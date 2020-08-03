@@ -5347,10 +5347,9 @@ SCARICARE MDB VOCI TRADOTTE
 # GNET
 ======================================================================
 
-LOG DI DEBUG TERMINALI
-------------------------------------------------------
+## LOG DI DEBUG TERMINALI
 
-� BINARIO-DECIMALE
+### BINARIO-DECIMALE
 
 	0000 0000	Byte (nibble high + nibble low)
 	[bit3 bit2 bit1 bit0]
@@ -5378,7 +5377,7 @@ LOG DI DEBUG TERMINALI
 		Nibble high = 2 = 0010 = bit1
 		Nibble low = 7 = 0111 = bit0, bit1, bit2
 
-� COMANDI DI AZZERAMENTO MEMORIE
+### COMANDI DI AZZERAMENTO MEMORIE
 	"Risposta a crypto key", 
 	"Crypto key", 
 	"Richiesta Setup accessi", 
@@ -5398,7 +5397,7 @@ LOG DI DEBUG TERMINALI
 	"Risposta a Monitor testine".
 
 
-� CRITTOGRAFIA GNET
+### CRITTOGRAFIA GNET
 	
 	OPCODES COMANDI BASE
 	I comandi dei terminali base sono intesi per tutti i terminali base, siano essi presenze, accessi o produzione
@@ -5512,15 +5511,14 @@ LOG DI DEBUG TERMINALI
 			00 			Testina KK n.7 (0 = online; 1 = offline)
 			00 			Testina KK n.8 (0 = online; 1 = offline)
 
-� ERRORI
+### ERRORI
 
 	E(00104) = Errore di comunicazione GNet, aumentare il Ping Retry su GNConfig e ripuntare le nuove Tabelle Host, eventualmente attivare il MicronLeak
 	E(00108) = Errore di timeout, niente di grave, rimander� il record pi� avanti
 	E(00109) = Errore firmware
 
 
-MICRONLEAK
-------------------------------------------------------
+## MICRONLEAK
 
 GESTIONE BASE
 Il processo pi� semplice con cui monitorare la comunicazione GNet si basa sull'utilizzo del log GNTrace.

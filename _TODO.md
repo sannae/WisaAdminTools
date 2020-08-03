@@ -4,7 +4,7 @@
 	03.08.2020 ARCA ASST FRANCIACORTA - Modifica report Presenze Mensili con turni notturni				30'		R.Domeniconi
 	03.08.2020 WKI CO.SER - Correzione assegnazione badge per due dipendenti su MW						20'		sig.ra Edda
 	03.08.2020 DEMONT - Assistenza Micronpass Web definizione orario abilitazione						30'		
-	03.08.2020 COOP ITALIA - Riconfigurazione n.2 MXP250 sconfigurati									90'		Sig. Samuele
+	03.08.2020 COOP ITALIA - Riconfigurazione n.2 MXP250 sconfigurati									100'	Sig. Samuele
 
 # DOING
 	

@@ -1,15 +1,30 @@
 ﻿<# 
+
 .SYNOPSIS
-    The script automates the MRT Application Suite installation
+The script automates the MRT Application Suite installation.
+
 .DESCRIPTION
-    Install IIS on Windows client or server
-    Install MRT Application Suite
-    Install SQL Server Express (if needed)
-    Install SQL Server Management Studio (if needed)
-    Configure IIS Application Pool
-    Configure MPW initial parameters by using external query (SqlServer PowerShell module required)
-.SYNTAX
-    ./main.ps1 [--InstallSQL] [--InstallSSMS] 
+The script performs 1) installation of IIS on Windows client or server, 
+2) installation of SQL Server Express (if needed), 
+3) installation of SQL Server Management Studio or Azure Data Studio (if needed),
+4) installation of MRT Application Suite, 
+5) configuration of website and application pool on IIS,
+6) initial configuration by using external query (SqlServer PowerShell module required)
+
+.NOTES
+Requisites:
+    - CSV file with required IIS features in the same directory (maybe replace with JSON?)
+    - SQLEXPR_x64_ENU.exe in same directory (if needed) (English only for now)
+    - SSMS-SETUP-ENU.exe in same directory (if needed) (English only for now)
+    - MRTxxx.exe in same directory
+    - Modules/SqlServer PowerShell module (last release downloadable from https://www.powershellgallery.com/packages/Sqlserver)
+
+
+.EXAMPLE
+./Install-MRT.ps1 
+.EXAMPLE
+./Install-MRT.ps1 --InstallSQL --InstallSSMS
+
 #>
 
 # Specify --InstallSQL to install SQL Server Express
