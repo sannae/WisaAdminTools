@@ -34,8 +34,17 @@ Param(
     [Parameter(Mandatory=$false, Position=2)] [switch]$InstallSSMS
 )
 
-# Installation utilities
-Import-Module -Name .\InstallUtils.psm1
+# Writes a log
+function Write-Log {
+    param ([string]$logstring)
+    $LogPath = "$InstallLocation\LOGS\_main_install.log"
+    $datetime = Get-Date -format "[dd-MM-yyyy HH:mm:ss]"
+    # Writes date-time and string
+    Add-content $LogPath -value "$datetime $logstring"
+    # Print to console the
+    Write-Host $logstring
+}
+
 
 # Set location and execution policy
 $InstallLocation = (Get-Location).Path
