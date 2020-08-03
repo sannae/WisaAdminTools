@@ -8,6 +8,7 @@
 # DOING
 	
 # TO-DO
+	WKI COSER - Recupero timbrature badge associati male
 	KUKA - Abilitazione protocollo TLS 1.2 su server
 	BCUBE AIRCARGO - Attivazione controllo abilitazioni su lettori 10.28.1.191 e 10.28.1.192
 	...
