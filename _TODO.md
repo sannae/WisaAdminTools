@@ -14,22 +14,23 @@
 
 # DOING
 	05.08.2020 [14:00] MAT - Installazione software e import anagrafico								<!-- STAMPARE RAPPORTINO -->	
-
+	05.08.2020 AERONAUTICA POGGIO RENATICO - Organizzare call con Manetti 5/8
+	05.08.2020 MARTINI E ROSSI - Completare installazione tornelli
+	05.08.2020 CESARE MAURI - Finire di attivare il lettore USB										<!-- STAMPARE RAPPORTINO -->
+	05.08.2020 SIEMENS BREMBO - Assistenza per varco offline
 
 # TO-DO
-	SIEMENS BREMBO - Assistenza per varco offline
+	
 	GRIMALDI - 1gg di sviluppo Airoldi
 	KUKA - Abilitazione protocollo TLS 1.2 su server
 	BCUBE AIRCARGO - Attivazione controllo abilitazioni su lettori 10.28.1.191 e 10.28.1.192
 	SIEMENS NOVARTIS - Organizzare call per gestione upgrade (quadro installazione)
 	SIEMENS NOVARTIS - Issue su varchi offline, v.mail A.Siano
 	SIEMENS NOVARTIS - Assistenza per A.Siano, modifica report personalizzato Visite a Dipendenti
-	AERONAUTICA POGGIO RENATICO - Organizzare call con Manetti 5/8
 	SYNTEC - Analisi Az.Osp. Verona
 	GRIMALDI - Mail di Di Maio
 	INVESTIRE SGR (FIGINO) - Problema hardware
 	IRCSS CANDIOLO - V.mail Andrea, nuovo terminale da configurare lato server 
-	CESARE MAURI - Finire di attivare il lettore USB												<!-- STAMPARE RAPPORTINO -->
 
 # DEV
 
