@@ -9,25 +9,44 @@ Docker pull mcr.microsoft.com/dotnet/framework/aspnet:4.8
 # Rename image (if needed)
 docker tag mcr.microsoft.com/dotnet/framework/aspnet:4.8 aspnet48baseimage
 
-# Create Dockerfile
-New-Item -Path . -Name "Dockerfile" -ItemType "file" -Value '
+# Preparation
+<#
+# Powershell:
+    Remove-IISSite -Name "Default Web Site"
+    New-IISSite -Name "mpassw" -BindingInformation "*:80:" -PhysicalPath "$env:systemdrive\MPW\Micronpass" -PassThru
+    Get-IISSite -Name "mpassw"
 
-    # Base image and author
-    FROM aspnet48baseimage
-    MAINTAINER Edoardo Sanna
+    # Install Crystal Reports
+    $msiArguments64 = '/qn','/i','"CRRuntime_64bit_13_0_25.msi"'
+    Start-Process -PassThru -Wait msiexec -ArgumentList $msiArguments64
+    $msiArguments32 = '/qn','/i','"CRRuntime_32bit_13_0_25.msi"'
+    Start-Process -PassThru -Wait msiexec -ArgumentList $msiArguments32
+    # ----> Questa parte va in errore!
+    # ----> https://stackoverflow.com/questions/55638049/docker-container-with-support-for-crystal-reports
 
-    # Create root directory MPW/Micronpass
-    RUN mkdir C:\MPW\Micronpass
+    # cmd:
+    icacls C:\MPW\Micronpass /grant Everyone:(F)
+    icacls \inetpub\wwwroot /grant Everyone:(F)
+#>
 
-    # Copy source code into container
-    COPY ./MPW/Micronpass /MPW/Micronpass
+# Create Dockerfile 
+New-Item -Path "C:\MPW\Micronpass" -Name "Dockerfile" -ItemType "file" -Value '
 
-    # Remove Default Website
-    RUN powershell Remove-IISSite -Name "Default Web Site"
-    RUN powershell New-IISSite -Name "mpassw" -BindingInformation "*:80:" -PhysicalPath "$env:systemdrive\MPW\Micronpass" -PassThru
+# Base image and author
+FROM aspnet48baseimage
+MAINTAINER Edoardo Sanna
 
-    # Check that the files have been successfully copied
-    RUN dir
+# Create root directory MPW/Micronpass
+RUN mkdir C:\MPW\Micronpass
+
+# Working directory
+WORKDIR .
+
+# Copy source code into container
+COPY . /MPW/Micronpass
+
+# Check that the files have been successfully copied
+RUN dir
 
 '
 
@@ -35,7 +54,7 @@ New-Item -Path . -Name "Dockerfile" -ItemType "file" -Value '
 docker build -t mpasswimage .
 
 # Run (pull, create & start) container
-docker run --name mpassw  --publish 8080:80 --detach mpasswimage
+docker run --name mpassw --publish 8080:80 --detach mpasswimage
 
 # Test web application with default browser
 Start-Process 'http://localhost:8080'
