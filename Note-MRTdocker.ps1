@@ -6,43 +6,42 @@ Restart-Computer -Force
 # Pull ASP.NET 4.8 base image
 Docker pull mcr.microsoft.com/dotnet/framework/aspnet:4.8
 
-# Rename image
+# Rename image (if needed)
 docker tag mcr.microsoft.com/dotnet/framework/aspnet:4.8 aspnet48baseimage
 
-# Create file
+# Create Dockerfile
 New-Item -Path . -Name "Dockerfile" -ItemType "file" -Value '
-    # Base image
-    FROM aspnet48baseimage
 
-    # Shell
-    SHELL [ "powershell.exe" ]
+    # Base image and author
+    FROM aspnet48baseimage
+    MAINTAINER Edoardo Sanna
 
     # Create root directory MPW/Micronpass
-    RUN cd \
-    RUN New-Item -Path . -Name "MPW\Micronpass" -ItemType "directory"
-
-    # Work directory
-    WORKDIR C:\MPW\Micronpass
+    RUN mkdir C:\MPW\Micronpass
 
     # Copy source code into container
-    COPY . .
+    COPY ./MPW/Micronpass /MPW/Micronpass
 
     # Remove Default Website
-    RUN Remove-IISSite -Name "Default Web Site"
-    RUN New-IISSite -Name "mpassw" -BindingInformation "*:80:" -PhysicalPath "$env:systemdrive\MPW\Micronpass" -PassThru
+    RUN powershell Remove-IISSite -Name "Default Web Site"
+    RUN powershell New-IISSite -Name "mpassw" -BindingInformation "*:80:" -PhysicalPath "$env:systemdrive\MPW\Micronpass" -PassThru
 
     # Check that the files have been successfully copied
     RUN dir
+
 '
 
 # Build new image
-docker build -t ASPNET48 .
+docker build -t mpasswimage .
 
 # Run (pull, create & start) container
-docker run --name ASPNET48 --publish 8080:80 --detach aspnet48baseimage
+docker run --name mpassw  --publish 8080:80 --detach mpasswimage
+
+# Test web application with default browser
+Start-Process 'http://localhost:8080'
 
 # Start PowerShell on running container
-docker exec -it ASPNET48 powershell
+# docker exec -it ASPNET48 powershell
 
 
 
