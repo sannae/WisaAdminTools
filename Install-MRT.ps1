@@ -9,7 +9,7 @@ The script performs 1) installation of IIS on Windows client or server,
 3) installation of SQL Server Management Studio or Azure Data Studio (if needed),
 4) installation of MRT Application Suite, 
 5) configuration of website and application pool on IIS,
-6) initial configuration by using external query (SqlServer PowerShell module required)
+6) initial configuration by using external query
 
 .NOTES
 Requisites:
@@ -18,7 +18,10 @@ Requisites:
     - SSMS-SETUP-ENU.exe in same directory (if needed) (English only for now)
     - MRTxxx.exe in same directory
     - Modules/SqlServer PowerShell module (last release downloadable from https://www.powershellgallery.com/packages/Sqlserver)
-
+To-do:
+    - Insert CheckProgramInstallation function
+    - Add speed-test
+    - Add DSC test at the end of the script
 
 .EXAMPLE
 ./Install-MRT.ps1 
@@ -224,6 +227,11 @@ if ($InstallSSMS -eq "Y"){
         break
     }  
 }
+
+# Installing Azure Data Studio
+# $ADSSetupFile = "azuredatastudio*.exe"
+# Rename-Item $ADSSetupFile -NewName ads_install.exe
+# .\ads_install.exe /SP- /VerySilent /LOG="LOGS/ADS_install.log" /NORESTART /SUPPRESSMSGBOXES /LAUNCHPROGRAM=0 | Out-Null
 
 <# ------------------------------------ #>
 
