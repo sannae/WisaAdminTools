@@ -247,6 +247,11 @@ Espandere il volume del VDI su VM:
 	CLOUD SELF DATA CENTER:
 		username:		edoardo.sanna@microncloud.local
 		password		M!cr0ntel072020
+		
+		Accesso alla console di gestione 
+		URL: https://selfdcvcloud.nuvolaitaliana.it/cloud/org/org-micspa
+		Username: DC_93413541309
+		password: Micro!Mpw13_2016!01
 			
 ## BITECH:
 
@@ -4963,9 +4968,9 @@ Prerequisiti di sistema client di stampa:
 		Inoltre, viene creato un collegamento ad Evolis Print Center in esecuzione automatica per tutti gli utenti
 	- Al termine dell'installazione dei driver, eseguire il nuovo software di gestione Evolis Print Center
 	- Collegare il cavo seriale-USB della stampante:
-		l'Evolis Print Center dice "Problema alimentazione carte" (icona gialla nel tray di Windows): sta gi� parlando con la stampante
+		l'Evolis Print Center dice "Problema alimentazione carte" (icona gialla nel tray di Windows): sta già parlando con la stampante
 	- Installare driver del coupler RFID
-		*** Il coupler � considerato un componente *esterno* alla stampante: i driver vanno installati perch� il sistema operativo lo vede come un lettore RFID da gestire separatamente
+		*** Il coupler è considerato un componente *esterno* alla stampante: i driver vanno installati perché il sistema operativo lo vede come un lettore RFID da gestire separatamente
 		*** V. sotto come testare la visibilit� del coupler dall'OS
 		125 kHz:
 			ACG125
