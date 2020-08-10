@@ -1,10 +1,3 @@
 
 ASPNET TUTORIAL https://dotnet.microsoft.com/learn/aspnet/hello-world-tutorial/install
 RAZOR TUTORIAL https://docs.microsoft.com/it-it/aspnet/core/tutorials/razor-pages/?view=aspnetcore-3.1
-
-// To re-build and migrate the project
-dotnet build
-dotnet ef migrations add InitialCreate
-dotnet ef database update
-
-// http://localhost:5000/Clients
