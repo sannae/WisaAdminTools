@@ -6285,8 +6285,8 @@ Il lettore legge il badge Il lettore legge l'impronta del dipendente e la invia 
 
 VERIFICA TESSERA CON IMPRONTA SU MIFARE 1K/4K:
 Il lettore legge l'UID del badge e il/i template contenutovi (salvato tramite arruolamento), dopodich� chiede all'MXP le white list; se il badge � abilitato, allora il lettore chiede l'impronta al dipendente e a quel punto la confronta con il template: se l'impronta coincide col template, allora viene generato il transito
-* Comunicazione pi� leggera
-* Impianto pi� sicuro, perch� l'UNICA copia dell'impronta � scritta nella tessera (crittata e con password, tra l'altro), per cui NON esistono copie su database
+* Comunicazione più leggera
+* Impianto più sicuro, perché l'UNICA copia dell'impronta è scritta nella tessera (crittata e con password, tra l'altro), per cui NON esistono copie su database
 
 	- MicronConfig > Testina > Configurazione testine > Device: Tecnologia 11-Biometrico		% Prima tecnologia di lettura ---> Configurare su Testina 1 anche se la descrizione della tecnologia dice T2!!!
 	- MicronConfig > Testina > Configurazione testine > Device: Tecnologia 13-Mifare		% Seconda tecnologia di lettura
@@ -6300,7 +6300,7 @@ Il sensore legge l'impronta e ne fa una verifica con i template in database scar
 * In assenza di tessera, il Suprema cerca il template in mezzo a TUTTI quelli salvati
 * Free Scan significa che il sensore � SEMPRE acceso (mentre con la lettura su tessera, il sensore si accende solo di fronte a un badge)
 
-	- (Nota: non ci sono testine KK lato software, il free scan � disponibile solo con testina collegata in seriale su terminale base, quindi la configurazione si fa tutta sull'MXP)
+	- (Nota: non ci sono testine KK lato software, il free scan è disponibile solo con testina collegata in seriale su terminale base, quindi la configurazione si fa tutta sull'MXP)
 	- MicronConfig > MXP > Configurazione Testine > Device: Tecnologia 11-Biometrico	% Tecnologia di lettura ---> Configurare su Testina 1 anche se la descrizione della tecnologia dice T2!!!
 	- MicronConfig > MXP > GPParam35 = 0							% Nessuna associazione a testina KK
 	- MicronConfig > Flags > IDBio = 15							% Associazione dell'impronta con la matricola
