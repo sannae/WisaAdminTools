@@ -1,3 +1,13 @@
+<#
+
+Alcuni link utili:
+    * Interessante introduzione ai Container e Nano Server su Octopus : https://octopus.com/blog/nano-server-future-deployment-models
+    * MS Learn's Administer-Containers-in-Azure Learning Path : https://docs.microsoft.com/en-us/learn/paths/administer-containers-in-azure/
+    * FreeCodeCamp's Docker Handbook : https://www.freecodecamp.org/news/the-docker-handbook/
+    * Stackify's start-to-finish guide to Docker for .NET : https://stackify.com/a-start-to-finish-guide-to-docker-for-net/
+#>
+
+
 # Install Docker (Windows Server)
 Install-Module -Name DockerMsftProvider -Repository PSGallery -Force
 Install-Package -Name docker -ProviderName DockerMsftProvider
@@ -6,29 +16,8 @@ Restart-Computer -Force
 # Pull ASP.NET 4.8 base image
 Docker pull mcr.microsoft.com/dotnet/framework/aspnet:4.8
 
-# Rename image (if needed)
-docker tag mcr.microsoft.com/dotnet/framework/aspnet:4.8 aspnet48baseimage
-
-# Create Dockerfile 
-New-Item -Path "C:\MPW\Micronpass" -Name "Dockerfile" -ItemType "file" -Value '
-
-# Base image and author
-FROM aspnet48baseimage
-MAINTAINER Edoardo Sanna
-
-# Create root directory MPW/Micronpass
-RUN mkdir C:\MPW\Micronpass
-
-# Working directory
-WORKDIR .
-
-# Copy source code into container
-COPY . /MPW/Micronpass
-
-# Check that the files have been successfully copied
-RUN dir
-
-'
+# Check dockerfile here
+# .......
 
 # Build new image
 docker build -t mpasswimage .
