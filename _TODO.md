@@ -4,23 +4,30 @@
 	2020.08.10 BITRON - Info su parametri MicronClear									20'			Davide Di Stefano
 	2020.08.10 WKI GRUPPO REGAL - Verifica su timbrature mancanti con Gianluca			30'			Serenella Colaiuda
 	2020.08.11 WORTHINGTON - Preanalisi modifica software Mensa							60'			Sig.ra Cocomazzi
-	2020.08.11 ASST VALCAMONICA - Assistenza Micronpass e CardPresso					
-	
+	2020.08.11 ASST VALCAMONICA - Assistenza Micronpass e CardPresso
+	2020.08.11 SIEMENS VIALE SARCA - Preanalisi problema KX, appuntamento per ven 14	30'		Antonio Mosca
+	2020.08.11 MARTINI E ROSSI - Assistenza a G.Rabino, info su nuovi tornelli			40'		Giampaolo Rabino
+	2020.08.11 SOLUZIONE SRL - Installazione parziale, manca database SQL				60'		Giancarlo Scali
 
 
 # DOING
-	SOLUZIONE SRL - Installazione Micronpass Web e configurazione terminali				
-	FLOWSERVE - Assistenza v.mail Cocomazzi (Pagano 0362.612507 per info sul tornello)
-	ASL CN2 - Richiamare L.Bergese
+	SIEMENS ANGELINI - Finire attivazione MicronThermal
+	ASL CN2 - Richiamare L.Bergese 347.4435304
+	TELECOM SAVONA - Assistenza
+	SIEMENS CAMPARI - Assistenza
+
 
 # TO-DO
+	ARCA ASST SETTELAGHI - Attivare APB su terminale mensa
+
+	FERRERO - Info per centralina ETTT03
+	FERRERO - Aggiunta varco su centralina MOD42
+	SUOMINEN - Problema MicronMail
 	AZIENDA OSPED. SS. ANTONIO E BIAGIO E C.ARRIGO - Lentezza MicronService (Porro Marco 0131207800)
-	TELECOM ASL 2 - Assistenza su terminale Pietra Ligure
-	MARTINI E ROSSI - Assistenza a G.Rabino
+	RASPINI - Assistenza accesso Micronpass
 	FERRERO - Modifica configurazione tornelli nuovi
 	SPECCHIDEA - Verifica se attività gestita su accessi e presenze
 	WKI GRUPPO REGAL - Segnalazione MicMail terminale offline
-	SIEMENS VIALE SARCA - Assistenza (solo verifica)
 	2I RETE GAS - Analisi migrazione VM su nuova rete (cambio indirizzo IP)
 	ENEA - Aggiornamento firmware tablet
 	JABIL - Chiavetta CardPresso non funzionante, sostituto?
@@ -43,3 +50,4 @@
 		In attesa di verifiche più approfondite, sentire Sig.LoRusso (centralino +39 0672.071) o P.Volpe
 	POLICLINICO MILANO - V.mail Andrea, nuovo terminale da configurare lato server		<!-- In attesa di rinnovo password, ticket aperto -->
 	AERONAUTICA POGGIO RENATICO - Analisi integrazione schede AMIS (Mifare?) 			<!-- In attesa di ricevere una tessera già scritta -->
+	SOLUZIONE SRL - Completamento attivazione terminali nuovi			<!-- In attesa di credenziali di sa su SQL Server -->
