@@ -1,16 +1,18 @@
 # DONE
-
+## 21.08.2020
+	DACCC AERONAUTICA MILITARE - Preanalisi centralina MXP250 offline, date istruzioni - 40 - Col.Andrea Quattrini
+	WKI SYSTEMA - Ricontrollare timbrature mancanti da ieri	- 60 - Jessica Ganderle
+	COOP ITALIA PRATO - Verifica stato centralina, istruzioni per resettare il KK - 30 - Emanuele Schiavo
 
 # DOING
-
+	SIEMENS ANGELINI - Aggiornamento campo T26LOCALITA, in attesa di feedback da Olivieri
+	2I RETE GAS - Completamento preventivo per cambio indirizzo IP 
+	SPECCHIDEA - Verifica su Micronpass Win
 
 # TO-DO
-	2I RETE GAS - Chiedere a Bernardi per server videosorveglianza
 	FLOWSERVE - Completare analisi con il cliente, prendere requisiti per AP
-	SIEMENS ANGELINI - Finire parte MicronThermal e aggiornamento T26LOCALITA
-	SPECCHIDEA - Verifica su Micronpass Win
 	INVESTIRE SGR (FIGINO) - Problema hardware
-	GRIMALDI - Deploy MrtVisitors 754 compatibile con POP3
+	GRIMALDI - Deploy MrtVisitors 754 compatibile con POP3 -- un po' di problemi, aspettare il ritorno di Airoldi
 	SIEMENS NOVARTIS - Redazione IQ/OQ/PQ
 	SYNTEC - Analisi Az.Osp. Verona
 	SKYLOGIC TORINO - Pass visitatori personalizzato (Skylogic-005/Software/pass)
