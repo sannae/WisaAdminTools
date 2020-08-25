@@ -38,9 +38,12 @@ Param(
 )
 
 # Writes a log
+$InstallLocation = (Get-Location).Path
+New-Item -ItemType Directory -Path $InstallLocation\LOGS | Out-Null
+$LogPath = "$InstallLocation\LOGS\mrt_install.log"
+
 function Write-Log {
     param ([string]$logstring)
-    $LogPath = "$InstallLocation\LOGS\_main_install.log"
     $datetime = Get-Date -format "[dd-MM-yyyy HH:mm:ss]"
     # Writes date-time and string
     Add-content $LogPath -value "$datetime $logstring"
@@ -48,13 +51,10 @@ function Write-Log {
     Write-Host $logstring
 }
 
-
-# Set location and execution policy
-$InstallLocation = (Get-Location).Path
+# Set execution policy
 Set-Executionpolicy -ExecutionPolicy Unrestricted -Force -ErrorAction SilentlyContinue 
 
-# Write Log and write host
-New-Item -ItemType Directory -Path .\LOGS | Out-Null
+# Let's start
 Write-Log "Welcome to the MRT installation!"
 Write-Log ""
 

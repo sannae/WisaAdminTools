@@ -4888,9 +4888,9 @@ https://docs.microsoft.com/en-us/dotnet/api/system.web.configuration.httpruntime
 # STAMPA BADGE (EVOLIS PRIMACY + EASYGO)
 ======================================================================
 
-Procedura di attivazione di una stampante badge
-----------------------------------------------------------
-� Materiale hardware:
+## Procedura di attivazione di una stampante badge
+
+### Materiale hardware:
 
 	- Stampante badge Evolis, con cavo seriale-USB di comunicazione e cavo di alimentazione
 	
@@ -4906,7 +4906,7 @@ Procedura di attivazione di una stampante badge
 		- Compatibilit� carte: ISO CR80-ISO 7810 (53.98mm x 85.60mm)
 	
 		La stampante Evolis ha un design molto semplice, con le seguenti componenti:
-		a. Corpo principale, contenente nastro di stampa e moduli di codifica (magnetizzatore, couple MIFARE) a seconda del modello
+		a. Corpo principale, contenente nastro di stampa e moduli di codifica (magnetizzatore, coupler MIFARE) a seconda del modello
 		b. Cavo di alimentazione
 		c. Cavo seriale-USB
 		d. Cassetto frontale superiore: punto di ricarica dei badge
@@ -4921,18 +4921,23 @@ Procedura di attivazione di una stampante badge
 	- DVD di installazione Primacy Zenius premium suite (contiene dirvers, software e documentazione)
 	- Cleaning kit con istruzioni
 
+	Assistenza Evolis: 
+		assistenza@ermes-online.it, +39 051.757040
+		Igor Osio (igor.osio@ermes-online.it)
+		Luca Cesaro (luca.cesaro@ermes-online.it)
 
-� Predisposizione software su server:
+
+### Predisposizione software su server:
 
 	- Installare MicronCardFive ultima versione (>= 4.0.0)
-		MicronCardFive � il servizio che si occupa di fare un polling sulla tabella T25COMBADGE ogni N secondi (parametro "IntervalTime" in MicronCardFiveService.exe.config).
+		MicronCardFive è il servizio che si occupa di fare un polling sulla tabella T25COMBADGE ogni N secondi (parametro "IntervalTime" in MicronCardFiveService.exe.config).
 		Ogni volta che trova un record con una data-ora in un formato specifico (parametro "FormatoDataNote" nel file MicronCardFiveService.exe.config) nell'attributo T25DESCRIZIONE (valore scritto da CardPresso): 
 			1. aggiorna il campo T25ID1 del record con la traccia letta dalla stampante
 			2. manda un wakeup al btService con l'abilitazione del badge
 		Impostare parametro FormatoDataNote = 's' (solo per CardPresso)
 	se trova un record con questa data-ora in T25DESCRIZIONE scrive il campo T25ID1 e manda un wake-up al btService di riferimento
 	- Creare la vista logica su SSMS:
-		La vista deve mostrare tutti i dati da stampare, pi� i dati aggiornati in fase di stampa (T25ID1, T25DESCRIZIONE)
+		La vista deve mostrare tutti i dati da stampare, più i dati aggiornati in fase di stampa (T25ID1, T25DESCRIZIONE)
 		Qualora ci fosse una sola vista per tutte le anagrafiche, chiamarla BADGE
 		Se invece si dovesse creare viste diverse per layout diversi a seconda del tipo matricola:
 			per i dipendenti, chiamarla D_BADGE
@@ -4941,12 +4946,12 @@ Procedura di attivazione di una stampante badge
 			e cos� via..
 
 
-� Procedura su postazione client:
+### Procedura su postazione client:
 
-Il client di stampa � la postazione su cui si installer� CardPresso, ovvero il software di gestione della stampa.
+Il client di stampa è la postazione su cui si installerà CardPresso, ovvero il software di gestione della stampa.
 Prerequisiti di sistema client di stampa:
 	- Sistema operativo >= Windows 10
-	- Connettivit� al server app e al server database
+	- Connettività al server app e al server database
 	- Utente almeno power-user o amministratore locale per:
 		poter installare i driver
 		poter accedere ai componenti HW della stampante
@@ -4985,8 +4990,8 @@ Prerequisiti di sistema client di stampa:
 			Percorso = [lasciare default]
 			[installazione con tutte le spunte di default]
 			*** La chiavetta funziona come licenza! Senza la chiavetta inserita il software non parte.
-			*** Inoltre, funge da licenza hardware - � legata alla macchina su cui � stata attivata, non si pu� spostare trasparentemente su un nuovo client
-	- Test di visibilit� del coupler:
+			*** Inoltre, funge da licenza hardware - è legata alla macchina su cui è stata attivata, non si può spostare trasparentemente su un nuovo client
+	- Test di visibilità del coupler:
 	*** Ovviamente la stampante deve essere accesa
 		- CardPresso > Home Page > Inizia usando CardPresso Ermes... > Crea personalmente un badge... > Tipi di card comuni > MIFARE_Classic
 		- Barra di navigazione > Anteprima codifica (simbolo contactless) > Codifica script > Codificatori contactless = OMNIKEY CardMan ecc.
@@ -4999,7 +5004,7 @@ Prerequisiti di sistema client di stampa:
 				Server = [copiare server da stringa di connessione, attributo 'Data Source']
 				Autenticazione SQL Server (inserire credenziali)
 				Usa il seguente database predefinito = MRT		% oCIO!
-		- Test connettivit� verso il database: crea un file test.udl, compilalo con i parametri di connessione (data source, login, database name) e clicca su Verifica Connettivit�
+		- Test connettività verso il database: crea un file test.udl, compilalo con i parametri di connessione (data source, login, database name) e clicca su Verifica Connettività
 	- [Opzionale] Creare un percorso di rete utilizzando l'apposito .bat che punti al percorso \MPW\Micronpass\photos
 	
 		Esempio di batch:
@@ -5012,13 +5017,13 @@ Prerequisiti di sistema client di stampa:
 	- Pannello di controllo > Dispositivi e stampanti > Evolis Primacy > [click destro] > Preferenze stampa
 			Orientamento = ORIZZONTALE
 			Codifica mediante applicazione = IMPOSTAZIONE PREDEFINITA	% In realt� ha effetto solo per la magnetizzazione
-	- Pannello di controllo > Dispositivi e stampanti > Evolis Primacy > [click destro] > Propriet� stampante
+	- Pannello di controllo > Dispositivi e stampanti > Evolis Primacy > [click destro] > Proprietà stampante
 			Avanzate > Invia direttamente alla stampante = TRUE
-	- Evolis Print Center > Propriet� > Stampa > Orientamento carta = ORIZZONTALE		% In realt� lo eredita dalle propriet� della stampante impostate su Pannello di Controllo
-	- Evolis Print Center > Propriet� > Amministrazione > Standby non consentito = TRUE	% Per disabilitare lo standby della stampante
+	- Evolis Print Center > Proprietà > Stampa > Orientamento carta = ORIZZONTALE		% In realtà lo eredita dalle propriet� della stampante impostate su Pannello di Controllo
+	- Evolis Print Center > Proprietà > Amministrazione > Standby non consentito = TRUE	% Per disabilitare lo standby della stampante
 		> Applica le impostazioni
-	- Evolis Print Center > Propriet� > Codifica > Magnetica > Identificazione automatica = TRUE	% in realt� lo legge dalle propriet� della stampante cambiate allo step precedente
-		*** Se non permette la modifica di quest'ultimo parametro, � perch� nella stampante non � inluso il magnetizzatore!
+	- Evolis Print Center > Proprietà > Codifica > Magnetica > Identificazione automatica = TRUE	% in realtà lo legge dalle proprietà della stampante cambiate allo step precedente
+		*** Se non permette la modifica di quest'ultimo parametro, è perché nella stampante non è inluso il magnetizzatore!
 
 
 � Configurazione CardPresso:
@@ -5031,7 +5036,7 @@ Prerequisiti di sistema client di stampa:
 	Operazioni contactless = TRUE
 	Codifica Magnetica = TRUE 	(SE � presente e configurato il modulo magnetizzatore nella stampante)
 	> Salva
-- Se hai gi� i layout (file .card):
+- Se hai già i layout (file .card):
 	- Aprire uno dei layout (per es: "FRONTE.card")
 		- Database > Connetti > 
 			- Procedura guidata connessione db > Open Database Connectivity (ODBC) 			% Selezione del database a cui connettersi	
@@ -5055,7 +5060,7 @@ Prerequisiti di sistema client di stampa:
 	- Per configurare il magnetizzatore:
 		- Retro > Track2 > Sorgente > Concatenato > Prefisso = [FATTO DA FABIETTO]
 		- Retro > Track2 > Sorgente > Colonna = MAGNETICO
-			*** Attenzione alla quantit� di cifre
+			*** Attenzione alla quantità di cifre
 	- Per collegare alla vista logica i campi variabili del layout:
 		- Propriet� generali del layout:
 			- Clicca sullo sfondo del layout > [menu sulla destra] > Database
@@ -5094,15 +5099,15 @@ Prerequisiti di sistema client di stampa:
 				Apri l'editor delle immagini = No
 
 
-� Utilizzo stampante:
+## Utilizzo stampante:
 
-Si d� per scontato che il record che si vuole stampare sia gi� inserito nel database MRT
+Si dà per scontato che il record che si vuole stampare sia già inserito nel database MRT
 - Inserisci il/i badge con banda magnetica rivolta verso il BASSO e verso DESTRA, guardando frontalmente la stampante
 - Apri CardPresso
 - Cerca il record da stampare:
 	CardPresso > Anteprima database (in alto, simbolo db) > Filtro database:
-		Campo = COGNOME					% Il cognome � un esempio, si pu� usare una qualsiasi delle colonne della vista logica
-		Operatore = � uguale(=) [oppure LIKE]
+		Campo = COGNOME					% Il cognome è un esempio, si pu� usare una qualsiasi delle colonne della vista logica
+		Operatore = è uguale(=) [oppure LIKE]
 		Valore = [inserire cognome]
 		Applica
 - File > Stampa > Stampa > [sel. dalla lista] > Stampa (oh mi raccomando caricare i badge!)
@@ -5132,7 +5137,7 @@ Note formazione:
 Entrambi i software puntano allo stesso database, anche se CardPresso vede esclusivamente una tabella 'filtrata' e strutturata appositamente per semplificare la stampa.
 
 
-[--OLD from here--]
+### --OLD from here--]
 ----------------------------------------
 EVOLIS PRIMACY: INTRO
 - Lucetta stampante: indica lo stato di alimentazione delle carte
