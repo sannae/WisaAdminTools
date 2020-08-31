@@ -15,6 +15,9 @@ Restart-Computer -Force
 
 # Pull ASP.NET 4.8 base image
 Docker pull mcr.microsoft.com/dotnet/framework/aspnet:4.8
+# Pull Windows 1809 as oledlg.dll source for Crystal Reports 
+# https://stackoverflow.com/questions/55638049/docker-container-with-support-for-crystal-reports
+Docker pull mcr.microsoft.com/windows:1809
 
 # Check dockerfile here
 # .......
@@ -39,7 +42,6 @@ Start-Process -PassThru -Wait msiexec -ArgumentList $msiArguments64
 $msiArguments32 = '/qn','/i','"CRRuntime_32bit_13_0_25.msi"'
 Start-Process -PassThru -Wait msiexec -ArgumentList $msiArguments32
 # ----> Questa parte va in errore!
-# ----> https://stackoverflow.com/questions/55638049/docker-container-with-support-for-crystal-reports
 
 # Run cmd on the container
 docker exec -it mpassw cmd
