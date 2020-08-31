@@ -1,4 +1,0 @@
-
-ASPNET TUTORIAL https://dotnet.microsoft.com/learn/aspnet/hello-world-tutorial/install
-RAZOR TUTORIAL https://docs.microsoft.com/it-it/aspnet/core/tutorials/razor-pages/?view=aspnetcore-3.1
-RAZOR WITH EF CORE https://docs.microsoft.com/en-us/aspnet/core/data/ef-rp/intro?view=aspnetcore-3.1&tabs=visual-studio
