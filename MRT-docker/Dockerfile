@@ -4,7 +4,7 @@
 # https://hub.docker.com/_/microsoft-windows
 FROM mcr.microsoft.com/windows:1809 as dll_source
 # https://hub.docker.com/_/microsoft-dotnet-framework-aspnet
-FROM mcr.microsoft.com/dotnet/framework/aspnet:4.8 AS dll_source
+FROM mcr.microsoft.com/dotnet/framework/aspnet:4.8
 
 # Title
 LABEL maintainer="Edoardo Sanna"
