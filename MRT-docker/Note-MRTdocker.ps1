@@ -50,9 +50,12 @@ docker exec -it mpassw cmd
 > icacls C:\MPW\Micronpass /grant Everyone:(F)
 > icacls \inetpub\wwwroot /grant Everyone:(F)
 
+# Indirizzo IP del container
+$IP = docker inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' mpassw
 
 # Back to host: test web application with default browser
-Start-Process 'http://localhost:8080'
+Start-Process "http://$IP:8080"
+
 
 # ----------------
 
