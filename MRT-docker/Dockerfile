@@ -35,7 +35,6 @@ EXPOSE 80
 RUN icacls C:\MPW\Micronpass /grant Everyone:(F)
 RUN icacls \inetpub\wwwroot /grant Everyone:(F)
 
-# Create new application
+# Create new application [OPTIONAL]
 RUN powershell.exe -Command Import-Module WebAdministration
 RUN powershell.exe -Command New-WebApplication -Name testApp -Site 'Default Web Site' -PhysicalPath C:\MPW\Micronpass -ApplicationPool DefaultAppPool
-
