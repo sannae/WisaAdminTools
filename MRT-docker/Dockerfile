@@ -19,6 +19,7 @@ COPY --from=dll_source /windows/syswow64/oledlg.dll /windows/syswow64/oledlg.dll
 
 # Create root directory MPW/Micronpass
 RUN mkdir C:\MPW\Micronpass
+RUN mkdir C:\MPW\Micronpass\logs
 
 # Working directory
 WORKDIR /MPW/Micronpass
@@ -34,11 +35,3 @@ Start-Sleep -s 15;
 
 # Expose port 80
 EXPOSE 80
-
-# Give permissions
-RUN icacls C:\MPW\Micronpass /grant Everyone:(F)
-RUN icacls \inetpub\wwwroot /grant Everyone:(F)
-
-# Create new application [OPTIONAL]
-RUN powershell.exe -Command Import-Module WebAdministration
-RUN powershell.exe -Command New-WebApplication -Name testApp -Site 'Default Web Site' -PhysicalPath C:\MPW\Micronpass -ApplicationPool DefaultAppPool
