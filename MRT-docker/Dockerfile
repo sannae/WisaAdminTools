@@ -10,8 +10,10 @@ FROM mcr.microsoft.com/dotnet/framework/aspnet:4.8
 LABEL maintainer="Edoardo Sanna"
 LABEL version="1.0"
 
-# Get the dll required by Crystal Reports
-# https://stackoverflow.com/questions/55638049/docker-container-with-support-for-crystal-reports
+# Change default shell from cmd to Powershell
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+
+# Get the dll required by Crystal Reports (https://stackoverflow.com/questions/55638049/docker-container-with-support-for-crystal-reports)
 COPY --from=dll_source /windows/system32/oledlg.dll /windows/system32/oledlg.dll 
 COPY --from=dll_source /windows/syswow64/oledlg.dll /windows/syswow64/oledlg.dll 
 
@@ -25,8 +27,10 @@ WORKDIR /MPW/Micronpass
 COPY . /MPW/Micronpass
 
 # Install Crystal Reports
-RUN powershell.exe -Command Start-Process C:\MPW\Micronpass\CRRuntime_64bit_13_0_25.msi -ArgumentList '/l*v c:\MPW\log\CRinstall.log' -Wait
-RUN powershell.exe -Command Start-Process C:\MPW\Micronpass\CRRuntime_32bit_13_0_25.msi -ArgumentList '/l*v c:\MPW\log\CRinstall.log' -Wait
+RUN Start-Process 'msiexec' -ArgumentList '/a C:\MPW\Micronpass\CRRuntime_64bit_13_0_25.msi /l*v c:\MPW\log\CRinstall.log /qn /norestart' -Wait ;\
+Start-Sleep -s 15;
+RUN Start-Process 'msiexec' -ArgumentList '/a C:\MPW\Micronpass\CRRuntime_32bit_13_0_25.msi /l*v c:\MPW\log\CRinstall.log' /qn /norestart' -Wait;\
+Start-Sleep -s 15;
 
 # Expose port 80
 EXPOSE 80
