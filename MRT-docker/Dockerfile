@@ -14,8 +14,7 @@ SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPref
 COPY --from=dll_source /windows/system32/oledlg.dll /windows/system32/oledlg.dll 
 COPY --from=dll_source /windows/syswow64/oledlg.dll /windows/syswow64/oledlg.dll 
 
-# Create root directory MPW/Micronpass
-RUN mkdir C:\MPW\Micronpass
+# Create root directory MPW/Micronpass and logs folder
 RUN mkdir C:\MPW\Micronpass\logs
 
 # Working directory
