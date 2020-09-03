@@ -25,10 +25,8 @@ WORKDIR /MPW/Micronpass
 COPY . /MPW/Micronpass
 
 # Install Crystal Reports
-RUN Start-Process 'msiexec' -ArgumentList '/a C:\MPW\Micronpass\CRRuntime_64bit_13_0_25.msi /l*v c:\MPW\log\CRinstall.log /qn /norestart' -Wait ;\
-Start-Sleep -s 15;
-RUN Start-Process 'msiexec' -ArgumentList '/a C:\MPW\Micronpass\CRRuntime_32bit_13_0_25.msi /l*v c:\MPW\log\CRinstall.log' /qn /norestart' -Wait;\
-Start-Sleep -s 15;
+RUN Start-Process 'msiexec' -ArgumentList '/a C:\MPW\Micronpass\CRRuntime_64bit_13_0_25.msi /l*v c:\MPW\log\CRinstall.log /qn /norestart' -Wait && Start-Sleep -s 15;
+RUN Start-Process 'msiexec' -ArgumentList '/a C:\MPW\Micronpass\CRRuntime_32bit_13_0_25.msi /l*v c:\MPW\log\CRinstall.log /qn /norestart' -Wait && Start-Sleep -s 15;
 
 # Expose port 80
 EXPOSE 80
