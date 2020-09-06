@@ -13,3 +13,4 @@
       </system.web>
   </configuration>
 ```
+- [] All'avvio ancora non va, restituisce l'errore "Could not load file or assembly 'CrystalDecisions.ReportAppServer.Controllers, Version=13.0.3500.0...": commentate le righe delle dependencies `assemblies` nel Web.config, ora restituisce l'errore "Error reading parameters" (va un po' meglio!)
