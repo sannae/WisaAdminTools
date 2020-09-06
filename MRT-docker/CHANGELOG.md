@@ -1,5 +1,5 @@
-[+] Aggiunto Configure-iis.ps1 al dockerfile per creare Test application pool e directory virtuale /mpassw e associarli
-[+] Abilitati errori dettagliati su web.config:
+- [x] Aggiunto Configure-iis.ps1 al dockerfile per creare Test application pool e directory virtuale /mpassw e associarli
+- [x] Abilitati errori dettagliati su web.config:
 ```
   <configuration>
       <system.webServer>
