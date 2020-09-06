@@ -1,3 +1,5 @@
+# v1.0.0, tested
+
 Import-Module IISAdministration
 
 # Crea application pool
