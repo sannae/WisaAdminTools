@@ -33,3 +33,6 @@ $manager.CommitChanges()
 
 $manager.Sites["Default Web Site"].Applications["/mpassw"] | Select-Object ApplicationPoolName
 
+# Ricicla tutto!
+
+$manager.ApplicationPools["TEST"].Recycle()
