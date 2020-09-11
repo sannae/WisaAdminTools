@@ -1,33 +1,35 @@
 # DONE
-## 24.08.2020 
-	2I RETE GAS - Prosecuzione analisi per preventivo cambio IP con Bernardi - 30 - Michele Bernardi
-	FERRERO - Controllo configurazione centrailna SEN12 per contatti non funzionanti - 30 - Andrea Gandino
-	WKI GRUPPO REGAL - Terminali offline Longman (20 452 e 18 460), riavviato servizio - 30 - Serenella Colaiuda
-	FERRERO - Sostituire MXP250 con MXP450 per GRA11 - 60 - Andrea Gandino
-	FERRERO - Controllare contatti NO/NC su MOD52, date istruzioni su modifica su scheda - 10 - Andrea Gandino
-	COMUNE DI CIRIE - Ripristino btService per riavvio forzato del server - 30 - Sig. Moreno (CED)
-	WKI GRUPPO REGAL - Attivare terminale muletto via TeamViewer e cavo di rete, rinviato a lunedì - 30 - Silvano Madalini 045.6083100
-	WKI SYSTEMA CONSORTILE SYBEL - Terminale scollegato, non raggiungibile da server, istruzioni per verificare segnale sul posto - 20 - Andrea De Marchi
-## 25.08.2020
-	COMUNE DI SAN MAURO - Assistenza a Tagliafierro per sopralluogo HW in vista dell'attivazione - 20 - Elena Solomita
-	ARCA ASST VIMERCATE - Ulteriori test (grafica, banda magnetica) sulla stampante Evolis Primacy, da finire - 180 - (interna)
-	ARCA ASST GARDA - Configurazione e attivazione di n.2 MXP450, n.3 KL611, n.3 KX50 (primi varchi accessi) - 30 - Luca Mora
-	FERRERO - Riconfigurazione centralina accessi SEN07 - 20 - Daniele Manera
-	ADP SEGESTA - Assistenza a Bernardi per terminale MCT351 non funzionante - 60 - Michele Bernardi
-	FERRERO - Sostituzione bollatrice 8025 (v.mail Sig.Monticone)
-	REALE MUTUA - Verifica su report presenti in azienda, i servizi erano scollegati dal database - 100 - Romolo Azzalin
+## 28.08.2020
+	NUNCAS - Assistenza ingresso pedonale non funzionante, appuntamento HW per 01/09 - 60 - Cristina Cozzi
+	AURICCHIO - Preanalisi per terminali che non mostrano la causale, organizzare intervento HW - 40 - Michele Girelli
+	REALE MUTUA - Segnalazione di M.Bavaro su ricostruzione presenti in azienda del 14/08 - 30 - Michele Bavaro
+	REALE MUTUA - Segnalazione di N.Bolletta, il varco termoscanner non funziona, resettata videocamera - 80 - Nico Bolletta
+	MICRONTEL IT LM MONTICELLI - Reboot alla centralina MXP450 appena sostituita per i parametri extra - 90 - Simone Sturari
+	FERRERO - Ancora problemi su SEN07, si è deciso per la sostituzione - 20 - Daniele Manera
+	FERRERO - Modifica versi di timbratura su bollatrice 8140 - 20 - Diego Serra
+	ADP O-I - Preparazione estratti dei manuali tecnici per gestione documentazione sanitaria - 40 - Alberto Crosetti
+	ADP COFREN - Errore in avvio IIS, informazioni e link per provare a risolvere da IIS Manager - 30 - Alberto Crosetti
+	SIEMENS ANGELINI - Configurazione pulsante per varco Air Lock, inviati screenshot a G.Gianelli - 30 - Gianluca Gianelli
 
 # DOING
-	MICRONTEL-IT MONTICELLI - Assistenza sig. Senigagliesi, tornello di nuovo bloccato
-	OPE CARROZZERIA IMPERIALE - Check su problema terminali dopo interruzione corrente - Francesco Mingolla 337.1295339 0535.20304
 
+	
 # TO-DO
-	BCUBE AIR CARGO - Problema su badge smagnetizzati
+	GRUNDFOS - Spostamento link Micronpass Web, analisi per preventivo
+	FERRERO - V. mail di R.Ansaldi su ticket management
+	HI-TECH - Richiamare Sig. Gattolin per info 3351092765 
+	ARCA ASST VALCAMONICA - Verificare consegna stampante, è in più?
+	FERRERO TURCHIA - Riprendere discorso upgrade release (v.mail Muslu)
+	DEMONT - Assistenza per stampa badge
+	ISEO DEUTSCHLAND RSAG - Assistenza (v. mail Marcel)
+	HUTCHINSON - Problema su totem
+	ALPLA - Terminale presenze non funzionante
 	SOLUZIONE SRL PILA - Rilascio Soluz-001 Export presenze personalizzato
-	NUNCAS - Assistenza tornello non funzionante, Cristina 3394766271
-	WKI SYSTEMA CONSORTILE - Terminale che continua a non scaricare timbrature (v.mail Jessica)
+	SIEMENS ANGELINI - Completare pianificazione (28/08)
+	SIEMENS ANGELINI - Problema timbratura in errore da parte di Synapses
 	SIEMENS ANGELINI - Problema su app Reception dopo aggiornamento
-	SIEMENS ANGELINI - Aggiornamento campo T26LOCALITA, in attesa di feedback da Olivieri
+	SIEMENS ANGELINI - Info a Elio per il nuovo sottomenu Badge su Micronpass
+	SIEMENS ANGELINI - Aggiornamento campo T26LOCALITA secondo le indicazioni di Olivieri
 	ISS S.MARINO - Concludere assistenza per video MP4 
 	SAICA FLEX - Ricostruire installazione da attacco virus (disponibile dal 25/08)
 	SPECCHIDEA - Verifica su Micronpass Win (rientra il 26/08)

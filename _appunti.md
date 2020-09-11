@@ -140,10 +140,11 @@ Funziona in modalit� Windows form, quindi come il btNoService.
 		f. check icona di connessione a display
 	3) Telnet da rete Microntel
 		telnet <IP pubblico>:<porta terminale>
+			IP pubblico va letto nei parametri a bordo del terminale (anche da display)
 
 	Se nessuno di questi funziona:
-	- � un problema di campo
-	- � un problema di modem
+	- è un problema di campo
+	- è un problema di modem
 		- Su MCT700, un modulo GSM funzionante ha i link SIM1 e GSM accesi FISSI (*non* SIM2)
 
 * VirtualBox
