@@ -16,6 +16,11 @@ Restart-Computer -Force
 
 # Pull dell'immagine ASP.NET 4.8
 Docker pull mcr.microsoft.com/dotnet/framework/aspnet:4.8
+# Pull Windows 1809 as oledlg.dll source for Crystal Reports 
+# https://stackoverflow.com/questions/55638049/docker-container-with-support-for-crystal-reports
+Docker pull mcr.microsoft.com/windows:1809
+# MS SQL Server Express image
+docker pull microsoft/mssql-server-windows-express:latest
 
 # Check dockerfile here
 # .......
@@ -59,6 +64,8 @@ docker exec -it mpassw cmd
 > icacls C:\MPW\Micronpass /grant Everyone:(F)
 > icacls \inetpub\wwwroot /grant Everyone:(F)
 
+# Indirizzo IP del container
+$IP = docker inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' mpassw
 
 # Apri URL di Micronpass Web
 Start-Process 'http://localhost:8080'
