@@ -1,25 +1,22 @@
 # DONE
-## 28.08.2020
-	NUNCAS - Assistenza ingresso pedonale non funzionante, appuntamento HW per 01/09 - 60 - Cristina Cozzi
-	AURICCHIO - Preanalisi per terminali che non mostrano la causale, organizzare intervento HW - 40 - Michele Girelli
-	REALE MUTUA - Segnalazione di M.Bavaro su ricostruzione presenti in azienda del 14/08 - 30 - Michele Bavaro
-	REALE MUTUA - Segnalazione di N.Bolletta, il varco termoscanner non funziona, resettata videocamera - 80 - Nico Bolletta
-	MICRONTEL IT LM MONTICELLI - Reboot alla centralina MXP450 appena sostituita per i parametri extra - 90 - Simone Sturari
-	FERRERO - Ancora problemi su SEN07, si è deciso per la sostituzione - 20 - Daniele Manera
-	FERRERO - Modifica versi di timbratura su bollatrice 8140 - 20 - Diego Serra
-	ADP O-I - Preparazione estratti dei manuali tecnici per gestione documentazione sanitaria - 40 - Alberto Crosetti
-	ADP COFREN - Errore in avvio IIS, informazioni e link per provare a risolvere da IIS Manager - 30 - Alberto Crosetti
-	SIEMENS ANGELINI - Configurazione pulsante per varco Air Lock, inviati screenshot a G.Gianelli - 30 - Gianluca Gianelli
+	ARCA ATS BRESCIA - Configurazione causali su terminale di test e formazione introduttiva a MPW - 80 - Alex Bonetti [STAMPARE]
+	FERRERO - Nuovi varchi P2 e P3 per centralina GRA17 - 40 - Andrea Gandino
+	FERRERO - Aggiornamento organigramma Alba_GRA con nuovi varchi PSC00-P1/P2/P3 - 10 - Andrea Gandino
+	FERRERO - Nuovo varco solo allarme solo KX50 su ETTT03-P6 - 15 - Andrea Gandino
 
 # DOING
+	COOP
+	ALPITOUR
+	UNIPD Info Neve
 
-	
+
 # TO-DO
+
+
+	...
 	GRUNDFOS - Spostamento link Micronpass Web, analisi per preventivo
-	FERRERO - V. mail di R.Ansaldi su ticket management
 	HI-TECH - Richiamare Sig. Gattolin per info 3351092765 
 	ARCA ASST VALCAMONICA - Verificare consegna stampante, è in più?
-	FERRERO TURCHIA - Riprendere discorso upgrade release (v.mail Muslu)
 	DEMONT - Assistenza per stampa badge
 	ISEO DEUTSCHLAND RSAG - Assistenza (v. mail Marcel)
 	HUTCHINSON - Problema su totem

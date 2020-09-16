@@ -51,13 +51,6 @@ function Write-Log {
     Write-Host $logstring
 }
 
-# Set execution policy
-Set-Executionpolicy -ExecutionPolicy Unrestricted -Force -ErrorAction SilentlyContinue 
-
-# Let's start
-Write-Log "Welcome to the MRT installation!"
-Write-Log ""
-
 # SQL Server Express parameters
 $SQLinstance = "MICRONTEL_SQLEXPRESS"
 if ($InstallSQL -eq $true) {
@@ -90,81 +83,12 @@ if ($InstallSSMS -eq $true) {
     } 
 }    
 
-<# ------------------------------------ #>
-
-Write-Log ""; $step = 1
-Write-Log "$step. Checking OS information"
-
-# Check if current user is Administrator
-function Check-IsAdmin { 
-    param() 
-    $principal = New-Object System.Security.Principal.WindowsPrincipal([System.Security.Principal.WindowsIdentity]::GetCurrent()) 
-    $principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator) 
-}
-if (!( Check-IsAdmin) ) {
-    Write-Log "ERROR - The currently logged on user is not an Administrator!"
-    break 
-}
-
-# Check current execution policy
-if ((Get-ExecutionPolicy) -ne "Unrestricted" ) {
-    Write-Log "ERROR - The Execution Policies on the current session prevents this script from working!"
-    break 
-}
-
-# Check OS type 
-$OSDetails = Get-ComputerInfo
-$OSType = $OSDetails.WindowsInstallationType
-
-# Check .NET Framework version 
-$MinimumFramework = '379893' # corresponds to .NET Framework 4.5.2
-$InstalledFramework = Get-ItemProperty "HKLM:SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full"
-if (!($InstalledFramework).Release -ge $MinimumFramework){
-    Write-Log "ERROR - The installed .NET Framework $($InstalledFramework.Version) does not meet the minimum requirements."
-    break 
-}
+."./Check-Requirements.ps1"
+Check-Requirements
 
 <# ------------------------------------ #>
 
-Write-Log ""; $step++ 
-Write-Log "$step. Loading CSV and installing IIS features"
-
-# Check if features file is present
-if(!(Test-Path ".\IIS_features.csv")) { 
-    Write-Log "ERROR - IIS feature list not found! Please copy it to root folder."  
-    break
-} 
-
-# Load IIS Features from CSV file
-$IISFeaturesList = @(Import-CSV ".\IIS_features.csv" -Delimiter ';' -header 'FeatureName','Client','Server')
-$IISFeaturesList = $IISFeaturesList.$OSType
-
-# Workstation (DISM installation module)
-if ($OSType -eq "Client"){
-    foreach ($feature in $IISFeaturesList){
-        # The -all switch automatically installs all the parent features
-        Enable-WindowsOptionalFeature -All -Online -FeatureName $feature | Out-Null 
-        if (!(Get-WindowsOptionalFeature -Online -FeatureName $feature).State -eq "Enabled"){
-            Write-Log "ERROR - Something went wrong installing $feature, please check again!"
-	        break
-        }
-    }
-} 
-# Server (ServerManager installation module)
-elseif ($OSType -eq "Server"){
-    foreach ($feature in $IISFeaturesList){
-        Install-WindowsFeature -Name $feature  | Out-Null
-        if (!(Get-WindowsFeature -name $feature).Installed -eq $True){
-            Write-Log "ERROR - Something went wrong installing $feature, please check again!"
-	        break
-        }
-    }
-}
-
-# Reset IIS
-Invoke-Command -ScriptBlock {iisreset} | Out-Null
-$IISVersion = [System.Diagnostics.FileVersionInfo]::GetVersionInfo(“C:\Windows\system32\notepad.exe”).FileVersion
-Write-Log "IIS $IISVersion successfully installed!"
+./Install-IISfeatures.ps1
 
 <# ------------------------------------ #>
 
@@ -355,8 +279,6 @@ else {
 	Write-Log "Application $WebSiteName$ApplicationName successfully assigned to Application pool $ApplicationPoolName"
 }    
 
-
-
 <# ------------------------------------ #>
 
 Write-Log ""; $step++ 
@@ -399,6 +321,7 @@ Invoke-Sqlcmd -ServerInstance $DBDataSource -Database $DBInitialCatalog -Usernam
 
 # Configuration query 
 # (this will be outsourced to an external file)
+# (TODO: Add admin's default authorizations)
 $InitialConfigurationQuery = "
     /* Set GDPR flags to default */
     UPDATE T05COMFLAGS SET T05VALORE='1' WHERE T05TIPO='GDPRMODEDIP'

@@ -19,7 +19,7 @@ foreach ( $Disk in (Get-PSDrive -PSPRovider 'FileSystem' | Where-Object Used).Ro
     $Root = Get-ChildItem $Disk | Where-Object {$_.PSIsContainer -eq $true -and $_.Name -match "MPW"}
     if ( $null -ne $Root) { break }
 }
-$StatusFile = "$Root\Status.txt"
+$StatusFile = "$Root\PlantStatus.txt"
 
 # Ragione sociale del cliente
 Add-Content -Path $StatusFile -Value "Cliente: " 

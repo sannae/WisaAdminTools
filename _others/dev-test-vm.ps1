@@ -2,7 +2,7 @@
 Connect-AzAccount
 
 # Create ResourceGroup and VM
-$rg = 'dev-test' 
+$rg = 'dev' 
 $loc = 'westeurope'
 $usr = "edoardo.sanna"
 $passwd = ConvertTo-SecureString "5Anna3d0ard0!" -AsPlainText -Force
@@ -18,5 +18,5 @@ mstsc /v:$PublicIP /f
 # Do stuff here
 
 # Delete all
-Remove-AzResourceGroup -Name 'dev-test' -Force
+Remove-AzResourceGroup -Name 'dev' -Force
 Remove-AzResourceGroup -Name 'NetworkWatcherRG' -Force

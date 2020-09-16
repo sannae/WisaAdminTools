@@ -7922,11 +7922,12 @@ AGGIUNGERE UN ATLAS SLAVE
 DIAGNOSTICA ATLAS
 ----------------------------------------------------
 
-- "serverd" � la versione 'Servizio' (daemon) del Vega, "Server" � la versione 'Noservice' del Vega (mostra su console tutto ci� che accade, dispositivi online/offline, lettura, ecc.)
+- "serverd" è la versione 'Servizio' (daemon) del Vega, "Server" è la versione 'Noservice' del Vega (mostra su console tutto ci� che accade, dispositivi online/offline, lettura, ecc.)
 	- Per passare da uno all'altro, basta inviare in sequenza i comandi:
-		- ./serverd stop		% per fermare il servizio
-		- ps				% per vedere se, nell'elenco dei processi, serverd si � effettivamente fermato
-		- ./Server			% per far partire la versione 'noservice'
+		- ./serverd stop	% per fermare il daemon
+		- ps				% per vedere se, nell'elenco dei processi, serverd si è effettivamente fermato
+		- ./Server			% per far partire la versione 'noservice' (si interrompe con Ctrl+C)
+		- ./serverd start	% Ricordarsi di far ripartire il daemon! Non ha avvio automatico al boot dell'OS
 
 BACKUP DI UN ATLAS
 Per effettuare un backup
