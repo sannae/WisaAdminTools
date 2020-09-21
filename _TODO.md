@@ -1,17 +1,26 @@
 # DONE
-	ARCA ATS BRESCIA - Configurazione causali su terminale di test e formazione introduttiva a MPW - 80 - Alex Bonetti [STAMPARE]
-	FERRERO - Nuovi varchi P2 e P3 per centralina GRA17 - 40 - Andrea Gandino
-	FERRERO - Aggiornamento organigramma Alba_GRA con nuovi varchi PSC00-P1/P2/P3 - 10 - Andrea Gandino
-	FERRERO - Nuovo varco solo allarme solo KX50 su ETTT03-P6 - 15 - Andrea Gandino
+
 
 # DOING
-	COOP
-	ALPITOUR
-	UNIPD Info Neve
+	LINKS
+	ISRI
+	RGI
+	OPE
+	CASALEGNO TENDAGGI 
+	DIAGEO
+	SIEMENS ROMA EUR
+	SIEMENS ROMA EUR
 
 
 # TO-DO
-
+	FREUDENBERG - Problema sig.ra Solimando
+	ARCA ATS BRESCIA - Configurazione e attivazione di tutti MCT700 con logo personalizzato
+	SIEMENS CHIESI - Problema MicronPlate
+	SIEMENS CHIESI - Problema MicronMail
+	ASL CN2 - Assistenza a Bergese per errore SQL su procedura CanteenTicket [in attesa di ripristino VPN]
+	AZ.OSP.S.CROCE E CARLE CUNEO - Analisi migrazione su nuovo server
+	GRIMALDI - Ricontattare il Sig. Ernesto Iozzi 081496249 per il problema su iOS
+	GRIMALDI - Deploy MrtVisitors 754 compatibile con POP3, pianificare per lunedì 21 pom.
 
 	...
 	GRUNDFOS - Spostamento link Micronpass Web, analisi per preventivo
@@ -32,23 +41,17 @@
 	SPECCHIDEA - Verifica su Micronpass Win (rientra il 26/08)
 	FLOWSERVE - Completare analisi con il cliente, prendere requisiti per AP
 	INVESTIRE SGR (FIGINO) - Problema hardware
-	GRIMALDI - Deploy MrtVisitors 754 compatibile con POP3 -- un po' di problemi, aspettare il ritorno di Airoldi
 	SIEMENS NOVARTIS - Redazione IQ/OQ/PQ
 	SYNTEC - Analisi Az.Osp. Verona
 	SKYLOGIC TORINO - Pass visitatori personalizzato (Skylogic-005/Software/pass)
 	*** GANZ - Problema su pulsante Download dei report da configuratore web del tablet (v.Enea)
 
+## Like
+	ISEO - Corso di aggiornamento per troubleshooting di basso livello su Atlas (creazione di impianto multi-slave, diagnostica su PuTTY e su web, uso di DebugClient)
+
 # DEV
 	AAP_ASSTGARDA-001 - Query host per terminali mensa
 	AAP_FLOW-020 - Implementazioni PPC & tornello mensa
 	AAP-CHIESI_026 - Modifiche layout badge
-	*** Regola su Outlook per inoltro automatico a customersupport@telecomitalia.it
 
 # WAIT
-	SIEMENS SARCA 235 - Verifica configurazione KX50 su 1P Lato Philips 	<!-- In attesa di accettazione preventivo dal cliente -->
-	SIEMENS BCC - Modifica configurazione rete terminali Pescara (n.1 MXP450 10.101.1.230) Tecnico sul posto 328.2109343
-		In attesa di verifiche più approfondite, sentire Sig.LoRusso (centralino +39 0672.071) o P.Volpe
-	AERONAUTICA POGGIO RENATICO - Analisi integrazione schede AMIS (Mifare?) 			<!-- In attesa di ricevere una tessera già scritta -->
-	BCUBE AIR CARGO - Riesportazione timbrature 7-8-9 agosto 		<!-- Forse autorisolto, in attesa di collegamento sul server -->
-	BCUBE AIR CARGO - Attivazione controllo abilitazioni su lettori 10.28.1.191 e 10.28.1.192	<!-- in attesa di collegamento sul server -->
-	

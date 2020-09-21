@@ -2921,7 +2921,7 @@ CONFIGURAZIONE LETTORI USB
 
 	� CONFIGURAZIONE LATO UTENTE MPASSW
 
-		- Utenti > Gestione Utenti > [sel.Utente che user� il lettore]: � possibile specificare quale modello di lettore viene usato, in modo da non dover svolgere alcuna attivit� di configurazione per gli utenti che non siano di reception. Il parametro "Modello lettore USB" pu� assumere i valori:
+		- Utenti > Gestione Utenti > [sel.Utente che user� il lettore]: � possibile specificare quale modello di lettore viene usato, in modo da non dover svolgere alcuna attività di configurazione per gli utenti che non siano di reception. Il parametro "Modello lettore USB" pu� assumere i valori:
 			* Nessuno: nessun lettore USB
 			* Lettore standard PC/SC: lettori di tessere MiFare, e.g. ACR122U di ACS
 			* Promag PCR-340: lettore seriale di tessere 125Khz
@@ -6032,11 +6032,11 @@ Aggiungere un'Area Passback
 		(*) Tabella MySQL di riferimento: T019APB_PARAM
 
 
-� "CONVERSIONE" DI DUE MXP AD UN'AREA APB
+"CONVERSIONE" DI DUE MXP AD UN'AREA APB
 Esempio fatto su PMI, in maniera tale da non incidere sul regime di utilizzo del sistema
 
 Prerequisito:
-- Per utilizzare l'ethcfg � necessario avere un PC nella stessa classe di rete
+- Per utilizzare l'ethcfg è necessario avere un PC nella stessa classe di rete
 - su Server > MicronConfig > Servizio > Inizio manutenzione (equivalente: IIS > Application Pool > stop app pool MPW)
 
 Procedura:
@@ -6271,13 +6271,13 @@ CONFIGURAZIONE SOFTWARE (MICRONCONFIG) per terminali GNET
 -----------------------------------------------------------------
 
 NOTE:
-- T25COMBADGE nel campo ID5 c'� il valore di riferimento nella tabella T100ACCBIO (che � anche l'indice nella memoria del Suprema)
+- T25COMBADGE nel campo ID5 c'è il valore di riferimento nella tabella T100ACCBIO (che � anche l'indice nella memoria del Suprema)
 - T100ACCBIO contiene i template biometrici
 
 
 CONFRONTO ID TAG (IMPRONTA SU DATABASE):
 Il lettore legge il badge Il lettore legge l'impronta del dipendente e la invia all'MXP che la confronta col template salvato su DB
-* Metodo pi� lento perch� deve inviare i template (e sono pesanti!)
+* Metodo più lento perché deve inviare i template (e sono pesanti!)
 * L'utilizzo di una tessera (o di un ID0 digitato da tastiera, v.sotto) semplifica comunque l'indicizzazione rispetto al Free Scan
 	
 	- MicronConfig > Testina > Configurazione Testine > Device: Tecnologia 11-Biometrico		% Prima tecnologia di lettura  ---> Configurare su Testina 1 anche se la descrizione della tecnologia dice T2!!!
@@ -6594,7 +6594,7 @@ Assistenza G.S.G. International - 0248469760
 
 INSTALLAZIONE:
 -----------------------------------------------------------------
-- Pacchetto di installazione "micPlateSetup_v23.zip"; unzippare ed eseguire Setup.exe (la cartella di destinazione non deve essere necessariamente sotto MPW)
+- Pacchetto di installazione "micPlateSetup_vXXX.zip"; unzippare ed eseguire Setup.exe (la cartella di destinazione non deve essere necessariamente sotto MPW)
 - L'applicativo contiene:
 	- MicPlateSrvAgent: MicronPlate in formato servizio, non interattivo
 	- MicPlateAgent: MicronPlate in formato programma interattivo, con visualizzazione delle foto e modifica targa del transito; � il NoService del precedente
@@ -6605,17 +6605,17 @@ CONFIGURAZIONE MICRONPLATEAGENT / MICRONPLATESERVICEAGENT:
 -----------------------------------------------------------------
 - Aprire il file di configurazione micPlateAgent.exe.config
 - Aggiornare la stringa di connessione inserendo Data Source (IP del DB server), Initial Catalog (nome database), user ID (nome utente), pwd (password di connessione)
-- Parametro di ripetibilit� della targa, ovvero tempo entro cui una stessa targa viene scartata per ripetizione; per questioni di rapidit� conviene tenerlo alto (default a 30 sec), mentre per questioni di 
+- Parametro di ripetibilità della targa, ovvero tempo entro cui una stessa targa viene scartata per ripetizione; per questioni di rapidità conviene tenerlo alto (default a 30 sec), mentre per questioni di 
 
-	<!-- Tempo ripetibilit� targa su Varco sec.-->
-	<add key="PlateTimeGate" value="5"/>
+	<!-- Tempo ripetibilità targa su Varco sec.-->
+	<add key="PlateTimeGate" value="30"/>
 
-- IDX di controllo badge se la telecamera � in Free Run: stabilisce a quale IDX del badge deve corrispondere lo scarico della timbratura nell'occorrenza di un transito; se il campo non � popolato, la targa non verr� associata all'anagrafica e il risultato della lettura sar� 'sconosciuto'; 0=Banda Magnetica, 1=Tag RF Full, ecc.
+- IDX di controllo badge se la telecamera è in Free Run: stabilisce a quale IDX del badge deve corrispondere lo scarico della timbratura nell'occorrenza di un transito; se il campo non è popolato, la targa non verà associata all'anagrafica e il risultato della lettura sarà 'sconosciuto'; 0=Banda Magnetica, 1=Tag RF Full, ecc.
 
 	<!-- idx di controllo badge in freemode -->
-	<add key="IDX" value="0"/>
+	<add key="IDX" value="1"/>
 
-- Associazione terminale: la videocamera scarica il transito come associato a un varco specifico, di cui si inserisce il codice terminale in questo parametro; gli altri parametri sono il verso (Entrata/Uscita), il modo di funzionamento (Free Run/Trigger) e l'elenco separato da virgole degli indirizzi IP delle videocamere relative a quel varco; ogni stringa terminale � separata dalle altre tramite punto e virgola
+- Associazione terminale: la videocamera scarica il transito come associato a un varco specifico, di cui si inserisce il codice terminale in questo parametro; gli altri parametri sono il verso (Entrata/Uscita), il modo di funzionamento (Free Run/Trigger) e l'elenco separato da virgole degli indirizzi IP delle videocamere relative a quel varco; ogni stringa terminale è separata dalle altre tramite punto e virgola
 
     <!-- associazione terminale,verso(E/U),modo funz(F/T), elenco telecamere;-->
 	<!--
@@ -6623,12 +6623,12 @@ CONFIGURAZIONE MICRONPLATEAGENT / MICRONPLATESERVICEAGENT:
     	-->
     <add key="Terminali" value="70000101,E,T,192.168.0.239"/>
 
-- Percorso foto: percorso di rete dove salvare le foto; il formato con cui vengono salvate pu� essere definito nella configurazione della videocamera
+- Percorso foto: percorso di rete dove salvare le foto; il formato con cui vengono salvate può essere definito nella configurazione della videocamera
 
 	<!-- Percorso di rete dove memorizzare le foto, se vuoto non memorizza -->
 	<add key="PathPhoto" value="C:\MPW\MicronPlateVega\Photo"/>
 
-- Indirizzo UDP: � l'indirizzo del PC su cui lavora il servizio, nella fattispecie dove � installato l'applicativo
+- Indirizzo UDP: � l'indirizzo del PC su cui lavora il servizio, nella fattispecie dove è installato l'applicativo
 
 	<!-- indirizzo locale per invio messaggi udp -->
 	<add key="UdpLocalIp" value="192.168.0.40"/>
@@ -8600,10 +8600,10 @@ In particolare esistono due link:
 Il software di gestione, se trova il link Logo.gif, lo visualizza, o meglio, visualizza il file Logo_def.gif. Questa pu� essere una gif animata, infatti nel funzionamento di default ci sono le stelle che girano.
 Sostituendo il file Logo_def.gif puoi personalizzare la gif animata.
 Se invece vuoi utilizzare un logo statico, rinomina il link Logo.gif, cos� il software utilizza Logo.png. Anche in questo caso si tratta di un link, per cui devi personalizzare il file Logo_def.png. 
-Le dimensioni del file sono circa 550*147 pixel.
+Le dimensioni del file sono circa 500*120 pixel.
 Quindi:
 
-	- Prepare an image (550*147 pixel) and rename it Logo_def.png
+	- Prepare an image (500*120 pixel) and rename it Logo_def.png
 	- Open Filezilla
 		host:		sftp:\\<indirizzoIP>
 		username:	root

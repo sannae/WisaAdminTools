@@ -217,7 +217,7 @@ Start-sleep -Seconds 5
 Set-Location $Root\MicronStart
 Start-process ./mStart.exe -Wait
 
-    # Check if Connection Strings have been updated before continuing
+# Check if Connection Strings have been updated before continuing
 
 
 <# ------------------------------------ #>
@@ -323,17 +323,17 @@ Invoke-Sqlcmd -ServerInstance $DBDataSource -Database $DBInitialCatalog -Usernam
 # (this will be outsourced to an external file)
 # (TODO: Add admin's default authorizations)
 $InitialConfigurationQuery = "
-    /* Set GDPR flags to default */
+    -- Set GDPR flags to default
     UPDATE T05COMFLAGS SET T05VALORE='1' WHERE T05TIPO='GDPRMODEDIP'
     UPDATE T05COMFLAGS SET T05VALORE='1' WHERE T05TIPO='GDPRMODEEST'
     UPDATE T05COMFLAGS SET T05VALORE='1' WHERE T05TIPO='GDPRMODEVIS'
     UPDATE T05COMFLAGS SET T05VALORE='1' WHERE T05TIPO='GDPRMODEUSR'
     UPDATE T05COMFLAGS SET T05VALORE='ANONYMOUS' WHERE T05TIPO='GDPRANONYMTEXT'
-    /* Create utilities internal company */
+    -- Create utilities internal company
     INSERT INTO T71COMAZIENDEINTERNE VALUES (N'UTIL',N'_UTILITIES',N'INSTALLATORE',N'20000101000000',N'',N'')
-    /* Create reference employee */
+    -- Create reference employee
     INSERT INTO T26COMDIPENDENTI VALUES (N'00000001',N'_DIP.RIF', N'_DIP.RIF', N'', N'', N'', N'', N'0', N'', N'INSTALLATORE', N'20000101000000', N'', N'', N'', N'', N'20000101', N'', N'0', N'', N'UTIL', N'M', N'', N'1', N'20000101000000', N'99991231235959', N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', N'')
-    /* Assign ref.empl. to admin user */
+    -- Assign ref.empl. to admin user
     UPDATE T21COMUTENTI SET T21DEFDIPRIFEST='00000001',T21DEFAZINTEST='UTIL',T21DEFDIPRIFVIS='00000001',T21DEFAZINTVIS='UTIL' WHERE T21UTENTE='admin'
 "
 
