@@ -6605,7 +6605,7 @@ CONFIGURAZIONE MICRONPLATEAGENT / MICRONPLATESERVICEAGENT:
 -----------------------------------------------------------------
 - Aprire il file di configurazione micPlateAgent.exe.config
 - Aggiornare la stringa di connessione inserendo Data Source (IP del DB server), Initial Catalog (nome database), user ID (nome utente), pwd (password di connessione)
-- Parametro di ripetibilità della targa, ovvero tempo entro cui una stessa targa viene scartata per ripetizione; per questioni di rapidità conviene tenerlo alto (default a 30 sec), mentre per questioni di 
+- Parametro di ripetibilità della targa, ovvero tempo entro cui una stessa targa viene scartata per ripetizione; per questioni di rapidità conviene tenerlo alto (default a 30 sec); deve comunque essere inferiore al parametro di ripetibilità a bordo della videocamera (Plate Reader > Plate Reader > Min Time Same Plate ms):
 
 	<!-- Tempo ripetibilità targa su Varco sec.-->
 	<add key="PlateTimeGate" value="30"/>

@@ -30,30 +30,44 @@ To-do:
 
 #>
 
-# Specify --InstallSQL to install SQL Server Express
-# Specify --InstallSSMS to install SSMS (or the equivalent Azure Data Studio)
 Param(
     [Parameter(Mandatory=$false, Position=1)] [switch]$InstallSQL,
     [Parameter(Mandatory=$false, Position=2)] [switch]$InstallSSMS
 )
 
-# Writes a log
+# Modules
+
+Import-Module WebAdministration -ErrorAction SilentlyContinue # For IIS 7.5 (Windows Server 2008 R2 on)
+Import-Module IISAdministration # For IIS 10.0 (Windows Server 2016 and 2016-nano on)
+Import-Module SQLServer
+
+# Move modules in the $Env:PATH folder
+
 $InstallLocation = (Get-Location).Path
+Set-Location $InstallLocation
+if(!(Test-Path ".\Modules")) {
+    Write-Log "ERROR - Modules folder not found!"  
+    break
+} 
+Copy-Item -Path "$InstallLocation\Modules\*" -Destination "C:\windows\System32\WindowsPowerShell\v1.0\Modules" -Recurse
+
+# Writes a log
+
 New-Item -ItemType Directory -Path $InstallLocation\LOGS | Out-Null
 $LogPath = "$InstallLocation\LOGS\mrt_install.log"
 
 function Write-Log {
     param ([string]$logstring)
     $datetime = Get-Date -format "[dd-MM-yyyy HH:mm:ss]"
-    # Writes date-time and string
     Add-content $LogPath -value "$datetime $logstring"
-    # Print to console the
     Write-Host $logstring
 }
 
 # SQL Server Express parameters
+
 $SQLinstance = "MICRONTEL_SQLEXPRESS"
 if ($InstallSQL -eq $true) {
+
     Write-Log "You chose to install SQL Server Express"
     Write-Log "The SQL Server new instance $SQLinstance will be installed"
     $SQLpassword = Read-Host -prompt "Insert SQL system administrator password [complexity restrictions are applied]: "
@@ -83,19 +97,104 @@ if ($InstallSSMS -eq $true) {
     } 
 }    
 
-."./Check-Requirements.ps1"
-Check-Requirements
+function Get-SystemRequirements {
 
-<# ------------------------------------ #>
+    [CmdletBinding()] param ()
 
-./Install-IISfeatures.ps1
+    # Set execution policy on the shell session
 
-<# ------------------------------------ #>
+    Write-Verbose -Message "Checking shell session execution policy"
+    Set-Executionpolicy -ExecutionPolicy Unrestricted -Force -ErrorAction SilentlyContinue
+    if ((Get-ExecutionPolicy) -ne "Unrestricted" ) {
+        Write-Error "The Execution Policies on the current session prevents this script from working!" ; break
+    } else {
+        Write-Output "PowerShell execution policy: $(Get-ExecutionPolicy)"
+    }
+
+    # Check if user is Administrator
+
+    Write-Verbose -Message "Checking currently logged user's role"
+    $principal = New-Object System.Security.Principal.WindowsPrincipal([System.Security.Principal.WindowsIdentity]::GetCurrent()) 
+    if (!( $principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)) ) {
+        Write-Error "The currently logged user is not Administrator" ; break
+    } else {
+        Write-Output "Current user role: Administrator"
+    }
+
+    # Check .NET Framework version 
+
+    Write-Verbose -Message "Checking .NET Framework compatibility"
+    $BenchmarkFramework = [version]("4.5.2")
+    $InstalledFramework = [version](Get-ItemProperty "HKLM:SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full").Version
+    if ($InstalledFramework -lt $BenchmarkFramework) {
+        Write-Error "The installed .NET Framework $($InstalledFramework) does not meet the minimum requirements. Please install .NET Framework 4.5.2" ; break
+    } else {
+        Write-Output "Installed .NET Framework version: $($InstalledFramework)"
+    }
+
+}
+function Install-IISFeatures {
+
+    [CmdletBinding()] param ()
+
+    # Check OS type 
+
+    $OSDetails = Get-ComputerInfo
+    $OSType = $OSDetails.WindowsInstallationType
+    Write-Verbose -Message "Current OS type: $OSType"
+
+    # Check if features file is present
+
+    if(!(Test-Path ".\IIS_features.csv")) { 
+        Write-Error "IIS feature list not found! Please copy it to root folder."  ; break
+    } 
+
+    # Load IIS Features from CSV file
+
+    $IISFeaturesList = @(Import-CSV ".\IIS_features.csv" -Delimiter ';' -header 'FeatureName','Client','Server').$OSType
+
+    # Install on workstation (DISM installation module)
+
+    if ($OSType -eq "Client"){
+        foreach ($feature in $IISFeaturesList){
+            Enable-WindowsOptionalFeature -All -Online -FeatureName $feature | Out-Null 
+            if (!(Get-WindowsOptionalFeature -Online -FeatureName $feature).State -eq "Enabled"){
+                Write-Error "Something went wrong installing $feature, please check again!" ; break
+            }
+        }
+    }
+
+    # Install on server (ServerManager installation module)
+
+    elseif ($OSType -eq "Server"){
+        foreach ($feature in $IISFeaturesList){
+            Install-WindowsFeature -Name $feature  | Out-Null
+            if (!(Get-WindowsFeature -name $feature).Installed -eq $True){
+                Write-Error "Something went wrong installing $feature, please check again!" ; break
+            }
+        }
+    }
+
+    # Reset IIS
+
+    Invoke-Command -ScriptBlock {iisreset} | Out-Null
+
+    # Check IIS Version
+
+    if (Get-ChildItem 'HKLM:\SOFTWARE\Microsoft' | Where-Object {$_.Name -match 'InetStp'}) {
+        $IISVersion = (Get-ItemProperty HKLM:\SOFTWARE\Microsoft\InetStp\).MajorVersion
+        Write-Output "IIS $IISVersion successfully installed!"
+        Return $IISVersion
+    } else {
+        Write-Error "IIS not fully installed, please check again"
+    }
+
+}
+
+# Install SQL Server
 
 if ($InstallSQL -eq $true){
 
-    Write-Log ""; $step++ 
-    Write-Log "$step. Installing SQL Server Express"
     $SQLexpress_Setupfile = (Get-Item SQLEXPR*.exe).Name
           
     Write-log "Starting installation: this may take a while..."   
@@ -157,52 +256,65 @@ if ($InstallSSMS -eq "Y"){
 # Rename-Item $ADSSetupFile -NewName ads_install.exe
 # .\ads_install.exe /SP- /VerySilent /LOG="LOGS/ADS_install.log" /NORESTART /SUPPRESSMSGBOXES /LAUNCHPROGRAM=0 | Out-Null
 
-<# ------------------------------------ #>
+# Install MRT Application Suite
+function Install-MRTSuite {
 
-Write-Log ""; $step++ 
-Write-Log "$step. Install MRT Application Suite"
+    [CmdletBinding()] param()
 
-# Check if setup file is present
-$mrtsetupfile = (Get-Item mrt*.exe).Name
-if(!(Test-Path ".\$mrtsetupfile")) {
-    Write-Log "ERROR - MRT setup file not found! Please copy it to root folder."  
-    break
-} 
+    # Check if setup file is present
 
-# Create package msi in current dir
-Rename-Item $mrtsetupfile -NewName mrt_install.exe
-.\mrt_install.exe /s /x /b"$PWD" /v"/qn"
-Start-sleep -s 20
-# Silently install msi (cmd) and create error log
-$msiArguments = '/qn','/i','"Micronpass Application Suite.msi"','/l*e ".\LOGS\MSI_install.log"'
-$InstallProcess = Start-Process -PassThru -Wait msiexec -ArgumentList $msiArguments
-Start-sleep -s 20
-# Check if installation was successful
-$Program = Get-CimInstance -Query "SELECT * FROM Win32_Product WHERE Name LIKE '%Micronpass Application Suite%'"
-Start-sleep -s 10
-$wmi_check = $null -ne $Program
-if (($InstallProcess.ExitCode -eq '0') -and ($wmi_check -eq $True )) {
-    Write-Log "$($Program.Name) $($Program.Version) successfully installed!"
-} else {
-    Write-Log "ERROR - Something went wrong installing $($Program.Name), please check install log"
-    break
-}  
+    $mrtsetupfile = (Get-Item mrt*.exe).Name
+    if(!(Test-Path ".\$mrtsetupfile")) {
+        Write-Error "MRT setup file not found! Please copy it to root folder."  
+        break
+    } 
 
-# Define root folder
-foreach ( $Disk in (Get-PSDrive -PSPRovider 'FileSystem' | Where-Object Used).Root ) {
-    $Root = Get-ChildItem $Disk | Where-Object {$_.PSIsContainer -eq $true -and $_.Name -match "MPW"}
-    if ( $null -ne $Root) { break }
+    # Create package msi in current dir
+
+    Rename-Item $mrtsetupfile -NewName mrt_install.exe
+    .\mrt_install.exe /s /x /b"$PWD" /v"/qn"
+    Start-sleep -s 20
+
+    # Silently install msi and create error log using msiexec
+
+    $msiArguments = '/qn','/i','"Micronpass Application Suite.msi"','/l*e ".\LOGS\MSI_install.log"'
+    $InstallProcess = Start-Process -PassThru -Wait msiexec -ArgumentList $msiArguments
+    Start-sleep -s 20
+
+    # Check if installation was successful in the list of Programs
+
+    $Program = Get-CimInstance -Query "SELECT * FROM Win32_Product WHERE Name LIKE '%Micronpass Application Suite%'"
+    Start-sleep -s 10
+    $wmi_check = $null -ne $Program
+    if (($InstallProcess.ExitCode -eq '0') -and ($wmi_check -eq $True )) {
+        Write-Output "$($Program.Name) $($Program.Version) successfully installed!"
+    } else {
+        Write-Error "Something went wrong installing $($Program.Name), please check install log"
+        break
+    }  
+
 }
 
-<# ------------------------------------ #>
+# Find MPW root folder
 
-Write-Log ""; $step++ 
-Write-Log "$step. Activating product"
+function Find-MPWfolder { 
 
-# Open GeneraABL
+    foreach ( $Disk in (Get-PSDrive -PSPRovider 'FileSystem' | Where-Object Used).Root ) {
+        $Root = Get-ChildItem $Disk | Where-Object {$_.PSIsContainer -eq $true -and $_.Name -eq 'MPW'}
+        if ( $null -ne $Root) { 
+            Write-Error "MPW folder does not exist"
+            break
+        } else {
+            Return $Root
+        }
+    }
+
+}
+
+# Open GeneraABL and generate ABL code
+
 Set-Location $Root\GeneraAbl\
 Start-process ./GeneraAbl.exe 
-# Check virtual or physical server
 if ($(get-wmiobject win32_computersystem).model -match "virtual,*"){
     $keys = "{TAB}{TAB}{ENTER}"
 } else {
@@ -213,88 +325,75 @@ Start-Sleep -Seconds 2
 $wshshell.sendkeys($keys)
 
 # Open MicronStart and wait for input
+
 Start-sleep -Seconds 5
 Set-Location $Root\MicronStart
 Start-process ./mStart.exe -Wait
 
-# Check if Connection Strings have been updated before continuing
+# TODO: Check if Connection Strings have been updated before continuing
 
+# Configure IIS 
 
-<# ------------------------------------ #>
+$ApplicationName = "mpassw"
+function Set-IISApplication {
 
-Write-Log ""; $step++ 
-Write-Log "$step. Configuring IIS application pool"
+    [CmdletBinding()] 
+    param ([string]$ApplicationName)
 
-# Global variables
-$ApplicationPoolName = "MICRONTEL_Accessi"
-$WebSiteName = "Default Web Site"
-$ApplicationName = "/mpassw"
-Write-Log "Starting configuration of $WebSiteName$ApplicationName in application pool $ApplicationPoolName"
+    # Global variables
+    $ApplicationPoolName = "MICRONTEL_Accessi"
+    $WebSiteName = "Default Web Site"
+    Write-Output "Starting configuration of $WebSiteName'/'$ApplicationName in application pool $ApplicationPoolName"
 
-# Import IIS admin modules
-$IISShiftVersion = '10'
-Import-Module WebAdministration -ErrorAction SilentlyContinue # For IIS 7.5 (Windows Server 2008 R2 on)
-Import-Module IISAdministration # For IIS 10.0 (Windows Server 2016 and 2016-nano on)
-$manager = Get-IISServerManager
+    # Import IIS admin modules
+    $IISShiftVersion = '10'
+    $manager = Get-IISServerManager
 
-# Create application pool, integrated pipeline, Runtime v4.0, Enable32bitApps, idleTimeout 8hrs
-# Using IISAdministration (IIS 10.0)
-if ($IISVersion.Substring(0,2) -ge $IISShiftVersion) {
-	if ($null -eq $manager.ApplicationPools["$ApplicationPoolName"]) {
-	$pool = $manager.ApplicationPools.Add("$ApplicationPoolName")
-	$pool.ManagedPipelineMode = "Integrated"
-	$pool.ManagedRuntimeVersion = "v4.0"
-	$pool.Enable32BitAppOnWin64 = $true
-	$pool.AutoStart = $true
-	$pool.ProcessModel.IdentityType = "ApplicationPoolIdentity"
-	$pool.ProcessModel.idleTimeout = "08:00:00"
-	$manager.CommitChanges()
-	Write-Log "Application pool $ApplicationPoolName successfully created"
-	} else {Write-Log "Application pool $ApplicationPoolName already exists, please choose a different name"}
-} 
-# On WebAdministration (IIS 7.5)
-else {
-	if ((Test-Path "IIS:\AppPools\$ApplicationPoolName") -eq $False) {
-	New-WebAppPool -name "$ApplicationPoolName"  -force
-	$appPool = Get-Item IIS:\AppPools\$ApplicationPoolName 
-	$appPool.processModel.identityType = "ApplicationPoolIdentity"
-	$appPool.enable32BitAppOnWin64 = 1
-	$appPool.processModel.idleTimeout = "08:00:00"
-	$appPool | Set-Item
-	Write-Log "Application Pool $ApplicationPoolName successfully created"
-	} else {Write-Log "Application Pool $ApplicationPoolName already exists, please choose a different name"}
+    # Create application pool, integrated pipeline, Runtime v4.0, Enable32bitApps, idleTimeout 8hrs
+    # Using IISAdministration (IIS 10.0)
+    if ($IISVersion.Substring(0,2) -ge $IISShiftVersion) {
+        if ($null -eq $manager.ApplicationPools["$ApplicationPoolName"]) {
+        $pool = $manager.ApplicationPools.Add("$ApplicationPoolName")
+        $pool.ManagedPipelineMode = "Integrated"
+        $pool.ManagedRuntimeVersion = "v4.0"
+        $pool.Enable32BitAppOnWin64 = $true
+        $pool.AutoStart = $true
+        $pool.ProcessModel.IdentityType = "ApplicationPoolIdentity"
+        $pool.ProcessModel.idleTimeout = "08:00:00"
+        $manager.CommitChanges()
+        Write-Log "Application pool $ApplicationPoolName successfully created"
+        } else {Write-Log "Application pool $ApplicationPoolName already exists, please choose a different name"}
+    } 
+    # On WebAdministration (IIS 7.5)
+    else {
+        if ((Test-Path "IIS:\AppPools\$ApplicationPoolName") -eq $False) {
+        New-WebAppPool -name "$ApplicationPoolName"  -force
+        $appPool = Get-Item IIS:\AppPools\$ApplicationPoolName 
+        $appPool.processModel.identityType = "ApplicationPoolIdentity"
+        $appPool.enable32BitAppOnWin64 = 1
+        $appPool.processModel.idleTimeout = "08:00:00"
+        $appPool | Set-Item
+        Write-Log "Application Pool $ApplicationPoolName successfully created"
+        } else {Write-Log "Application Pool $ApplicationPoolName already exists, please choose a different name"}
+    }
+
+    # Assign the web application mpassw to the application pool
+    # Using IISAdministration (IIS 10.0)
+    if ($IISVersion.Substring(0,2) -ge $IISShiftVersion) {
+        $website = $manager.Sites["$WebSiteName"]
+        $website.Applications["$ApplicationName"].ApplicationPoolName = "$ApplicationPoolName"
+        $manager.CommitChanges()
+        Write-Log "Application $WebSiteName$ApplicationName successfully assigned to Application pool $ApplicationPoolName"
+    }
+    # Using WebAdministration (IIS 7.5)
+    else {
+        Set-ItemProperty -Path "IIS:\Sites\$WebSiteName\$ApplicationName" -name "applicationPool" -value "$ApplicationPoolName"
+        Write-Log "Application $WebSiteName$ApplicationName successfully assigned to Application pool $ApplicationPoolName"
+    }    
+
 }
 
-# Assign the web application mpassw to the application pool
-# Using IISAdministration (IIS 10.0)
-if ($IISVersion.Substring(0,2) -ge $IISShiftVersion) {
-	$website = $manager.Sites["$WebSiteName"]
-	$website.Applications["$ApplicationName"].ApplicationPoolName = "$ApplicationPoolName"
-	$manager.CommitChanges()
-	Write-Log "Application $WebSiteName$ApplicationName successfully assigned to Application pool $ApplicationPoolName"
-}
-# Using WebAdministration (IIS 7.5)
-else {
-	Set-ItemProperty -Path "IIS:\Sites\$WebSiteName\$ApplicationName" -name "applicationPool" -value "$ApplicationPoolName"
-	Write-Log "Application $WebSiteName$ApplicationName successfully assigned to Application pool $ApplicationPoolName"
-}    
-
 <# ------------------------------------ #>
-
-Write-Log ""; $step++ 
-Write-Log "$step. Initialize MRT"
-
-# Move module in the $Env:PATH folder
-Set-Location $InstallLocation
-$ModulesFolder = "C:\windows\System32\WindowsPowerShell\v1.0\Modules"
-if(!(Test-Path ".\Modules")) {
-    Write-Log "ERROR - Modules folder not found!"  
-    break
-} 
-Copy-Item -Path "$InstallLocation\Modules\*" -Destination $ModulesFolder -Recurse
-
-# Import SqlServer module
-Import-Module -name SqlServer
 
 # Convert .config file to readable .XML
 $ConfigFile = "$Root\MicronConfig\config.exe.config"
@@ -351,6 +450,7 @@ if (($MicronpassVersion -ge '7.5.400.0') -and ($MicronpassVersion -lt '7.6.0.0')
     Invoke-Sqlcmd -ServerInstance $DBDataSource -Database $DBInitialCatalog -Username $DBUserID -Password $DBPassword -Query "$ScriptPath\202001031132139_CongedoVisitatore.sql"
     Invoke-Sqlcmd -ServerInstance $DBDataSource -Database $DBInitialCatalog -Username $DBUserID -Password $DBPassword -Query "$ScriptPath\202002251338486_Mrt7510.sql"      
     Invoke-Sqlcmd -ServerInstance $DBDataSource -Database $DBInitialCatalog -Username $DBUserID -Password $DBPassword -Query "$ScriptPath\202004111624012_Mrt7513.sql"
+
 }
 
 Write-Log ""
@@ -363,6 +463,6 @@ Write-Log ""
 Start-Process -FilePath "$Root\MicronConfig\config.exe" -Verb RunAs
 
 # Open browser
-Start-Process "http://localhost/$ApplicationName"
+Start-Process "http://localhost$ApplicationName"
 
 <# ------------------------------------ #>
