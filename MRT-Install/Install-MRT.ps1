@@ -39,7 +39,7 @@ Param(
 
 Import-Module WebAdministration -ErrorAction SilentlyContinue # For IIS 7.5 (Windows Server 2008 R2 on)
 Import-Module IISAdministration # For IIS 10.0 (Windows Server 2016 and 2016-nano on)
-Import-Module SQLServer
+Install-Module Dbatools # https://dbatools.io/offline/
 
 # Move modules in the $Env:PATH folder
 
@@ -330,7 +330,43 @@ Start-sleep -Seconds 5
 Set-Location $Root\MicronStart
 Start-process ./mStart.exe -Wait
 
-# TODO: Check if Connection Strings have been updated before continuing
+### TODO: Check if Connection Strings have been updated before continuing
+
+# Acquire database connection string from a config file (it acquires an array with server\instance, database, username, password)
+function Get-MPWConnectionStrings {
+
+    [CmdletBinding()] 
+    param ()
+
+    # Convert .config file to readable .XML
+    $ConfigFile = "$Root\MicronConfig\config.exe.config"
+    $ConfigXml = [xml] (Get-Content $ConfigFile)
+
+    # Read value from dbengine
+    $DBEngine = $ConfigXml.SelectSingleNode('//add[@key="dbEngine"]').Value
+    $MyDBEngine = "$("//add[@key='")$($DBEngine)$("Str']")"
+
+    # Read value from SqlStr
+    $ConnectionString = $ConfigXml.SelectSingleNode($MyDBEngine).Value
+
+    # Get Connection String parameters
+    $DBDataSource = [regex]::Match($ConnectionString, 'Data Source=([^;]+)').Groups[1].Value
+    $DBInitialCatalog = [regex]::Match($ConnectionString, 'Initial Catalog=([^;]+)').Groups[1].Value
+    $DBUserId = [regex]::Match($ConnectionString, 'User ID=([^;]+)').Groups[1].Value
+    $DBPassword = [regex]::Match($ConnectionString, 'Password=([^;]+)').Groups[1].Value
+
+    Return $DBDataSource, $DBInitialCatalog, $DBUserID, $DBPassword 
+
+}
+
+$global:DBDataSource = $(Get-MPWConnectionStrings)[0]       # Does not accept (local) as server name
+$global:DBInitialCatalog = $(Get-MPWConnectionStrings)[1]
+$global:DBUserId = $(Get-MPWConnectionStrings)[2]
+$global:DBPassword = $(Get-MPWConnectionStrings)[3]
+
+# Test db connection
+
+Get-DbaDatabase -SqlInstance $DBDataSource -Database $DBInitialCatalog
 
 # Configure IIS 
 
@@ -343,7 +379,7 @@ function Set-IISApplication {
     # Global variables
     $ApplicationPoolName = "MICRONTEL_Accessi"
     $WebSiteName = "Default Web Site"
-    Write-Output "Starting configuration of $WebSiteName'/'$ApplicationName in application pool $ApplicationPoolName"
+    Write-Verbose "Starting configuration of $WebSiteName'/'$ApplicationName in application pool $ApplicationPoolName"
 
     # Import IIS admin modules
     $IISShiftVersion = '10'
@@ -361,8 +397,8 @@ function Set-IISApplication {
         $pool.ProcessModel.IdentityType = "ApplicationPoolIdentity"
         $pool.ProcessModel.idleTimeout = "08:00:00"
         $manager.CommitChanges()
-        Write-Log "Application pool $ApplicationPoolName successfully created"
-        } else {Write-Log "Application pool $ApplicationPoolName already exists, please choose a different name"}
+        Write-Output "Application pool $ApplicationPoolName successfully created"
+        } else {Write-Error "Application pool $ApplicationPoolName already exists, please choose a different name"}
     } 
     # On WebAdministration (IIS 7.5)
     else {
@@ -373,8 +409,8 @@ function Set-IISApplication {
         $appPool.enable32BitAppOnWin64 = 1
         $appPool.processModel.idleTimeout = "08:00:00"
         $appPool | Set-Item
-        Write-Log "Application Pool $ApplicationPoolName successfully created"
-        } else {Write-Log "Application Pool $ApplicationPoolName already exists, please choose a different name"}
+        Write-Output "Application Pool $ApplicationPoolName successfully created"
+        } else {Write-Error "Application Pool $ApplicationPoolName already exists, please choose a different name"}
     }
 
     # Assign the web application mpassw to the application pool
@@ -382,53 +418,33 @@ function Set-IISApplication {
     if ($IISVersion.Substring(0,2) -ge $IISShiftVersion) {
         $website = $manager.Sites["$WebSiteName"]
         $website.Applications["$ApplicationName"].ApplicationPoolName = "$ApplicationPoolName"
-        $manager.CommitChanges()
-        Write-Log "Application $WebSiteName$ApplicationName successfully assigned to Application pool $ApplicationPoolName"
+        $manager.CommitChanges() | Out-Null
+        Write-Output "Application $WebSiteName'/'$ApplicationName successfully assigned to Application pool $ApplicationPoolName"
     }
     # Using WebAdministration (IIS 7.5)
     else {
         Set-ItemProperty -Path "IIS:\Sites\$WebSiteName\$ApplicationName" -name "applicationPool" -value "$ApplicationPoolName"
-        Write-Log "Application $WebSiteName$ApplicationName successfully assigned to Application pool $ApplicationPoolName"
+        Write-Output "Application $WebSiteName'/'$ApplicationName successfully assigned to Application pool $ApplicationPoolName"
     }    
 
 }
 
-<# ------------------------------------ #>
+# GDPR configuration query
 
-# Convert .config file to readable .XML
-$ConfigFile = "$Root\MicronConfig\config.exe.config"
-$ConfigXml = [xml] (Get-Content $ConfigFile)
-
-# Read value from dbengine
-$DBEngine = $ConfigXml.SelectSingleNode('//add[@key="dbEngine"]').Value
-$MyDBEngine = "$("//add[@key='")$($DBEngine)$("Str']")"
-
-# Read value from SqlStr
-$ConnectionString = $ConfigXml.SelectSingleNode($MyDBEngine).Value
-
-# Get Connection String parameters
-$DBDataSource = [regex]::Match($ConnectionString, 'Data Source=([^;]+)').Groups[1].Value
-$DBInitialCatalog = [regex]::Match($ConnectionString, 'Initial Catalog=([^;]+)').Groups[1].Value
-$DBUserId = [regex]::Match($ConnectionString, 'User ID=([^;]+)').Groups[1].Value
-$DBPassword = [regex]::Match($ConnectionString, 'Password=([^;]+)').Groups[1].Value
-
-# Extract SQL Server version as connection test
-Invoke-Sqlcmd -ServerInstance $DBDataSource -Database $DBInitialCatalog -Username $DBUserID -Password $DBPassword -Query "SELECT @@VERSION"
-
-# Check if connection test was successful
-###########################################
-
-# Configuration query 
-# (this will be outsourced to an external file)
-# (TODO: Add admin's default authorizations)
-$InitialConfigurationQuery = "
+$SQLGDPR = "
     -- Set GDPR flags to default
     UPDATE T05COMFLAGS SET T05VALORE='1' WHERE T05TIPO='GDPRMODEDIP'
     UPDATE T05COMFLAGS SET T05VALORE='1' WHERE T05TIPO='GDPRMODEEST'
     UPDATE T05COMFLAGS SET T05VALORE='1' WHERE T05TIPO='GDPRMODEVIS'
     UPDATE T05COMFLAGS SET T05VALORE='1' WHERE T05TIPO='GDPRMODEUSR'
-    UPDATE T05COMFLAGS SET T05VALORE='ANONYMOUS' WHERE T05TIPO='GDPRANONYMTEXT'
-    -- Create utilities internal company
+    UPDATE T05COMFLAGS SET T05VALORE='ANONYMOUS' WHERE T05TIPO='GDPRANONYMTEXT' "
+
+Invoke-DbaQuery -sqlinstance $DBDataSource -Database $DBInitialCatalog -Query $SQLGDPR -MessagesToOutput
+
+# Utilities configuration query
+
+$SQLUtilities = 
+    "-- Create utilities internal company
     INSERT INTO T71COMAZIENDEINTERNE VALUES (N'UTIL',N'_UTILITIES',N'INSTALLATORE',N'20000101000000',N'',N'')
     -- Create reference employee
     INSERT INTO T26COMDIPENDENTI VALUES (N'00000001',N'_DIP.RIF', N'_DIP.RIF', N'', N'', N'', N'', N'0', N'', N'INSTALLATORE', N'20000101000000', N'', N'', N'', N'', N'20000101', N'', N'0', N'', N'UTIL', N'M', N'', N'1', N'20000101000000', N'99991231235959', N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', N'')
@@ -436,33 +452,31 @@ $InitialConfigurationQuery = "
     UPDATE T21COMUTENTI SET T21DEFDIPRIFEST='00000001',T21DEFAZINTEST='UTIL',T21DEFDIPRIFVIS='00000001',T21DEFAZINTVIS='UTIL' WHERE T21UTENTE='admin'
 "
 
-# Apply query
-Invoke-Sqlcmd -ServerInstance $DBDataSource -Database $DBInitialCatalog -Username $DBUserID -Password $DBPassword -Query $InitialConfigurationQuery
+Invoke-DbaQuery -sqlinstance $DBDataSource -Database $DBInitialCatalog -File $SQLUtilities -MessagesToOutput
 
-# Check if query was correctly applied
-###########################################
+### TODO: test query
 
-# Database correction scripts (only in 7.5)
+# 7.5 ONLY # Database correction scripts
+
 $MicronpassVersion = [System.Diagnostics.FileVersionInfo]::GetVersionInfo("$Root\Micronpass\bin\mpassw.dll").FileVersion
 $ScriptPath = "$Root\DBUpgrade750Scripts\SQLServer"
-if (($MicronpassVersion -ge '7.5.400.0') -and ($MicronpassVersion -lt '7.6.0.0')) {
-    Invoke-Sqlcmd -ServerInstance $DBDataSource -Database $DBInitialCatalog -Username $DBUserID -Password $DBPassword -Query "$ScriptPath\201912121059478_ExtendendVisitors.sql"
-    Invoke-Sqlcmd -ServerInstance $DBDataSource -Database $DBInitialCatalog -Username $DBUserID -Password $DBPassword -Query "$ScriptPath\202001031132139_CongedoVisitatore.sql"
-    Invoke-Sqlcmd -ServerInstance $DBDataSource -Database $DBInitialCatalog -Username $DBUserID -Password $DBPassword -Query "$ScriptPath\202002251338486_Mrt7510.sql"      
-    Invoke-Sqlcmd -ServerInstance $DBDataSource -Database $DBInitialCatalog -Username $DBUserID -Password $DBPassword -Query "$ScriptPath\202004111624012_Mrt7513.sql"
+
+if (($MicronpassVersion -ge '7.5.600.0') -and ($MicronpassVersion -lt '7.6.0.0')) {
+
+    Invoke-DbaQuery -sqlinstance $DBDataSource -Database $DBInitialCatalog -File "$ScriptPath\201912121059478_ExtendendVisitors.sql" -MessagesToOutput
+    Invoke-DbaQuery -sqlinstance $DBDataSource -Database $DBInitialCatalog -File "$ScriptPath\202001031132139_CongedoVisitatore.sql" -MessagesToOutput
+    Invoke-DbaQuery -sqlinstance $DBDataSource -Database $DBInitialCatalog -File "$ScriptPath\202002251338486_Mrt7510.sql" -MessagesToOutput
+    Invoke-DbaQuery -sqlinstance $DBDataSource -Database $DBInitialCatalog -File "$ScriptPath\202004111624012_Mrt7513.sql" -MessagesToOutput
+    Invoke-DbaQuery -sqlinstance $DBDataSource -Database $DBInitialCatalog -File "$ScriptPath\202007291526523_Mrt7514.sql" -MessagesToOutput
+    Invoke-DbaQuery -sqlinstance $DBDataSource -Database $DBInitialCatalog -File "$ScriptPath\202009011504100_Mrt7515.sql" -MessagesToOutput
 
 }
 
-Write-Log ""
-
-<# ------------------------------------ #>
-
-# Insert final DSC checks here
-
 # Open config as administrator
+
 Start-Process -FilePath "$Root\MicronConfig\config.exe" -Verb RunAs
 
 # Open browser
-Start-Process "http://localhost$ApplicationName"
 
-<# ------------------------------------ #>
+Start-Process "http://localhost/$ApplicationName"
+

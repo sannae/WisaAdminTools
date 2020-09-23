@@ -1,23 +1,17 @@
 # DONE
-	DIAGEO - Documento AP di Paolo su Vulnerability Check 2020 - 15 - Enrico Bruno
-	FREUDENBERG - Problema MicronMail Sig. Nudo - 30 - Andrea Salviati
-	FREUDENBERG - Ticket Sig.ra Solimando - 40 - Francesca Solimando
-	REALE MUTUA - Reception S.Maria 011.4311201-02 Siccardi 011.4311205
-	REALE MUTUA - Chiarimenti per mail automatica presenti in Udine squadre emergenza - 30 - Enrico Minotti
-	REALE MUTUA - Riavvio videocamera varco -2P - 20 - Gianpiero Tuozzo
-	REALE MUTUA - Modifica organigramma per utente HRMADRID per vedere le post.controllo sanitario - 20 - Gianpiero Tuozzo
-	SIEMENS VIPITENO - Info a Sciara per report presenti e grafico transiti - 60 - Michele Sciara
+
 
 # DOING
 	UNIPD - Videocamera 192.168.129.157 varco sbarra 
-	NUNCAS
-	
-
-# TO-DO
-	ARCA ATS BRESCIA - Configurazione e attivazione di tutti MCT700 con logo personalizzato
+	DELPA
 	SIEMENS CHIESI - Problema MicronPlate
 	SIEMENS CHIESI - Problema MicronMail
 	AZ.OSP.S.CROCE E CARLE CUNEO - Analisi migrazione su nuovo server
+	DEWAVE
+
+
+# TO-DO
+	ARCA ATS BRESCIA - Configurazione e attivazione di tutti MCT700 con logo personalizzato
 	ISEO DEUTSCHLAND RSAG - Assistenza (v. mail Marcel)
 	ALPLA - Terminale presenze non funzionante
 	SOLUZIONE SRL PILA - Rilascio Soluz-001 Export presenze personalizzato
