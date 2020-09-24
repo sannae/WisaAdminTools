@@ -2,8 +2,8 @@
 Connect-AzAccount
 
 # Create ResourceGroup and VM
-$rg = 'dev' 
-$loc = 'westeurope'
+$rg = 'dev2' 
+$loc = 'northeurope'
 $usr = "edoardo.sanna"
 $passwd = ConvertTo-SecureString "5Anna3d0ard0!" -AsPlainText -Force
 $Credential = New-Object System.Management.Automation.PSCredential ($usr, $passwd);
@@ -16,7 +16,8 @@ cmdkey /generic:$PublicIP /user:$usr /pass:$passwd
 mstsc /v:$PublicIP /f
 
 # Do stuff here
+# ...
 
 # Delete all
-Remove-AzResourceGroup -Name 'dev' -Force
+Remove-AzResourceGroup -Name $rg -Force
 Remove-AzResourceGroup -Name 'NetworkWatcherRG' -Force

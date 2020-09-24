@@ -219,7 +219,7 @@ Espandere il volume del VDI su VM:
 		URL:		https://teamportal.mapec.it/www/
 			Credenziali TeamSystem(R):
 			username:	edoardo.sanna@microntel.com
-			password:	M!cr0ntel062020
+			password:	M!cr0ntel092020
 
 
 	INFOPOINT:

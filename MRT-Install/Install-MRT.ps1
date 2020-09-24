@@ -39,18 +39,18 @@ Param(
 
 Import-Module WebAdministration -ErrorAction SilentlyContinue # For IIS 7.5 (Windows Server 2008 R2 on)
 Import-Module IISAdministration # For IIS 10.0 (Windows Server 2016 and 2016-nano on)
-Install-Module Dbatools # https://dbatools.io/offline/
+Import-Module Dbatools # https://dbatools.io/offline/
 
 # Move modules in the $Env:PATH folder
-
-$InstallLocation = (Get-Location).Path
-Set-Location $InstallLocation
-if(!(Test-Path ".\Modules")) {
-    Write-Log "ERROR - Modules folder not found!"  
-    break
-} 
-Copy-Item -Path "$InstallLocation\Modules\*" -Destination "C:\windows\System32\WindowsPowerShell\v1.0\Modules" -Recurse
-
+    <#
+    $InstallLocation = (Get-Location).Path
+    Set-Location $InstallLocation
+    if(!(Test-Path ".\Modules")) {
+        Write-Log "ERROR - Modules folder not found!"  
+        break
+    } 
+    Copy-Item -Path "$InstallLocation\Modules\*" -Destination "C:\windows\System32\WindowsPowerShell\v1.0\Modules" -Recurse
+    #>
 # Writes a log
 
 New-Item -ItemType Directory -Path $InstallLocation\LOGS | Out-Null
@@ -97,6 +97,7 @@ if ($InstallSSMS -eq $true) {
     } 
 }    
 
+# Check System requirements (framework, user, etc.)
 function Get-SystemRequirements {
 
     [CmdletBinding()] param ()
@@ -133,6 +134,11 @@ function Get-SystemRequirements {
     }
 
 }
+
+Get-SystemRequirements
+
+# Install IIS features
+
 function Install-IISFeatures {
 
     [CmdletBinding()] param ()
@@ -191,27 +197,27 @@ function Install-IISFeatures {
 
 }
 
+Install-IISFeatures
+
 # Install SQL Server
 
 if ($InstallSQL -eq $true){
 
     $SQLexpress_Setupfile = (Get-Item SQLEXPR*.exe).Name
           
-    Write-log "Starting installation: this may take a while..."   
-    Write-Log "A SQLEXPR install log will be created in the current path to track SQL Server installation."
     # Silently extract setup media file
     Rename-Item $SQLexpress_Setupfile -NewName sql_install.exe
-    ./sql_install.exe /q /x:".\SQL_Setup_files"
+    Start-Process sql_install.exe -ArgumentList '/q /x:".\SQL_Setup_files"'
     Start-sleep -s 5
     # SQL Server Express installation
-    ./SQL_Setup_files/setup.exe /Q /IACCEPTSQLSERVERLICENSETERMS /ACTION="install" /FEATURES=SQLengine /INSTANCENAME="$SQLinstance" /SECURITYMODE=SQL /SAPWD="$SQLpassword" /INDICATEPROGRESS | Out-file ".\LOGS\SQLEXPR_install.log"
+    Start-Process "./SQL_Setup_files/setup.exe" -ArgumentList '/Q /IACCEPTSQLSERVERLICENSETERMS /ACTION="install" /FEATURES=SQLengine /INSTANCENAME="$SQLinstance" /SECURITYMODE=SQL /SAPWD="$SQLpassword" /INDICATEPROGRESS | Out-file ".\LOGS\SQLEXPR_install.log"'
     Start-sleep -s 30
     
     # Check if installation was successful by verifying the instance in the service name
     if (Get-Service -displayname "*$($SQLinstance)*" -ErrorAction SilentlyContinue){
-       Write-Log "SQL instance $SQLinstance successfully installed"
+       Write-Host "SQL instance $SQLinstance successfully installed"
     } else {
-       Write-Log "ERROR - Something went wrong installing SQL instance $SQLinstance, please check SQL installation log"
+       Write-Host "ERROR - Something went wrong installing SQL instance $SQLinstance, please check SQL installation log"
        break
     }
 }
@@ -220,12 +226,8 @@ if ($InstallSQL -eq $true){
 
 if ($InstallSSMS -eq "Y"){
 
-    Write-Log ""; $step++ 
-    Write-Log "$step. Installing SQL Server Management Studio"
     $SSMS_Setupfile = (Get-Item SSMS*.exe).Name
 
-    Write-log "Starting installation: this may take a while..."
-    Write-Log "A SSMS_install.log will be created in the current path to track the SSMS installation."
     # Move SSMS setup file into SQL install folder
     Rename-Item $SSMS_Setupfile -NewName SSMS_setup.exe
     if (!(Get-Item .\SQL_Setup_files)){
@@ -244,9 +246,9 @@ if ($InstallSSMS -eq "Y"){
     Start-sleep -s 10
     $wmi_check = $null -ne $Program
     if (($SSMSInstallProcess.ExitCode -eq '0') -and ($wmi_check -eq $True )) {
-        Write-Log "$($Program.Name) $($Program.Version) successfully installed!"
+        Write-Host "$($Program.Name) $($Program.Version) successfully installed!"
     } else {
-        Write-Log "ERROR - Something went wrong installing $($Program.Name), please check install log"
+        Write-Host "ERROR - Something went wrong installing $($Program.Name), please check install log"
         break
     }  
 }
@@ -295,20 +297,17 @@ function Install-MRTSuite {
 
 }
 
+Install-MRTSuite
+
 # Find MPW root folder
 
-function Find-MPWfolder { 
-
-    foreach ( $Disk in (Get-PSDrive -PSPRovider 'FileSystem' | Where-Object Used).Root ) {
-        $Root = Get-ChildItem $Disk | Where-Object {$_.PSIsContainer -eq $true -and $_.Name -eq 'MPW'}
-        if ( $null -ne $Root) { 
-            Write-Error "MPW folder does not exist"
-            break
-        } else {
-            Return $Root
-        }
+foreach ( $Disk in (Get-PSDrive -PSPRovider 'FileSystem' | Where-Object Used).Root ) {
+    $RootPath = Get-ChildItem $Disk | Where-Object {$_.PSIsContainer -eq $true -and $_.Name -eq "MPW"}
+    if ( $null -ne $RootPath) {
+        $Root = $RootPath.FullName
+    } else {
+        Write-Host "MPW not found!"
     }
-
 }
 
 # Open GeneraABL and generate ABL code
@@ -370,7 +369,6 @@ Get-DbaDatabase -SqlInstance $DBDataSource -Database $DBInitialCatalog
 
 # Configure IIS 
 
-$ApplicationName = "mpassw"
 function Set-IISApplication {
 
     [CmdletBinding()] 
@@ -382,52 +380,32 @@ function Set-IISApplication {
     Write-Verbose "Starting configuration of $WebSiteName'/'$ApplicationName in application pool $ApplicationPoolName"
 
     # Import IIS admin modules
-    $IISShiftVersion = '10'
     $manager = Get-IISServerManager
 
     # Create application pool, integrated pipeline, Runtime v4.0, Enable32bitApps, idleTimeout 8hrs
     # Using IISAdministration (IIS 10.0)
-    if ($IISVersion.Substring(0,2) -ge $IISShiftVersion) {
-        if ($null -eq $manager.ApplicationPools["$ApplicationPoolName"]) {
-        $pool = $manager.ApplicationPools.Add("$ApplicationPoolName")
-        $pool.ManagedPipelineMode = "Integrated"
-        $pool.ManagedRuntimeVersion = "v4.0"
-        $pool.Enable32BitAppOnWin64 = $true
-        $pool.AutoStart = $true
-        $pool.ProcessModel.IdentityType = "ApplicationPoolIdentity"
-        $pool.ProcessModel.idleTimeout = "08:00:00"
-        $manager.CommitChanges()
-        Write-Output "Application pool $ApplicationPoolName successfully created"
-        } else {Write-Error "Application pool $ApplicationPoolName already exists, please choose a different name"}
-    } 
-    # On WebAdministration (IIS 7.5)
-    else {
-        if ((Test-Path "IIS:\AppPools\$ApplicationPoolName") -eq $False) {
-        New-WebAppPool -name "$ApplicationPoolName"  -force
-        $appPool = Get-Item IIS:\AppPools\$ApplicationPoolName 
-        $appPool.processModel.identityType = "ApplicationPoolIdentity"
-        $appPool.enable32BitAppOnWin64 = 1
-        $appPool.processModel.idleTimeout = "08:00:00"
-        $appPool | Set-Item
-        Write-Output "Application Pool $ApplicationPoolName successfully created"
-        } else {Write-Error "Application Pool $ApplicationPoolName already exists, please choose a different name"}
-    }
+    if ($null -eq $manager.ApplicationPools["$ApplicationPoolName"]) {
+    $pool = $manager.ApplicationPools.Add("$ApplicationPoolName")
+    $pool.ManagedPipelineMode = "Integrated"
+    $pool.ManagedRuntimeVersion = "v4.0"
+    $pool.Enable32BitAppOnWin64 = $true
+    $pool.AutoStart = $true
+    $pool.ProcessModel.IdentityType = "ApplicationPoolIdentity"
+    $pool.ProcessModel.idleTimeout = "08:00:00"
+    $manager.CommitChanges()
+    Write-Output "Application pool $ApplicationPoolName successfully created"
+    } else {Write-Error "Application pool $ApplicationPoolName already exists, please choose a different name"}
 
     # Assign the web application mpassw to the application pool
     # Using IISAdministration (IIS 10.0)
-    if ($IISVersion.Substring(0,2) -ge $IISShiftVersion) {
-        $website = $manager.Sites["$WebSiteName"]
-        $website.Applications["$ApplicationName"].ApplicationPoolName = "$ApplicationPoolName"
-        $manager.CommitChanges() | Out-Null
-        Write-Output "Application $WebSiteName'/'$ApplicationName successfully assigned to Application pool $ApplicationPoolName"
-    }
-    # Using WebAdministration (IIS 7.5)
-    else {
-        Set-ItemProperty -Path "IIS:\Sites\$WebSiteName\$ApplicationName" -name "applicationPool" -value "$ApplicationPoolName"
-        Write-Output "Application $WebSiteName'/'$ApplicationName successfully assigned to Application pool $ApplicationPoolName"
-    }    
+    $website = $manager.Sites["$WebSiteName"]
+    $website.Applications["$ApplicationName"].ApplicationPoolName = "$ApplicationPoolName"
+    $manager.CommitChanges() | Out-Null
+    Write-Output "Application $WebSiteName'/'$ApplicationName successfully assigned to Application pool $ApplicationPoolName"
 
 }
+
+Set-IISApplication -ApplicationName "mpassw"
 
 # GDPR configuration query
 
@@ -454,7 +432,7 @@ $SQLUtilities =
 
 Invoke-DbaQuery -sqlinstance $DBDataSource -Database $DBInitialCatalog -File $SQLUtilities -MessagesToOutput
 
-### TODO: test query
+### TODO: test all queries
 
 # 7.5 ONLY # Database correction scripts
 
@@ -471,6 +449,8 @@ if (($MicronpassVersion -ge '7.5.600.0') -and ($MicronpassVersion -lt '7.6.0.0')
     Invoke-DbaQuery -sqlinstance $DBDataSource -Database $DBInitialCatalog -File "$ScriptPath\202009011504100_Mrt7515.sql" -MessagesToOutput
 
 }
+
+### TODO: Test the whole thing (Pester?)
 
 # Open config as administrator
 
