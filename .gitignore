@@ -1,3 +1,5 @@
-# Test
+# PowerShell Modules
+MRT-install/Modules/
 
-/MRT-install/test
+# Installation packages
+MRT-install/Packages/
