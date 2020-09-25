@@ -444,7 +444,7 @@ if (($MicronpassVersion -ge '7.5.600.0') -and ($MicronpassVersion -lt '7.6.0.0')
 
 }
 
-### TODO: Test the whole thing (Pester?)
+### TODO: Test the whole thing with Pester (https://octopus.com/blog/testing-powershell-code-with-pester)
 
 # Open config as administrator
 
