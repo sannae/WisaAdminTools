@@ -13,6 +13,7 @@ The script performs 1) installation of IIS on Windows client or server,
 
 .NOTES
 Requisites:
+    - Root folder is C:/MPW_INSTALL
     - ./IIS_features.csv: CSV file with required IIS features in the same directory (maybe replace with JSON?)
     - ./Packages/SQLEXPR_x64_ENU.exe in same directory (if needed) (English only for now)
     - ./Packages/SSMS-SETUP-ENU.exe in same directory (if needed) (English only for now)
@@ -36,7 +37,7 @@ Set-Location $InstallLocation
 # Modules
 
 if(!(Test-Path "$InstallLocation\Modules")) {
-    Write-Host "ERROR - Modules folder not found!"  
+    Write-Host "Modules folder not found!" -ForegroundColor Red
     break
 } 
 
