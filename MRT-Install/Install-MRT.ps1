@@ -295,7 +295,7 @@ function Install-MRTSuite {
 Install-MRTSuite
 
 # Find MPW root folder
-
+<#
 foreach ( $Disk in (Get-PSDrive -PSPRovider 'FileSystem' | Where-Object Used).Root ) {
     $RootPath = Get-ChildItem $Disk | Where-Object {$_.PSIsContainer -eq $true -and $_.Name -eq "MPW"}
     if ( $null -ne $RootPath) {
@@ -304,6 +304,9 @@ foreach ( $Disk in (Get-PSDrive -PSPRovider 'FileSystem' | Where-Object Used).Ro
         Write-Host "MPW not found!" -ForegroundColor Red
     }
 }
+#>
+
+$Root = 'C:/MPW'
 
 # Open GeneraABL and generate ABL code
 
