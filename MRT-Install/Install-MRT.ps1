@@ -17,8 +17,8 @@ Requisites:
     - ./Packages/SQLEXPR_x64_ENU.exe in same directory (if needed) (English only for now)
     - ./Packages/SSMS-SETUP-ENU.exe in same directory (if needed) (English only for now)
     - ./Packages/MRTxxx.exe in same directory
-    - ./Modules/dbatools: PowerShell dbatools module
-    - ./Modules/IISAdministration: PowerShell IISAdministration module
+    - ./Modules/dbatools: PowerShell dbatools module (https://octopus.com/blog/sql-server-powershell-dbatools)
+    - ./Modules/IISAdministration: PowerShell IISAdministration module (https://octopus.com/blog/iis-powershell)
 
 .EXAMPLE
 ./Install-MRT.ps1 --InstallSQL --InstallSSMS
