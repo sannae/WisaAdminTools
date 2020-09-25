@@ -279,14 +279,14 @@ function Install-MRTSuite {
     Start-sleep -s 20
 
     # Check if installation was successful in the list of Programs
-#!
+
     $Program = Get-CimInstance -Query "SELECT * FROM Win32_Product WHERE Name LIKE '%Micronpass Application Suite%'"
     Start-sleep -s 10
     $wmi_check = $null -ne $Program
     if (($InstallProcess.ExitCode -eq '0') -and ($wmi_check -eq $True )) {
-        Write-Output "$($Program.Name) $($Program.Version) successfully installed!"
+        Write-Host "$($Program.Name) $($Program.Version) successfully installed!" -ForegroundColor Green
     } else {
-        Write-Error "Something went wrong installing $($Program.Name), please check install log"
+        Write-Host "Something went wrong installing $($Program.Name), please check install log" -ForegroundColor Red
         break
     }  
 
@@ -301,14 +301,13 @@ foreach ( $Disk in (Get-PSDrive -PSPRovider 'FileSystem' | Where-Object Used).Ro
     if ( $null -ne $RootPath) {
         $Root = $RootPath.FullName
     } else {
-        Write-Host "MPW not found!"
+        Write-Host "MPW not found!" -ForegroundColor Red
     }
 }
 
 # Open GeneraABL and generate ABL code
 
-Set-Location $Root\GeneraAbl\
-Start-process ./GeneraAbl.exe 
+Start-process $Root/GeneraABL/GeneraAbl.exe 
 if ($(get-wmiobject win32_computersystem).model -match "virtual,*"){
     $keys = "{TAB}{TAB}{ENTER}"
 } else {
@@ -321,8 +320,7 @@ $wshshell.sendkeys($keys)
 # Open MicronStart and wait for input
 
 Start-sleep -Seconds 5
-Set-Location $Root\MicronStart
-Start-process ./mStart.exe -Wait
+Start-process $Root/MicronStart/mStart.exe -Wait
 
 ### TODO: Check if Connection Strings have been updated before continuing
 
@@ -372,7 +370,7 @@ function Set-IISApplication {
     # Global variables
     $ApplicationPoolName = "MICRONTEL_Accessi"
     $WebSiteName = "Default Web Site"
-    Write-Verbose "Starting configuration of $WebSiteName'/'$ApplicationName in application pool $ApplicationPoolName"
+    Write-Host "Starting configuration of $WebSiteName'/'$ApplicationName in application pool $ApplicationPoolName"
 
     # Import IIS admin modules
     $manager = Get-IISServerManager
@@ -388,15 +386,16 @@ function Set-IISApplication {
     $pool.ProcessModel.IdentityType = "ApplicationPoolIdentity"
     $pool.ProcessModel.idleTimeout = "08:00:00"
     $manager.CommitChanges()
-    Write-Output "Application pool $ApplicationPoolName successfully created"
-    } else {Write-Error "Application pool $ApplicationPoolName already exists, please choose a different name"}
+    Write-Host "Application pool $ApplicationPoolName successfully created" -ForegroundColor Green
+    } else {Write-Host "Application pool $ApplicationPoolName already exists, please choose a different name" -ForegroundColor Red
+}
 
     # Assign the web application mpassw to the application pool
     # Using IISAdministration (IIS 10.0)
     $website = $manager.Sites["$WebSiteName"]
     $website.Applications["$ApplicationName"].ApplicationPoolName = "$ApplicationPoolName"
     $manager.CommitChanges() | Out-Null
-    Write-Output "Application $WebSiteName'/'$ApplicationName successfully assigned to Application pool $ApplicationPoolName"
+    Write-Host "Application $WebSiteName'/'$ApplicationName successfully assigned to Application pool $ApplicationPoolName" -ForegroundColor Green
 
 }
 
