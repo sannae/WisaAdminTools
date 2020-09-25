@@ -37,7 +37,6 @@ Param(
 
 # Modules
 
-Import-Module WebAdministration -ErrorAction SilentlyContinue # For IIS 7.5 (Windows Server 2008 R2 on)
 Import-Module IISAdministration # For IIS 10.0 (Windows Server 2016 and 2016-nano on)
 Import-Module Dbatools # https://dbatools.io/offline/
 
