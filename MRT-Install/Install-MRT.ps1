@@ -30,25 +30,27 @@ Param(
     [Parameter(Mandatory=$false, Position=2)] [switch]$InstallSSMS
 )
 
+$InstallLocation = 'C:\MPW_INSTALL'
+Set-Location $InstallLocation
+
 # Modules
+
+if(!(Test-Path "$InstallLocation\Modules")) {
+    Write-Host "ERROR - Modules folder not found!"  
+    break
+} 
 
 Import-Module IISAdministration # For IIS 10.0 (Windows Server 2016 and 2016-nano on)
 Import-Module Dbatools # https://dbatools.io/offline/
 
-# Move modules in the $Env:PATH folder
-    <#
-    $InstallLocation = (Get-Location).Path
-    Set-Location $InstallLocation
-    if(!(Test-Path ".\Modules")) {
-        Write-Log "ERROR - Modules folder not found!"  
-        break
-    } 
-    Copy-Item -Path "$InstallLocation\Modules\*" -Destination "C:\windows\System32\WindowsPowerShell\v1.0\Modules" -Recurse
-    #>
+<#
+Copy-Item -Path "$InstallLocation\Modules\*" -Destination "C:\windows\System32\WindowsPowerShell\v1.0\Modules" -Recurse
+#>
+
 # Writes a log
 
 New-Item -ItemType Directory -Path $InstallLocation\LOGS | Out-Null
-$LogPath = "$InstallLocation\LOGS\mrt_install.log"
+$LogPath = "$InstallLocation\LOGS\MRT_install.log"
 
 function Write-Log {
     param ([string]$logstring)
@@ -60,21 +62,23 @@ function Write-Log {
 # SQL Server Express parameters
 
 $SQLinstance = "MICRONTEL_SQLEXPRESS"
+$SQLexpress_Setupfile = (Get-Item $InstallLocation/SQLEXPR*.exe).Name
+
 if ($InstallSQL -eq $true) {
 
-    Write-Log "You chose to install SQL Server Express"
-    Write-Log "The SQL Server new instance $SQLinstance will be installed"
+    Write-Host "You chose to install SQL Server Express"
+    Write-Host "The SQL Server new instance $SQLinstance will be installed"
     $SQLpassword = Read-Host -prompt "Insert SQL system administrator password [complexity restrictions are applied]: "
     
     # Check if setup file is present
     if(!(Test-Path ".\$Sqlexpress_Setupfile")) { 
-        Write-Log "ERROR - Sqlexpress setup file not found! Please copy it to root folder."  
+        Write-Host 'Sqlexpress setup file not found! Please copy it to root folder.' -ForegroundColor Red  
         break
     } 
         
     # Check if an instance with the same name already exists
     if ((Get-Service -displayname "*$($SQLinstance)*")){
-        Write-Log "ERROR - Service $SQLinstance is already installed."
+        Write-Host "Service $SQLinstance is already installed." -ForegroundColor Red
         Get-Service -displayname "*$($SQLinstance)*"
         break
     }
@@ -82,11 +86,11 @@ if ($InstallSQL -eq $true) {
 
 # SQL Server Management Studio parameters
 if ($InstallSSMS -eq $true) {
-    Write-Log "You chose to install SQL Server Management Studio"
+    Write-Host "You chose to install SQL Server Management Studio"
 
     # Check if setup file is present
-    if(!(Test-Path ".\$SSMS_Setupfile")) { 
-        Write-Log "ERROR - SSMS setup file not found! Please copy it to root folder."  
+    if(!(Test-Path "$InstallLocation\$SSMS_Setupfile")) { 
+        Write-Host "SSMS setup file not found! Please copy it to root folder."  -ForegroundColor Red
         break
     } 
 }    
@@ -98,33 +102,33 @@ function Get-SystemRequirements {
 
     # Set execution policy on the shell session
 
-    Write-Verbose -Message "Checking shell session execution policy"
+    Write-Host "Checking shell session execution policy"
     Set-Executionpolicy -ExecutionPolicy Unrestricted -Force -ErrorAction SilentlyContinue
     if ((Get-ExecutionPolicy) -ne "Unrestricted" ) {
-        Write-Error "The Execution Policies on the current session prevents this script from working!" ; break
+        Write-Host "The Execution Policies on the current session prevents this script from working!" -ForegroundColor Red; break
     } else {
-        Write-Output "PowerShell execution policy: $(Get-ExecutionPolicy)"
+        Write-Host "PowerShell execution policy: $(Get-ExecutionPolicy)" -ForegroundColor Red
     }
 
     # Check if user is Administrator
 
-    Write-Verbose -Message "Checking currently logged user's role"
+    Write-Host "Checking currently logged user's role"
     $principal = New-Object System.Security.Principal.WindowsPrincipal([System.Security.Principal.WindowsIdentity]::GetCurrent()) 
     if (!( $principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)) ) {
-        Write-Error "The currently logged user is not Administrator" ; break
+        Write-Host "The currently logged user is not Administrator" -ForegroundColor Red; break
     } else {
-        Write-Output "Current user role: Administrator"
+        Write-Host "Current user role: Administrator"
     }
 
     # Check .NET Framework version 
 
-    Write-Verbose -Message "Checking .NET Framework compatibility"
+    Write-Host "Checking .NET Framework compatibility"
     $BenchmarkFramework = [version]("4.5.2")
     $InstalledFramework = [version](Get-ItemProperty "HKLM:SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full").Version
     if ($InstalledFramework -lt $BenchmarkFramework) {
-        Write-Error "The installed .NET Framework $($InstalledFramework) does not meet the minimum requirements. Please install .NET Framework 4.5.2" ; break
+        Write-Host "The installed .NET Framework $($InstalledFramework) does not meet the minimum requirements. Please install .NET Framework 4.5.2" -ForegroundColor Red ; break
     } else {
-        Write-Output "Installed .NET Framework version: $($InstalledFramework)"
+        Write-Host "Installed .NET Framework version: $($InstalledFramework)"
     }
 
 }
@@ -141,17 +145,17 @@ function Install-IISFeatures {
 
     $OSDetails = Get-ComputerInfo
     $OSType = $OSDetails.WindowsInstallationType
-    Write-Verbose -Message "Current OS type: $OSType"
+    Write-Host "Current OS type: $OSType"
 
     # Check if features file is present
 
-    if(!(Test-Path ".\IIS_features.csv")) { 
-        Write-Error "IIS feature list not found! Please copy it to root folder."  ; break
+    if(!(Test-Path "$InstallLocation\IIS_features.csv")) { 
+        Write-Host "IIS feature list not found! Please copy it to root folder." -ForegroundColor Red ; break
     } 
 
     # Load IIS Features from CSV file
 
-    $IISFeaturesList = @(Import-CSV ".\IIS_features.csv" -Delimiter ';' -header 'FeatureName','Client','Server').$OSType
+    $IISFeaturesList = @(Import-CSV "$InstallLocation\IIS_features.csv" -Delimiter ';' -header 'FeatureName','Client','Server').$OSType
 
     # Install on workstation (DISM installation module)
 
@@ -159,8 +163,8 @@ function Install-IISFeatures {
         foreach ($feature in $IISFeaturesList){
             Enable-WindowsOptionalFeature -All -Online -FeatureName $feature | Out-Null 
             if (!(Get-WindowsOptionalFeature -Online -FeatureName $feature).State -eq "Enabled"){
-                Write-Error "Something went wrong installing $feature, please check again!" ; break
-            }
+                Write-Host "Something went wrong installing $feature, please check again!" -ForegroundColor Red ; break
+            } 
         }
     }
 
@@ -170,7 +174,7 @@ function Install-IISFeatures {
         foreach ($feature in $IISFeaturesList){
             Install-WindowsFeature -Name $feature  | Out-Null
             if (!(Get-WindowsFeature -name $feature).Installed -eq $True){
-                Write-Error "Something went wrong installing $feature, please check again!" ; break
+                Write-Host "Something went wrong installing $feature, please check again!" -ForegroundColor Red ; break
             }
         }
     }
@@ -183,10 +187,9 @@ function Install-IISFeatures {
 
     if (Get-ChildItem 'HKLM:\SOFTWARE\Microsoft' | Where-Object {$_.Name -match 'InetStp'}) {
         $IISVersion = (Get-ItemProperty HKLM:\SOFTWARE\Microsoft\InetStp\).MajorVersion
-        Write-Output "IIS $IISVersion successfully installed!"
-        Return $IISVersion
+        Write-Host "IIS $IISVersion successfully installed!" -ForegroundColor Green
     } else {
-        Write-Error "IIS not fully installed, please check again"
+        Write-Host "IIS not fully installed, please check again" -ForegroundColor Red
     }
 
 }
@@ -196,8 +199,6 @@ Install-IISFeatures
 # Install SQL Server
 
 if ($InstallSQL -eq $true){
-
-    $SQLexpress_Setupfile = (Get-Item SQLEXPR*.exe).Name
           
     # Silently extract setup media file
     Rename-Item $SQLexpress_Setupfile -NewName sql_install.exe
@@ -209,10 +210,9 @@ if ($InstallSQL -eq $true){
     
     # Check if installation was successful by verifying the instance in the service name
     if (Get-Service -displayname "*$($SQLinstance)*" -ErrorAction SilentlyContinue){
-       Write-Host "SQL instance $SQLinstance successfully installed"
+       Write-Host "SQL instance $SQLinstance successfully installed" -ForegroundColor Green
     } else {
-       Write-Host "ERROR - Something went wrong installing SQL instance $SQLinstance, please check SQL installation log"
-       break
+       Write-Host "Something went wrong installing SQL instance $SQLinstance, please check SQL installation log" -ForegroundColor Red
     }
 }
 
@@ -259,26 +259,27 @@ function Install-MRTSuite {
 
     # Check if setup file is present
 
-    $mrtsetupfile = (Get-Item mrt*.exe).Name
-    if(!(Test-Path ".\$mrtsetupfile")) {
-        Write-Error "MRT setup file not found! Please copy it to root folder."  
+    if(!(Test-Path ".\mrt*.exe")) {
+        Write-Host "MRT setup file not found! Please copy it to root folder."  -ForegroundColor Red
         break
-    } 
+    } else {
+        $mrtsetupfile = (Get-Item mrt*.exe).Name
+    }
 
     # Create package msi in current dir
 
-    Rename-Item $mrtsetupfile -NewName mrt_install.exe
-    .\mrt_install.exe /s /x /b"$PWD" /v"/qn"
+    Rename-Item $InstallLocation/$mrtsetupfile -NewName mrt_install.exe
+    .\mrt_install.exe /s /x /b"$InstallLocation" /v"/qn"
     Start-sleep -s 20
 
     # Silently install msi and create error log using msiexec
 
-    $msiArguments = '/qn','/i','"Micronpass Application Suite.msi"','/l*e ".\LOGS\MSI_install.log"'
+    $msiArguments = '/qn','/i','"Micronpass Application Suite.msi"','/l*e "$InstallLocation\LOGS\MRT_MSI_install.log"'
     $InstallProcess = Start-Process -PassThru -Wait msiexec -ArgumentList $msiArguments
     Start-sleep -s 20
 
     # Check if installation was successful in the list of Programs
-
+#!
     $Program = Get-CimInstance -Query "SELECT * FROM Win32_Product WHERE Name LIKE '%Micronpass Application Suite%'"
     Start-sleep -s 10
     $wmi_check = $null -ne $Program
