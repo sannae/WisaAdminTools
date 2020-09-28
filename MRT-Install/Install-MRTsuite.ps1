@@ -1,0 +1,500 @@
+﻿<# 
+
+.SYNOPSIS
+The script automates the MRT Application Suite installation.
+
+.DESCRIPTION
+The script performs 1) installation of IIS on Windows client or server, 
+2) installation of SQL Server Express (if needed), 
+3) installation of SQL Server Management Studio or Azure Data Studio (if needed),
+4) installation of MRT Application Suite, 
+5) configuration of website and application pool on IIS,
+6) initial configuration by using external query
+
+.NOTES
+Requisites:
+    - Root folder is C:/MPW_INSTALL
+    - ./IIS_features.csv: CSV file with required IIS features in the same directory (maybe replace with JSON?)
+    - ./Packages/SQLEXPR_x64_ENU.exe in same directory (if needed) (English only for now)
+    - ./Packages/SSMS-SETUP-ENU.exe in same directory (if needed) (English only for now)
+    - ./Packages/MRTxxx.exe in same directory
+    - ./Modules/dbatools: PowerShell dbatools module (https://octopus.com/blog/sql-server-powershell-dbatools)
+    - ./Modules/IISAdministration: PowerShell IISAdministration module (https://octopus.com/blog/iis-powershell)
+
+.EXAMPLE
+./Install-MRT.ps1 --InstallSQL --InstallSSMS
+
+#>
+
+Param(
+    [Parameter(Mandatory=$false, Position=1)] [switch]$InstallSQL,
+    [Parameter(Mandatory=$false, Position=2)] [switch]$InstallSSMS
+)
+
+$InstallLocation = 'C:\MPW_INSTALL'
+Set-Location $InstallLocation
+
+# Modules
+# (Automatically download a PS module and save it locally: Save-Module -Name MODULENAME -Path LOCALPATH)
+## TODO: Offline install still not working ...
+
+if(!(Test-Path "$InstallLocation\Modules")) {
+    Write-Host "Modules folder not found!" -ForegroundColor Red
+    break
+} 
+
+Import-Module IISAdministration # For IIS 10.0 (Windows Server 2016 and 2016-nano on)
+Import-Module Dbatools # https://dbatools.io/offline/
+
+<#
+Copy-Item -Path "$InstallLocation\Modules\*" -Destination "C:\windows\System32\WindowsPowerShell\v1.0\Modules" -Recurse
+#>
+
+# Writes a log
+
+New-Item -ItemType Directory -Path $InstallLocation\LOGS | Out-Null
+$LogPath = "$InstallLocation\LOGS\MRT_install.log"
+
+function Write-Log {
+    param ([string]$logstring)
+    $datetime = Get-Date -format "[dd-MM-yyyy HH:mm:ss]"
+    Add-content $LogPath -value "$datetime $logstring"
+    Write-Host $logstring
+}
+
+# SQL Server Express parameters
+
+$SQLinstance = "MICRONTEL_SQLEXPRESS"
+$SQLexpress_Setupfile = (Get-Item $InstallLocation/SQLEXPR*.exe).Name
+
+if ($InstallSQL -eq $true) {
+
+    Write-Host "You chose to install SQL Server Express"
+    Write-Host "The SQL Server new instance $SQLinstance will be installed"
+    $SQLpassword = Read-Host -prompt "Insert SQL system administrator password [complexity restrictions are applied]: "
+    
+    # Check if setup file is present
+    if(!(Test-Path ".\$Sqlexpress_Setupfile")) { 
+        Write-Host 'Sqlexpress setup file not found! Please copy it to root folder.' -ForegroundColor Red  
+        break
+    } 
+        
+    # Check if an instance with the same name already exists
+    if ((Get-Service -displayname "*$($SQLinstance)*")){
+        Write-Host "Service $SQLinstance is already installed." -ForegroundColor Red
+        Get-Service -displayname "*$($SQLinstance)*"
+        break
+    }
+}
+
+# SQL Server Management Studio parameters
+if ($InstallSSMS -eq $true) {
+    Write-Host "You chose to install SQL Server Management Studio"
+
+    # Check if setup file is present
+    if(!(Test-Path "$InstallLocation\$SSMS_Setupfile")) { 
+        Write-Host "SSMS setup file not found! Please copy it to root folder."  -ForegroundColor Red
+        break
+    } 
+}    
+
+# Check System requirements (framework, user, etc.)
+function Get-SystemRequirements {
+
+    [CmdletBinding()] param ()
+
+    # Set execution policy on the shell session
+
+    Write-Host "Checking shell session execution policy"
+    Set-Executionpolicy -ExecutionPolicy Unrestricted -Force -ErrorAction SilentlyContinue
+    if ((Get-ExecutionPolicy) -ne "Unrestricted" ) {
+        Write-Host "The Execution Policies on the current session prevents this script from working!" -ForegroundColor Red; break
+    } else {
+        Write-Host "PowerShell execution policy: $(Get-ExecutionPolicy)" -ForegroundColor Red
+    }
+
+    # Check if user is Administrator
+
+    Write-Host "Checking currently logged user's role"
+    $principal = New-Object System.Security.Principal.WindowsPrincipal([System.Security.Principal.WindowsIdentity]::GetCurrent()) 
+    if (!( $principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)) ) {
+        Write-Host "The currently logged user is not Administrator" -ForegroundColor Red; break
+    } else {
+        Write-Host "Current user role: Administrator"
+    }
+
+    # Check .NET Framework version 
+
+    Write-Host "Checking .NET Framework compatibility"
+    $BenchmarkFramework = [version]("4.5.2")
+    $InstalledFramework = [version](Get-ItemProperty "HKLM:SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full").Version
+    if ($InstalledFramework -lt $BenchmarkFramework) {
+        Write-Host "The installed .NET Framework $($InstalledFramework) does not meet the minimum requirements. Please install .NET Framework 4.5.2" -ForegroundColor Red ; break
+    } else {
+        Write-Host "Installed .NET Framework version: $($InstalledFramework)"
+    }
+
+}
+
+Get-SystemRequirements
+
+# Install IIS features
+
+function Install-IISFeatures {
+
+    [CmdletBinding()] param ()
+
+    # Check OS type 
+
+    $OSDetails = Get-ComputerInfo
+    $OSType = $OSDetails.WindowsInstallationType
+    Write-Host "Current OS type: $OSType"
+
+    # Check if features file is present
+
+    if(!(Test-Path "$InstallLocation\IIS_features.csv")) { 
+        Write-Host "IIS feature list not found! Please copy it to root folder." -ForegroundColor Red ; break
+    } 
+
+    # Load IIS Features from CSV file
+
+    $IISFeaturesList = @(Import-CSV "$InstallLocation\IIS_features.csv" -Delimiter ';' -header 'FeatureName','Client','Server').$OSType
+
+    # Install on workstation (DISM installation module)
+
+    if ($OSType -eq "Client"){
+        foreach ($feature in $IISFeaturesList){
+            Enable-WindowsOptionalFeature -All -Online -FeatureName $feature | Out-Null 
+            if (!(Get-WindowsOptionalFeature -Online -FeatureName $feature).State -eq "Enabled"){
+                Write-Host "Something went wrong installing $feature, please check again!" -ForegroundColor Red ; break
+            } 
+        }
+    }
+
+    # Install on server (ServerManager installation module)
+
+    elseif ($OSType -eq "Server"){
+        foreach ($feature in $IISFeaturesList){
+            Install-WindowsFeature -Name $feature  | Out-Null
+            if (!(Get-WindowsFeature -name $feature).Installed -eq $True){
+                Write-Host "Something went wrong installing $feature, please check again!" -ForegroundColor Red ; break
+            }
+        }
+    }
+
+    # Reset IIS
+
+    Invoke-Command -ScriptBlock {iisreset} | Out-Null
+
+    # Check IIS Version
+
+    if (Get-ChildItem 'HKLM:\SOFTWARE\Microsoft' | Where-Object {$_.Name -match 'InetStp'}) {
+        $IISVersion = (Get-ItemProperty HKLM:\SOFTWARE\Microsoft\InetStp\).MajorVersion
+<<<<<<< HEAD:MRT-Install/Install-MRT.ps1
+        Write-Output "IIS $IISVersion successfully installed!"
+=======
+        Write-Host "IIS $IISVersion successfully installed!" -ForegroundColor Green
+>>>>>>> 994805a218a15b408f047976d3104af6575ddecf:MRT-Install/Install-MRTsuite.ps1
+    } else {
+        Write-Host "IIS not fully installed, please check again" -ForegroundColor Red
+    }
+
+}
+
+Install-IISFeatures
+
+# Install SQL Server
+
+if ($InstallSQL -eq $true){
+          
+    # Silently extract setup media file
+    Rename-Item $SQLexpress_Setupfile -NewName sql_install.exe
+    Start-Process sql_install.exe -ArgumentList '/q /x:".\SQL_Setup_files"'
+    Start-sleep -s 5
+    # SQL Server Express installation
+    Start-Process "./SQL_Setup_files/setup.exe" -ArgumentList '/Q /IACCEPTSQLSERVERLICENSETERMS /ACTION="install" /FEATURES=SQLengine /INSTANCENAME="$SQLinstance" /SECURITYMODE=SQL /SAPWD="$SQLpassword" /INDICATEPROGRESS | Out-file ".\LOGS\SQLEXPR_install.log"'
+    Start-sleep -s 30
+    
+    # Check if installation was successful by verifying the instance in the service name
+    if (Get-Service -displayname "*$($SQLinstance)*" -ErrorAction SilentlyContinue){
+       Write-Host "SQL instance $SQLinstance successfully installed" -ForegroundColor Green
+    } else {
+       Write-Host "Something went wrong installing SQL instance $SQLinstance, please check SQL installation log" -ForegroundColor Red
+    }
+}
+
+# Installing SSMS
+
+if ($InstallSSMS -eq "Y"){
+
+    $SSMS_Setupfile = (Get-Item SSMS*.exe).Name
+
+    # Move SSMS setup file into SQL install folder
+    Rename-Item $SSMS_Setupfile -NewName SSMS_setup.exe
+    if (!(Get-Item .\SQL_Setup_files)){
+        New-Item -ItemType Directory -Path .\SQL_Setup_files
+    }
+
+    Move-Item -Path .\SSMS_setup.exe -Destination .\SQL_Setup_files\SSMS_Setup.exe
+    # Silently installing SSMS with no restart, create SSMS_install.log
+    # ./SQL_Setup_files/SSMS_setup.exe /INSTALL /QUIET /NORESTART /LOG SSMS_install.log
+    $SSMSArguments = '/INSTALL','/QUIET','/NORESTART','/LOG "LOGS/SSMS_install.log"'
+    $SSMSInstallProcess = Start-Process -PassThru -Wait ./SQL_Setup_files/SSMS_Setup.exe -ArgumentList $SSMSArguments
+    Start-sleep -s 30
+
+    # Check if install was good
+    $Program = Get-CimInstance -Query "SELECT * FROM Win32_Product WHERE Name LIKE '%SQL Server Management Studio%'"
+    Start-sleep -s 10
+    $wmi_check = $null -ne $Program
+    if (($SSMSInstallProcess.ExitCode -eq '0') -and ($wmi_check -eq $True )) {
+        Write-Host "$($Program.Name) $($Program.Version) successfully installed!"
+    } else {
+        Write-Host "ERROR - Something went wrong installing $($Program.Name), please check install log"
+        break
+    }  
+}
+
+# Installing Azure Data Studio
+# $ADSSetupFile = "azuredatastudio*.exe"
+# Rename-Item $ADSSetupFile -NewName ads_install.exe
+# .\ads_install.exe /SP- /VerySilent /LOG="LOGS/ADS_install.log" /NORESTART /SUPPRESSMSGBOXES /LAUNCHPROGRAM=0 | Out-Null
+
+# Install MRT Application Suite
+function Install-MRTSuite {
+
+    [CmdletBinding()] param()
+
+    # Check if setup file is present
+
+<<<<<<< HEAD:MRT-Install/Install-MRT.ps1
+    $mrtsetupfile = (Get-Item mrt*.exe).Name
+    if(!(Test-Path "$mrtsetupfile")) {
+        Write-Error "MRT setup file not found! Please copy it to root folder."  
+=======
+    if(!(Test-Path ".\mrt*.exe")) {
+        Write-Host "MRT setup file not found! Please copy it to root folder."  -ForegroundColor Red
+>>>>>>> 994805a218a15b408f047976d3104af6575ddecf:MRT-Install/Install-MRTsuite.ps1
+        break
+    } else {
+        $mrtsetupfile = (Get-Item mrt*.exe).Name
+    }
+
+    # Create package msi in current dir
+
+    Rename-Item $InstallLocation/$mrtsetupfile -NewName mrt_install.exe
+    .\mrt_install.exe /s /x /b"$InstallLocation" /v"/qn"
+    Start-sleep -s 20
+
+    # Silently install msi and create error log using msiexec
+
+    $msiArguments = '/qn','/i','"Micronpass Application Suite.msi"','/l*e "$InstallLocation\LOGS\MRT_MSI_install.log"'
+    $InstallProcess = Start-Process -PassThru -Wait msiexec -ArgumentList $msiArguments
+    Start-sleep -s 20
+
+    # Check if installation was successful in the list of Programs
+
+    $Program = Get-CimInstance -Query "SELECT * FROM Win32_Product WHERE Name LIKE '%Micronpass Application Suite%'"
+    Start-sleep -s 10
+    $wmi_check = $null -ne $Program
+    if (($InstallProcess.ExitCode -eq '0') -and ($wmi_check -eq $True )) {
+        Write-Host "$($Program.Name) $($Program.Version) successfully installed!" -ForegroundColor Green
+    } else {
+        Write-Host "Something went wrong installing $($Program.Name), please check install log" -ForegroundColor Red
+        break
+    }  
+
+}
+
+function Install-CrystalReports {
+
+    [CmdletBinding()] param()
+
+    # Check if setup file is present
+
+    $CRsetupfile32 = (Get-Item CRRuntime_32bit*.msi).Name
+    $CRsetupfile64 = (Get-Item CRRuntime_64bit*.msi).Name
+    if(!(Test-Path ".\$CRsetupfile32" -or Test-Path ".\$CRsetupfile64")) {
+        Write-Error "Crystal Reports setup file not found! Please copy it to root folder."  
+        break
+    } 
+
+    # Silently install msi and create error log using msiexec
+
+    $msi32Arguments = '/qn','/i',"$CRsetupfile32",'/l*e ".\LOGS\CR32_MSI_install.log"'
+    $InstallProcess32 = Start-Process -PassThru -Wait msiexec -ArgumentList $msi32Arguments
+    Start-sleep -s 20
+    $msi64Arguments = '/qn','/i',"$CRsetupfile64",'/l*e ".\LOGS\CR64_MSI_install.log"'
+    $InstallProcess64 = Start-Process -PassThru -Wait msiexec -ArgumentList $msi64Arguments
+    Start-sleep -s 20
+
+    ## TODO: Check if installation was successful in the list of Programs
+
+}
+
+Set-Location Packages
+Install-MRTSuite
+Install-CrystalReports
+
+# Find MPW root folder
+<#
+foreach ( $Disk in (Get-PSDrive -PSPRovider 'FileSystem' | Where-Object Used).Root ) {
+    $RootPath = Get-ChildItem $Disk | Where-Object {$_.PSIsContainer -eq $true -and $_.Name -eq "MPW"}
+    if ( $null -ne $RootPath) {
+        $Root = $RootPath.FullName
+    } else {
+        Write-Host "MPW not found!" -ForegroundColor Red
+    }
+}
+#>
+
+$Root = 'C:/MPW'
+
+# Open GeneraABL and generate ABL code
+
+Start-process $Root/GeneraABL/GeneraAbl.exe 
+if ($(get-wmiobject win32_computersystem).model -match "virtual,*"){
+    $keys = "{TAB}{TAB}{ENTER}"
+} else {
+    $keys = "{TAB}{ENTER}"
+}
+$wshshell = New-Object -ComObject WScript.Shell
+Start-Sleep -Seconds 2
+$wshshell.sendkeys($keys)
+
+# Open MicronStart and wait for input
+
+Start-sleep -Seconds 5
+Start-process $Root/MicronStart/mStart.exe -Wait
+
+### TODO: Check if Connection Strings have been updated before continuing
+
+# Acquire database connection string from a config file (it acquires an array with server\instance, database, username, password)
+function Get-MPWConnectionStrings {
+
+    [CmdletBinding()] 
+    param ()
+
+    # Convert .config file to readable .XML
+    $ConfigFile = "$Root\MicronConfig\config.exe.config"
+    $ConfigXml = [xml] (Get-Content $ConfigFile)
+
+    # Read value from dbengine
+    $DBEngine = $ConfigXml.SelectSingleNode('//add[@key="dbEngine"]').Value
+    $MyDBEngine = "$("//add[@key='")$($DBEngine)$("Str']")"
+
+    # Read value from SqlStr
+    $ConnectionString = $ConfigXml.SelectSingleNode($MyDBEngine).Value
+
+    # Get Connection String parameters
+    $DBDataSource = [regex]::Match($ConnectionString, 'Data Source=([^;]+)').Groups[1].Value
+    $DBInitialCatalog = [regex]::Match($ConnectionString, 'Initial Catalog=([^;]+)').Groups[1].Value
+    $DBUserId = [regex]::Match($ConnectionString, 'User ID=([^;]+)').Groups[1].Value
+    $DBPassword = [regex]::Match($ConnectionString, 'Password=([^;]+)').Groups[1].Value
+
+    Return $DBDataSource, $DBInitialCatalog, $DBUserID, $DBPassword 
+
+}
+
+$global:DBDataSource = $(Get-MPWConnectionStrings)[0]       # Does not accept (local) as server name
+$global:DBInitialCatalog = $(Get-MPWConnectionStrings)[1]
+$global:DBUserId = $(Get-MPWConnectionStrings)[2]
+$global:DBPassword = $(Get-MPWConnectionStrings)[3]
+
+# Test db connection
+
+Get-DbaDatabase -SqlInstance $DBDataSource -Database $DBInitialCatalog
+
+# Configure IIS 
+
+function Set-IISApplication {
+
+    [CmdletBinding()] 
+    param ([string]$ApplicationName)
+
+    # Global variables
+    $ApplicationPoolName = "MICRONTEL_Accessi"
+    $WebSiteName = "Default Web Site"
+    Write-Host "Starting configuration of $WebSiteName'/'$ApplicationName in application pool $ApplicationPoolName"
+
+    # Import IIS admin modules
+    $manager = Get-IISServerManager
+
+    # Create application pool, integrated pipeline, Runtime v4.0, Enable32bitApps, idleTimeout 8hrs
+    # Using IISAdministration (IIS 10.0)
+    if ($null -eq $manager.ApplicationPools["$ApplicationPoolName"]) {
+    $pool = $manager.ApplicationPools.Add("$ApplicationPoolName")
+    $pool.ManagedPipelineMode = "Integrated"
+    $pool.ManagedRuntimeVersion = "v4.0"
+    $pool.Enable32BitAppOnWin64 = $true
+    $pool.AutoStart = $true
+    $pool.ProcessModel.IdentityType = "ApplicationPoolIdentity"
+    $pool.ProcessModel.idleTimeout = "08:00:00"
+    $manager.CommitChanges()
+    Write-Host "Application pool $ApplicationPoolName successfully created" -ForegroundColor Green
+    } else {Write-Host "Application pool $ApplicationPoolName already exists, please choose a different name" -ForegroundColor Red
+}
+
+    # Assign the web application mpassw to the application pool
+    # Using IISAdministration (IIS 10.0)
+    $website = $manager.Sites["$WebSiteName"]
+    $website.Applications["$ApplicationName"].ApplicationPoolName = "$ApplicationPoolName"
+    $manager.CommitChanges() | Out-Null
+    Write-Host "Application $WebSiteName'/'$ApplicationName successfully assigned to Application pool $ApplicationPoolName" -ForegroundColor Green
+
+}
+
+Set-IISApplication -ApplicationName "mpassw"
+
+# GDPR configuration query
+
+$SQLGDPR = "
+    -- Set GDPR flags to default
+    UPDATE T05COMFLAGS SET T05VALORE='1' WHERE T05TIPO='GDPRMODEDIP'
+    UPDATE T05COMFLAGS SET T05VALORE='1' WHERE T05TIPO='GDPRMODEEST'
+    UPDATE T05COMFLAGS SET T05VALORE='1' WHERE T05TIPO='GDPRMODEVIS'
+    UPDATE T05COMFLAGS SET T05VALORE='1' WHERE T05TIPO='GDPRMODEUSR'
+    UPDATE T05COMFLAGS SET T05VALORE='ANONYMOUS' WHERE T05TIPO='GDPRANONYMTEXT' "
+
+Invoke-DbaQuery -sqlinstance $DBDataSource -Database $DBInitialCatalog -Query $SQLGDPR -MessagesToOutput
+
+# Utilities configuration query
+
+$SQLUtilities = 
+    "-- Create utilities internal company
+    INSERT INTO T71COMAZIENDEINTERNE VALUES (N'UTIL',N'_UTILITIES',N'INSTALLATORE',N'20000101000000',N'',N'')
+    -- Create reference employee
+    INSERT INTO T26COMDIPENDENTI VALUES (N'00000001',N'_DIP.RIF', N'_DIP.RIF', N'', N'', N'', N'', N'0', N'', N'INSTALLATORE', N'20000101000000', N'', N'', N'', N'', N'20000101', N'', N'0', N'', N'UTIL', N'M', N'', N'1', N'20000101000000', N'99991231235959', N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', N'')
+    -- Assign ref.empl. to admin user
+    UPDATE T21COMUTENTI SET T21DEFDIPRIFEST='00000001',T21DEFAZINTEST='UTIL',T21DEFDIPRIFVIS='00000001',T21DEFAZINTVIS='UTIL' WHERE T21UTENTE='admin'
+"
+
+Invoke-DbaQuery -sqlinstance $DBDataSource -Database $DBInitialCatalog -File $SQLUtilities -MessagesToOutput
+
+### TODO: test all queries
+
+# 7.5 ONLY # Database correction scripts
+
+$MicronpassVersion = [System.Diagnostics.FileVersionInfo]::GetVersionInfo("$Root\Micronpass\bin\mpassw.dll").FileVersion
+$ScriptPath = "$Root\DBUpgrade750Scripts\SQLServer"
+
+if (($MicronpassVersion -ge '7.5.600.0') -and ($MicronpassVersion -lt '7.6.0.0')) {
+
+    Invoke-DbaQuery -sqlinstance $DBDataSource -Database $DBInitialCatalog -File "$ScriptPath\201912121059478_ExtendendVisitors.sql" -MessagesToOutput
+    Invoke-DbaQuery -sqlinstance $DBDataSource -Database $DBInitialCatalog -File "$ScriptPath\202001031132139_CongedoVisitatore.sql" -MessagesToOutput
+    Invoke-DbaQuery -sqlinstance $DBDataSource -Database $DBInitialCatalog -File "$ScriptPath\202002251338486_Mrt7510.sql" -MessagesToOutput
+    Invoke-DbaQuery -sqlinstance $DBDataSource -Database $DBInitialCatalog -File "$ScriptPath\202004111624012_Mrt7513.sql" -MessagesToOutput
+    Invoke-DbaQuery -sqlinstance $DBDataSource -Database $DBInitialCatalog -File "$ScriptPath\202007291526523_Mrt7514.sql" -MessagesToOutput
+    Invoke-DbaQuery -sqlinstance $DBDataSource -Database $DBInitialCatalog -File "$ScriptPath\202009011504100_Mrt7515.sql" -MessagesToOutput
+
+}
+
+### TODO: Test the whole thing with Pester (https://octopus.com/blog/testing-powershell-code-with-pester)
+
+# Open config as administrator
+
+Start-Process -FilePath "$Root\MicronConfig\config.exe" -Verb RunAs
+
+# Open browser
+
+Start-Process "http://localhost/$ApplicationName"
+

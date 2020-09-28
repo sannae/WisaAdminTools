@@ -16,7 +16,7 @@
     - ADAM MARCZAK'S AZURE FUNDAMENTALS https://www.youtube.com/playlist?list=PLGjZwEtPN7j-Q59JYso3L4_yoCjj2syrM
     - "Azure in a month of lunches" by Iain Foulds
 ## Docker path
-- [] Docker Certified Associate (?)
+- [] Docker Certified Associate https://training.mirantis.com/dca-certification-exam/
 ## Powershell
 - [] JOHN SAVILL'S POWERSHELL MASTERCLASS https://www.youtube.com/playlist?list=PLlVtbbG169nFq_hR7FcMYg32xsSAObuq8
 

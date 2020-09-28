@@ -5,6 +5,8 @@ Alcuni link utili:
     * MS Learn's Administer-Containers-in-Azure Learning Path : https://docs.microsoft.com/en-us/learn/paths/administer-containers-in-azure/
     * FreeCodeCamp's Docker Handbook : https://www.freecodecamp.org/news/the-docker-handbook/
     * Stackify's start-to-finish guide to Docker for .NET : https://stackify.com/a-start-to-finish-guide-to-docker-for-net/
+* Octopus Blog : https://octopus.com/blog/containerize-a-real-world-web-app
+* Docker lab : https://github.com/docker/labs/tree/master/dockercon-us-2017/windows-modernize-aspnet-ops#task3.1
 #>
 
 
