@@ -2,13 +2,18 @@
 
 
 # DOING
-
+[09:00] BOMA MILANO MONETA 
+[15:00] CROCE ROSSA TORINO
+[15:30] DUAL SANITALY Oggi pomeriggio 15:30-16:30
+DELPA
+OPE GRUPPO CCM
+OPE GRUPPOPER - Rinnovo password
 
 # TO-DO
 NCT
+COMMERCIALE TUBI
 FUJIFILM
 DEMONT
-DELPA
 SIEMENS CHIESI - Problema MicronPlate
 SIEMENS CHIESI - Problema MicronMail
 AZ.OSP.S.CROCE E CARLE CUNEO - Analisi migrazione su nuovo server
@@ -16,13 +21,9 @@ DEWAVE
 UNIPD - Videocamera 192.168.129.157 varco sbarra 
 ARCA ATS BRESCIA - Configurazione e attivazione di tutti MCT700 con logo personalizzato
 ISEO DEUTSCHLAND RSAG - Assistenza (v. mail Marcel)
-ALPLA - Terminale presenze non funzionante
-SOLUZIONE SRL PILA - Problema codifica terminale MCT700
 ISS S.MARINO - Concludere assistenza per video MP4 
-SAICA FLEX - Ricostruire installazione da attacco virus (disponibile dal 25/08)
 SPECCHIDEA - Verifica su Micronpass Win (rientra il 26/08)
 FLOWSERVE - Completare analisi con il cliente, prendere requisiti per AP
-INVESTIRE SGR (FIGINO) - Problema hardware
 SYNTEC - Analisi Az.Osp. Verona
 SKYLOGIC TORINO - Pass visitatori personalizzato (Skylogic-005/Software/pass)
 ## ADP
