@@ -2,18 +2,10 @@
 
 
 # DOING
-BCUBE
-ARCA ASST SETTELAGHI
-	056 VA_INDUNO OLONA_V.MAGNASCO 4		192.168.169.50
-	064 VA_ARCISATE_V.MATTEOTTI 20			192.168.134.50
-	057 VA_ARCISATE_V.CAMPI MAGGIORI 23		192.168.121.50
-	059 VA_BISUSCHIO_V.REPUBBLICA 100		192.168.135.50
-ARCA ASST GARDA
-[10:00] ILLY
-[13:30] DUAL SANITALY
+
 
 # TO-DO
-
+NCT
 FUJIFILM
 DEMONT
 DELPA
@@ -34,7 +26,9 @@ INVESTIRE SGR (FIGINO) - Problema hardware
 SYNTEC - Analisi Az.Osp. Verona
 SKYLOGIC TORINO - Pass visitatori personalizzato (Skylogic-005/Software/pass)
 ## ADP
-Verifica chiamate
+[Verifica chiamate]
+## Ferrero
+[Verifica chiamate]
 ## Like
 ISEO - Corso di aggiornamento per troubleshooting di basso livello su Atlas (creazione di impianto multi-slave, diagnostica su PuTTY e su web, uso di DebugClient)
 

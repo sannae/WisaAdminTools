@@ -31,6 +31,8 @@ Param(
 )
 
 # Modules
+# (Automatically download a PS module and save it locally: Save-Module -Name MODULENAME -Path LOCALPATH)
+## TODO: Offline install still not working ...
 
 Import-Module IISAdministration # For IIS 10.0 (Windows Server 2016 and 2016-nano on)
 Import-Module Dbatools # https://dbatools.io/offline/
@@ -184,7 +186,6 @@ function Install-IISFeatures {
     if (Get-ChildItem 'HKLM:\SOFTWARE\Microsoft' | Where-Object {$_.Name -match 'InetStp'}) {
         $IISVersion = (Get-ItemProperty HKLM:\SOFTWARE\Microsoft\InetStp\).MajorVersion
         Write-Output "IIS $IISVersion successfully installed!"
-        Return $IISVersion
     } else {
         Write-Error "IIS not fully installed, please check again"
     }
@@ -260,7 +261,7 @@ function Install-MRTSuite {
     # Check if setup file is present
 
     $mrtsetupfile = (Get-Item mrt*.exe).Name
-    if(!(Test-Path ".\$mrtsetupfile")) {
+    if(!(Test-Path "$mrtsetupfile")) {
         Write-Error "MRT setup file not found! Please copy it to root folder."  
         break
     } 
@@ -291,7 +292,35 @@ function Install-MRTSuite {
 
 }
 
+function Install-CrystalReports {
+
+    [CmdletBinding()] param()
+
+    # Check if setup file is present
+
+    $CRsetupfile32 = (Get-Item CRRuntime_32bit*.msi).Name
+    $CRsetupfile64 = (Get-Item CRRuntime_64bit*.msi).Name
+    if(!(Test-Path ".\$CRsetupfile32" -or Test-Path ".\$CRsetupfile64")) {
+        Write-Error "Crystal Reports setup file not found! Please copy it to root folder."  
+        break
+    } 
+
+    # Silently install msi and create error log using msiexec
+
+    $msi32Arguments = '/qn','/i',"$CRsetupfile32",'/l*e ".\LOGS\CR32_MSI_install.log"'
+    $InstallProcess32 = Start-Process -PassThru -Wait msiexec -ArgumentList $msi32Arguments
+    Start-sleep -s 20
+    $msi64Arguments = '/qn','/i',"$CRsetupfile64",'/l*e ".\LOGS\CR64_MSI_install.log"'
+    $InstallProcess64 = Start-Process -PassThru -Wait msiexec -ArgumentList $msi64Arguments
+    Start-sleep -s 20
+
+    ## TODO: Check if installation was successful in the list of Programs
+
+}
+
+Set-Location Packages
 Install-MRTSuite
+Install-CrystalReports
 
 # Find MPW root folder
 

@@ -2,7 +2,7 @@
 Connect-AzAccount
 
 # Create ResourceGroup and VM
-$rg = 'dev2' 
+$rg = 'dev' 
 $loc = 'northeurope'
 $usr = "edoardo.sanna"
 $passwd = ConvertTo-SecureString "5Anna3d0ard0!" -AsPlainText -Force
