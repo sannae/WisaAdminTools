@@ -190,11 +190,7 @@ function Install-IISFeatures {
 
     if (Get-ChildItem 'HKLM:\SOFTWARE\Microsoft' | Where-Object {$_.Name -match 'InetStp'}) {
         $IISVersion = (Get-ItemProperty HKLM:\SOFTWARE\Microsoft\InetStp\).MajorVersion
-<<<<<<< HEAD:MRT-Install/Install-MRT.ps1
-        Write-Output "IIS $IISVersion successfully installed!"
-=======
-        Write-Host "IIS $IISVersion successfully installed!" -ForegroundColor Green
->>>>>>> 994805a218a15b408f047976d3104af6575ddecf:MRT-Install/Install-MRTsuite.ps1
+        Write-Host "IIS $IISVersion successfully installed!"
     } else {
         Write-Host "IIS not fully installed, please check again" -ForegroundColor Red
     }
@@ -212,7 +208,7 @@ if ($InstallSQL -eq $true){
     Start-Process sql_install.exe -ArgumentList '/q /x:".\SQL_Setup_files"'
     Start-sleep -s 5
     # SQL Server Express installation
-    Start-Process "./SQL_Setup_files/setup.exe" -ArgumentList '/Q /IACCEPTSQLSERVERLICENSETERMS /ACTION="install" /FEATURES=SQLengine /INSTANCENAME="$SQLinstance" /SECURITYMODE=SQL /SAPWD="$SQLpassword" /INDICATEPROGRESS | Out-file ".\LOGS\SQLEXPR_install.log"'
+    Start-Process "./SQL_Setup_files/setup.exe" -ArgumentList "/Q /IACCEPTSQLSERVERLICENSETERMS /ACTION='install' /FEATURES=SQLengine /INSTANCENAME="$SQLinstance" /SECURITYMODE=SQL /SAPWD="$SQLpassword" /INDICATEPROGRESS | Out-file '.\LOGS\SQLEXPR_install.log'"
     Start-sleep -s 30
     
     # Check if installation was successful by verifying the instance in the service name
@@ -266,14 +262,8 @@ function Install-MRTSuite {
 
     # Check if setup file is present
 
-<<<<<<< HEAD:MRT-Install/Install-MRT.ps1
-    $mrtsetupfile = (Get-Item mrt*.exe).Name
-    if(!(Test-Path "$mrtsetupfile")) {
-        Write-Error "MRT setup file not found! Please copy it to root folder."  
-=======
     if(!(Test-Path ".\mrt*.exe")) {
         Write-Host "MRT setup file not found! Please copy it to root folder."  -ForegroundColor Red
->>>>>>> 994805a218a15b408f047976d3104af6575ddecf:MRT-Install/Install-MRTsuite.ps1
         break
     } else {
         $mrtsetupfile = (Get-Item mrt*.exe).Name
