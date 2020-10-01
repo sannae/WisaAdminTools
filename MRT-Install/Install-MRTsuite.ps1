@@ -277,7 +277,7 @@ function Install-MRTSuite {
 
     # Silently install msi and create error log using msiexec
 
-    $msiArguments = '/qn','/i','"Micronpass Application Suite.msi"','/l*e "$InstallLocation\LOGS\MRT_MSI_install.log"'
+    $msiArguments = '/qn','/i','"Micronpass Application Suite.msi"',"/l*e '$InstallLocation\LOGS\MRT_MSI_install.log'"
     $InstallProcess = Start-Process -PassThru -Wait msiexec -ArgumentList $msiArguments
     Start-sleep -s 20
 

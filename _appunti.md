@@ -6981,8 +6981,8 @@ Regole firewall server:
 	Porta TCP 80 (comunicazione su protocollo HTTP) in ingresso
 	
 
-� TIMBRATURA VIRTUALE
------------------------------------------------------------------------
+## TIMBRATURA VIRTUALE
+
 Documentazione: MO_MRT_APP TVirt.docx
 
 Questo nasce dalla personalizzazione per Estracom.
@@ -7050,8 +7050,8 @@ DEMO:
 	URL Micronpass di riferimento: http://79.11.21.211:8183/mpassw
 
 
-� BADGE VIRTUALE
------------------------------------------------------------------------
+## BADGE VIRTUALE
+
 Questa applicazione nasce dalla personalizzazione SIEMENS per ANGELINI
 Documentazione: MO_MRT_APP BVirt.docx
 
@@ -7211,8 +7211,8 @@ C:\MPW\MicronAPPWS\LOG
 	Espresso nella forma "Method + Request + Response"
 
 
-App RECEPTION
------------------------------------
+## App RECEPTION
+
 Installazione:
 	Prerequisiti:
 	- Sistema operativo iOS/Android
@@ -7224,8 +7224,8 @@ Prima configurazione dell'app:
 	- Settings > Username			% Nome utente con cui l'app si autentica al webservice
 	- Settings > Password			% Password con cui l'app si autentica al webservice
 	- Settings > VisitType			% Chiave del tipo visita
-	- Settings > Standby delay [s]		% Timeout di inattivit�: scaduto il tempo, viene visualizzato il sito web specificato dopo
-	- Settings > Info link 			% Sito web da visualizzare scaduto il timeout di inattivit�
+	- Settings > Standby delay [s]	% Timeout di inattività: scaduto il tempo, viene visualizzato il sito web specificato dopo
+	- Settings > Info link 			% Sito web da visualizzare scaduto il timeout di inattività
 	- Settings > Partner			% Microntel, Iseo, ADP, Siemens, custom
 		* Nel caso di 'custom', � possibile:
 			- Scegliere il logo dai file salvati su tablet
