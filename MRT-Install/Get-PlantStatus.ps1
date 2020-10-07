@@ -2,10 +2,8 @@
 
 # Modules
 
-Import-Module WebAdministration -SkipEditionCheck
 Import-Module IISAdministration
-Import-Module SQLServer
-
+Import-Module dbatools
 
 # Controllo di versione di Powershell: ALMENO la 5.0!
 
@@ -28,7 +26,6 @@ $StatusFile = "$Root\PlantStatus.txt"
 
 Add-Content -Path $StatusFile -Value "Cliente: " 
 $($(Get-Content -Path "$Root\MicronService\MRT.LIC" | Select-String -Pattern 'Licence') -Split '=')[1] | Out-File $StatusFile -Append
-Add-Content -Path $StatusFile -Value "--------------" 
 
 # Lista dei servizi il cui percorso contiene \MPW
 
@@ -53,17 +50,5 @@ $ConnectionString = "Persist Security Info=False;User ID=$DBUserID;Password=$DBP
 
 # Query di stato impianto
 
-$VersioneInstallata = "SELECT T05VALORE AS [Versione installata] FROM T05COMFLAGS WHERE T05TIPO='DBVER'"
-$ServiziAttivi= "SELECT T03CODICE AS Codice, T03DESCRIZIONE AS Descrizione, 
-CASE T03CONFIGGN WHEN '' THEN 'KARM' ELSE T03CONFIGGN END AS [GNet Path] FROM T03COMSERVICES" # TODO: Parametri di scarico timbrature
-$FamiglieFirmware = "SELECT T22GNTYPE AS [Versione Firmware],COUNT(T22CODICE) AS [Terminali base attivi] FROM T22ACCTERMINALI WHERE T22KK='0' AND T22ABILITATO='1' GROUP BY T22GNTYPE"
-$TerminaliBaseAttivi = "SELECT T22CODICE AS Codice, T22DESCRIZIONE AS Descrizione, T22GNTYPE AS [Firmware], T22GNNUN AS RamoNodo, T22GNIP AS IndirizzoIP FROM T22ACCTERMINALI WHERE T22KK='0' AND T22ABILITATO='1'"
-
 Add-Content -Path $StatusFile -Value "Versione installata: " 
-Invoke-Sqlcmd -ConnectionString $ConnectionString -Query $VersioneInstallata | Out-File $StatusFile -Append
-Add-Content -Path $StatusFile -Value "Parametri dei servizi: " 
-Invoke-Sqlcmd -ConnectionString $ConnectionString -Query $ServiziAttivi | Out-File $StatusFile -Append
-Add-Content -Path $StatusFile -Value "Famiglie di firmware: " 
-Invoke-Sqlcmd -ConnectionString $ConnectionString -Query $FamiglieFirmware | Out-File $StatusFile -Append
-Add-Content -Path $StatusFile -Value "Terminali base attivi: " 
-Invoke-Sqlcmd -ConnectionString $ConnectionString -Query $TerminaliBaseAttivi | Format-Table | Out-File $StatusFile -Append
+Invoke-DbaQuery -sqlinstance $DBDataSource -Database $DBInitialCatalog -File 'PlantStatus.sql' -MessagesToOutput | Out-File $StatusFile -Append

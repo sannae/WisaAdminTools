@@ -359,6 +359,7 @@ Start-process $Root/MicronStart/mStart.exe -Wait
 ### TODO: Check if Connection Strings have been updated before continuing
 
 # Acquire database connection string from a config file (it acquires an array with server\instance, database, username, password)
+# TODO: Passare la variabile $Root come parametro di input
 function Get-MPWConnectionStrings {
 
     [CmdletBinding()] 

@@ -1,11 +1,13 @@
 # DONE
 CSI - Analisi migrazione applicativi
+SIEMENS 335.6968912
+GEROSA - Info per spostamento db
+FUJI FILM - Assistenza btService stoppato
 
 # DOING
 
 
 # TO-DO
-ADP LAVAZZA
 COMMERCIALE TUBI
 SIGIT MAROCCO
 SIEMENS CHIESI
