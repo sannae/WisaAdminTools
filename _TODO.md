@@ -1,11 +1,14 @@
 # DONE
-
+CSI - Analisi migrazione applicativi
 
 # DOING
 
 
 # TO-DO
+ADP LAVAZZA
 COMMERCIALE TUBI
+SIGIT MAROCCO
+SIEMENS CHIESI
 DEMONT
 OPE GRUPPO CCM - Analisi migrazione
 SOLUZIONE PER PILA - modifica su decodifica badge (TREVNIBBLE), ancora da provare, attesa riscontro da Scali
@@ -26,6 +29,8 @@ SKYLOGIC TORINO - Pass visitatori personalizzato (Skylogic-005/Software/pass)
 ## ADP
 ADP OI
 ## Ferrero
+## RealeMutua
+REALE MUTUA - Upgrade firmware videocamere
 
 ## TechDebt
 ISEO - Corso di aggiornamento per troubleshooting di basso livello su Atlas (creazione di impianto multi-slave, diagnostica su PuTTY e su web, uso di DebugClient)

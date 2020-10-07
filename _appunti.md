@@ -5525,7 +5525,7 @@ SCARICARE MDB VOCI TRADOTTE
 ### ERRORI
 
 	E(00104) = Errore di comunicazione GNet, aumentare il Ping Retry su GNConfig e ripuntare le nuove Tabelle Host, eventualmente attivare il MicronLeak
-	E(00108) = Errore di timeout, niente di grave, rimander� il record pi� avanti
+	E(00108) = Errore di timeout, niente di grave, rimanderà il record più avanti
 	E(00109) = Errore firmware
 
 
