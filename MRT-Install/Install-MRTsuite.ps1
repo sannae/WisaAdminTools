@@ -327,7 +327,14 @@ Install-CrystalReports
 
 # Find MPW root folder
 <#
-
+foreach ( $Disk in (Get-PSDrive -PSPRovider 'FileSystem' | Where-Object Used).Root ) {
+    $RootPath = Get-ChildItem $Disk | Where-Object {$_.PSIsContainer -eq $true -and $_.Name -eq "MPW"}
+    if ( $null -ne $RootPath) {
+        $Root = $RootPath.FullName
+    } else {
+        Write-Host "MPW not found!" -ForegroundColor Red
+    }
+}
 #>
 
 $Root = 'C:/MPW'
@@ -356,7 +363,7 @@ Start-process $Root/MicronStart/mStart.exe -Wait
 function Get-MPWConnectionStrings {
 
     [CmdletBinding()] 
-    param ([string]$Root)
+    param ()
 
     # Convert .config file to readable .XML
     $ConfigFile = "$Root\MicronConfig\config.exe.config"

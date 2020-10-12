@@ -50,7 +50,5 @@ $ConnectionString = "Persist Security Info=False;User ID=$DBUserID;Password=$DBP
 
 # Query di stato impianto
 
+Add-Content -Path $StatusFile -Value "Versione installata: " 
 Invoke-DbaQuery -sqlinstance $DBDataSource -Database $DBInitialCatalog -File 'PlantStatus.sql' -MessagesToOutput | Out-File $StatusFile -Append
-
-# Commesse su server Bitech
-
