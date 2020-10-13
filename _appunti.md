@@ -5117,7 +5117,7 @@ Si dà per scontato che il record che si vuole stampare sia già inserito nel da
 		Nel momento in cui la stampante si riprende, infatti, potrebbe pre-selezionare un codificatore diverso dall'OmniKey
 - La stampante, nell'ordine:
 	a. legge la traccia RFID del badge inserito, scrivendone il campo nella colonna T25ID1 e scrivendo la data-ora di stampa in T25DESCRIZIONE
-		Il servizio MicronCardFive cercher� i badge con T25DESCRIZIONE popolato con data-ora e invier� il dato al MicronService
+		Il servizio MicronCardFive cercherà i badge con T25DESCRIZIONE popolato con data-ora e invier� il dato al MicronService
 	b. magnetizza la banda magnetica, se selezionata in fase di stampa
 	c. stampa la grafica del badge
 [Test]: verifica che sia stato scritto T25DESCRIZIONE
@@ -5136,6 +5136,12 @@ Note formazione:
 - Micronpass Web: gestionale delle anagrafiche
 - CardPresso: gestionale di stampa
 Entrambi i software puntano allo stesso database, anche se CardPresso vede esclusivamente una tabella 'filtrata' e strutturata appositamente per semplificare la stampa.
+
+## Possibili errori:
+
+* Client warning: valore troppo grande o troppo piccolo per un int32
+	** Se mostrato prima di visualizzare la versione stampante: copiare il file C:\Programmi\Evolis Print Center\Evolis Premium Suite\iomem.dll dentro al percorso C:\Windows\SysWOW64
+	** Se mostrato dopo l'acquisizione della traccia RFID: [ancora da capire]
 
 
 ### --OLD from here--]

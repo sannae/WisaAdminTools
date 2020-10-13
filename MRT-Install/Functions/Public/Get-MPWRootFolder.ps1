@@ -5,6 +5,7 @@
     It loops all the filesystem disks and search for any child item named 'MPW'.
 .EXAMPLE
     PS> $Root = Get-MPWRootFolder
+    PS> Get-MPWRootFolder
 .NOTES
 
 #>

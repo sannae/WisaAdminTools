@@ -31,6 +31,8 @@ $($(Get-Content -Path "$Root\MicronService\MRT.LIC" | Select-String -Pattern 'Li
 
 Get-Service | Where-Object {$_.BinaryPathName -like "*$Root*"} | Select-Object Name,DisplayName,Status,StartupType,BinaryPathName | Format-Table | Out-File $StatusFile -Append
 
+# TODO: Export dei parametri importanti relativi ai servizi dalla T103COMPARAMS
+
 # Lista delle applicazioni web il cui percorso contiene \MPW
 
 Get-Webapplication | Where-Object {$_.PhysicalPath -like "*$Root*" } | Select-Object path,PhysicalPath,applicationPool,enabledProtocols | Format-Table | Out-File $StatusFile -Append
@@ -52,3 +54,5 @@ $ConnectionString = "Persist Security Info=False;User ID=$DBUserID;Password=$DBP
 
 Add-Content -Path $StatusFile -Value "Versione installata: " 
 Invoke-DbaQuery -sqlinstance $DBDataSource -Database $DBInitialCatalog -File 'PlantStatus.sql' -MessagesToOutput | Out-File $StatusFile -Append
+
+# TODO: Lista delle operazioni pianificate che includono il percorso 'MPW' o che includono i percorsi di export presenze trovati in T103COMPARAMS
