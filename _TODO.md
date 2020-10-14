@@ -2,14 +2,19 @@
 
 
 # DOING
-[14:00] SIEMENS CHIESI - Stampante 
-TELEPERFORMANCE - Info per prev
-IT CONSULTING - Info per prev - Davide Chessorti 031.3336222 331.1338236
+
 
 # TO-DO
-SIGIT MAROCCO
+IC SRL BAUSCH - Richieste modifica personalizzazione (report già rilasciato, configurazione da modificare)
+UNIPD - Analisi richiesta di G.Neve
+UNIPD ODL 44 (Simone Tiveron)
+SIEMENS ANGELINI - Scaricare log da ProgramFiles\Siemens\EventServer\MicPlugin e girarli a Luca
+[ripianificare-definire-orario] SIEMENS CHIESI - Stampante 
+TELEPERFORMANCE - Info per prev
+SOLUZIONE SRL PILA - Upgrade Micronpass 7.5.6xx e MicronService 7.5.6xx
+SIGIT MAROCCO - Copiare MicronBadge
 ARCA ASST SETTELAGHI - Richiesta di Giusti 
-[ripianificare] ILLY CAFFE - Call per allineamento tecnico
+ARCA ASST SETTELAGHI - Richiesta di Palladino
 ASST GAETANO PINI - Completare configurazione terminali
     n.1 MXP450 172.17.130.194
         KK1 IO1     MEDICINA FISICA E RIABILITAZIONE - BLOCCO A - SX
@@ -31,6 +36,5 @@ SKYLOGIC TORINO - Pass visitatori personalizzato (Skylogic-005/Software/pass)
 AAP_ASSTGARDA-001 - Query host per terminali mensa
 AAP_FLOW-020 - Implementazioni PPC & tornello mensa
 AAP-CHIESI_026 - Modifiche layout badge
-NT_SOLUZ-001 - Correzione export presenze
 ## TechDebt
 ISEO - Corso di aggiornamento per troubleshooting di basso livello su Atlas (creazione di impianto multi-slave, diagnostica su PuTTY e su web, uso di DebugClient)

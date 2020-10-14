@@ -9259,10 +9259,6 @@ Il display (o la testina) mostra:
 	- "ANOMALIA IN CONTROLLI SANITARI" ("HEALTH CHK") (T>Tallarme oppure NoMask nel caso di tablet)
 
 
-
-
-
-
 ### KARM
 
 Prerequisiti software
@@ -9538,48 +9534,6 @@ Configurazione del dispositivo da browser (Chrome o Firefox)
 - Manutenzione:
 	- System > Restart Timing > Restart Timing		% Imposta un orario di riavvio schedulato
 
-
-#### Deprecato di sotto
-
-- Installare il software SDP2000 sul server
-	Attenzione: il computer su cui viene installato il software rimane indissolubilmente legato al tablet
-	Il software si installa con avvio in esecuzione automatica
-- Aprire http://localhost:8686 (Chrome) per aprire la pagina web ("Smart Device Platform") installata localmente
-	L'indirizzo IP usato è uno di quelli disponibili sulle NIC della macchina
-- Entrare con credenziali di default
-	username:	admin
-	password:	admin
-- Collegare il tablet alla rete e attendere che si accenda
-- Se la rete ha un DHCP, lui automaticamente si prende un indirizzo IP
-	IP default: 192.168.1.140 (DHCP=Enabled)
-- Smart Device Platform > Device > Search device > [leggere l'indirizzo IP dinamico assegnato]
-- Per la configurazione del tablet, aprire IE>http://[INDIRIZZO-IP-TABLET]:7080, si apre la pagina "INtelligent Terminal"
-	username:	admin
-	password:	12345
-- Intelligent Terminal > NEtwork > DHCP = FALSE
-- Intelligent Terminal > Display Configuration > Language = [SET LANGUAGE]
-- Intelligent Terminal > Temperature taking > Temperatura di compensazione = 0.000 [su questo dispositivo la compensazione va fatta manualmente, se necessario]
-- Smart Device Platform > Device > Add
-- Smart Device Platform > Device > Settings
-	Basic paramters > 
-	Network Config > 
-	Remote config > 
-		> Upgrade firmware					% Possibilità di aggiornare il firmware
-		> Volume settings = 5					% Volume dell'interfaccia audio
-		> Supplementary lighting setting = TRUE/FALSE		% Lucetta aggiuntiva sopra il display
-		> Relay opening and closing control = [200ms-10s]
-		> Restore factory settings
-	Version info
-	Function parameters > 
-		> Temperature check = TRUE		% Controllo temperatura
-		> Alarm temperature = 37.5		% Temperatura di allarme
-		> Stranger access = TRUE		% Accetta gli sconosciuti
-		> Check Mask = TRUE/FALSE		% Controlla la mascherina
-		> Save Photo = TRUE/FALSE		% Salva le foto nel database mysql
-
-- Per riportare allo stato di fabbrica,
-	Intelligent terminal > Maintain > Restore Factory Settings
-	Il terminale perde tutta la configurazione e CAMBIA l'indirizzo IP
 
 ### Videocamera HIKVISION
 
