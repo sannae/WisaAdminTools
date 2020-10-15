@@ -56,3 +56,5 @@ Add-Content -Path $StatusFile -Value "Versione installata: "
 Invoke-DbaQuery -sqlinstance $DBDataSource -Database $DBInitialCatalog -File 'PlantStatus.sql' -MessagesToOutput | Out-File $StatusFile -Append
 
 # TODO: Lista delle operazioni pianificate che includono il percorso 'MPW' o che includono i percorsi di export presenze trovati in T103COMPARAMS
+
+# TODO (su script esterno): usando la descrizione del cliente da MRT.LIC, andare via FTP a cercare eventuali commesse esistenti e - se esistono - cercare solo i file VR

@@ -6511,7 +6511,7 @@ UTILIZZO:
 
 # MICRONVIEWER (VISUALIZZAZIONE TRANSITI)
 ======================================================================
-La funzione non � pi� un applicativo a parte ma � una funzione aggiuntiva di Micronpass Web, e quindi invece di MicronViewer si chiama "Visualizzazione transiti"
+La funzione non è più un applicativo a parte ma è una funzione aggiuntiva di Micronpass Web, e quindi invece di MicronViewer si chiama "Visualizzazione transiti"
 
 Prerequisiti:
 Il file .LIC deve contenere MicronViewer
@@ -6519,26 +6519,27 @@ Il file .LIC deve contenere MicronViewer
 Attivazione:
 - MicronConfig > Tabelle > Associazioni varchi MicronViewer: inserisci codice della postazione (4 numeri) e scegli varco dal menu a tendina
 - MicronConfig > Parametri > Micronpass > Indirizzo IP locale per Visualizzazione transiti: <IP del server>
+- Riavviare btService
 
 Configurazione:
-(*) I parametri vanno settati PER OGNI postazione da cui si utilizza la Visualizzazione Transiti, perch� hanno effetto sul browser utilizzato
+(*) I parametri vanno settati PER OGNI postazione da cui si utilizza la Visualizzazione Transiti, perché hanno effetto sul browser utilizzato
 - Micronpass Web > Visualizzazione Transiti > [postazione di visualizzazione] > [simbolo attrezzi]
 	Parametri:
 		Elenco varchi da monitorare:		Spunta su varco
-		N� transiti visibili a video:		Numero di transiti da visualizzare prima che appaia la barra di scorrimento verticale
-		N� transiti totali:			Numero totale di transiti (settare questo parametro non troppo alto, per evitare un consumo eccessivo di memoria da parte del browser)
+		N. transiti visibili a video:		Numero di transiti da visualizzare prima che appaia la barra di scorrimento verticale
+		N. transiti totali:			Numero totale di transiti (settare questo parametro non troppo alto, per evitare un consumo eccessivo di memoria da parte del browser)
 		Tempo fermo immagine in sec:		Tempo per cui il transito rimane nella parte alta dello schermo, prima che venga rimosso
-		N� richieste al secondo:		Quantit� di richieste inviate dal browser al server, al secondo (settare questo parametro alto rende pi� real-time la funzione, ma consuma di pi�)
+		N. richieste al secondo:		Quantità di richieste inviate dal browser al server, al secondo (settare questo parametro alto rende più real-time la funzione, ma consuma di più)
 		Allarme sonoro sorteggiatore:		Crea un allarme quando il sorteggiatore si attiva
-		Allarme sonoro sort. in fase di stop:	Crea un allarme nella 'Stop phase' (cio� quando si clicca su una riga qualsiasi della griglia dei transiti, bloccando l'applicazione)
+		Allarme sonoro sort. in fase di stop:	Crea un allarme nella 'Stop phase' (cioè quando si clicca su una riga qualsiasi della griglia dei transiti, bloccando l'applicazione)
 		Esegui animazione:			Crea un'animazione per ogni transito (da non abilitare se ci sono molte richieste al secondo)
 
 Uso:
-L�area  (1) (Barra di navigazione) contiene i bottoni di comando (la casetta porta alla home page, il simbolo di on/off riporta all�elenco delle postazioni, il simbolo della matita con chiave inglese ai parametri della postazione, il lucchetto consente di fermare immediatamente lo scarico e di bloccare la visualizzazione sulla foto attuale).
-L�area (2) (Dettaglio) contiene i dati di dettaglio della timbratura e ha un bordo (e la scritta inferiore) che identificano lo status della timbratura, i colori sono per il momento fissi: Rosso (transito rifiutato), Verde (transito accettato normale), Blu (transito accettato eccezionale), Azzurro (transito accettato flash).
-In presenza di transito con sorteggiatore non vengono cambiati i colori ma l�accadimento viene evidenziato dalla parola �sorteggiatore� dopo lo stato del transito.
-L�area (3) (Griglia transiti) contiene l�elenco degli ultimi n transiti (dove n � il parametro Numero transiti totali), la griglia cresce verso il basso e la selezione viene mantenuta sull�ultimo transito ricevuto. Il colore del testo denota lo stato del transito, in presenza di un transito con sorteggiatore il colore di fondo diviene rosa.
-Cliccando su una riga della griglia viene bloccato lo scarico delle timbrature e vengono portati nell�area di dettaglio i dati relativi al transito. Da notare che viene visualizzato un bordo superiore ed inferiore. Lo stato di blocco viene anche evidenziato dal simbolo di lucchetto aperto nell�area 1. A questo punto per sbloccare lo scarico � sufficiente cliccare nuovamente sulla riga selezionato oppure sul simbolo di lucchetto sbloccato. Cliccando invece su un�altra riga si mantiene lo stato di blocco ma vengono ovviamente visualizzati nell�area 2 i dati relativi alla riga cliccata. Da ultimo, durante la fase di funzionamento regolare, cliccando sul lucchetto nell�area 1 viene bloccato lo scarico selezionando automaticamente l�ultima riga inserita.
+L'area  (1) (Barra di navigazione) contiene i bottoni di comando (la casetta porta alla home page, il simbolo di on/off riporta all'elenco delle postazioni, il simbolo della matita con chiave inglese ai parametri della postazione, il lucchetto consente di fermare immediatamente lo scarico e di bloccare la visualizzazione sulla foto attuale).
+L'area (2) (Dettaglio) contiene i dati di dettaglio della timbratura e ha un bordo (e la scritta inferiore) che identificano lo status della timbratura, i colori sono per il momento fissi: Rosso (transito rifiutato), Verde (transito accettato normale), Blu (transito accettato eccezionale), Azzurro (transito accettato flash).
+In presenza di transito con sorteggiatore non vengono cambiati i colori ma l'accadimento viene evidenziato dalla parola "sorteggiatore" dopo lo stato del transito.
+L'area (3) (Griglia transiti) contiene l'elenco degli ultimi n transiti (dove n è il parametro Numero transiti totali), la griglia cresce verso il basso e la selezione viene mantenuta sull'ultimo transito ricevuto. Il colore del testo denota lo stato del transito, in presenza di un transito con sorteggiatore il colore di fondo diviene rosa.
+Cliccando su una riga della griglia viene bloccato lo scarico delle timbrature e vengono portati nell'area di dettaglio i dati relativi al transito. Da notare che viene visualizzato un bordo superiore ed inferiore. Lo stato di blocco viene anche evidenziato dal simbolo di lucchetto aperto nell'area 1. A questo punto per sbloccare lo scarico è sufficiente cliccare nuovamente sulla riga selezionato oppure sul simbolo di lucchetto sbloccato. Cliccando invece su un'altra riga si mantiene lo stato di blocco ma vengono ovviamente visualizzati nell'area 2 i dati relativi alla riga cliccata. Da ultimo, durante la fase di funzionamento regolare, cliccando sul lucchetto nell'area 1 viene bloccato lo scarico selezionando automaticamente l'ultima riga inserita.
 
 Autorizzazioni utente:
 (Ovviamente l'utente deve avere il varco selezionato nel suo Organigramma)
@@ -6546,9 +6547,9 @@ Autorizzazioni utente:
 
 (*) Per abilitare un segnale acustico in corrispondenza dei transiti:
 - MicronConfig > Varco > Testina > Configurazione testine > Testina # > Setup sorteggiatore > Frequenza: 100 (abilita ingresso/uscita)
-Non c'� bisogno di configurare un Out aggiuntivo per il sorteggiatore
+Non c'è bisogno di configurare un Out aggiuntivo per il sorteggiatore
 Azzeramento Memorie all'MXP per confermare la configurazione
-Su Micronpass Web, il transito crea un Bip-bip-bip da browser e il record corrispondente sulla griglia transiti diventa rosso: nel database la timbratura � etichettata con un T37SORTEGGIATO=1
+Su Micronpass Web, il transito crea un Bip-bip-bip da browser e il record corrispondente sulla griglia transiti diventa rosso: nel database la timbratura è etichettata con un T37SORTEGGIATO=1
 
 
 
@@ -9280,6 +9281,22 @@ MCT700 senza locbus:
 	- Parametri > HealthChecks > Mode = Controlli sanitari senza gestione documentale
 		
 	*Il controllo sanitario è applicato sempre solo nella direzione di ingresso*
+
+MXP450 con locbus:
+
+	Prerequisiti firmware
+		package >= 1.4.0
+		kDisplay >= 1.4.2w
+
+	Tablet Ganz:
+	- Parametri > HealthChecks > HDInDevice = 		% KX50 su cui è collegato il dispositivo
+	- Parametri > HealthChecks > HDInNum = 			% Numero dell'ingresso digitale del KX50
+	- Parametri > HealthChecks > HDMode = Rileva stato di buona salute (ingr.dig.)
+	- Parametri > HealthChecks > HDTime = 5
+	- Parametri > HealthChecks > Mode = Controlli sanitari senza gestione documentale
+		
+	*Il controllo sanitario è applicato sempre solo nella direzione di ingresso*
+
 
 ### Micronpass Web
 

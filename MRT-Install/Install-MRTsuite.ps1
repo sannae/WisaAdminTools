@@ -105,20 +105,25 @@ function Get-SystemRequirements {
 
     # Set execution policy on the shell session
 
-    Write-Host "Checking shell session execution policy"
+    Write-Verbose "Checking shell session execution policy"
     Set-Executionpolicy -ExecutionPolicy Unrestricted -Force -ErrorAction SilentlyContinue
     if ((Get-ExecutionPolicy) -ne "Unrestricted" ) {
-        Write-Host "The Execution Policies on the current session prevents this script from working!" -ForegroundColor Red; break
+        Write-Error "The Execution Policies on the current session prevents this script from working!" -ForegroundColor Red; break
     } else {
-        Write-Host "PowerShell execution policy: $(Get-ExecutionPolicy)" -ForegroundColor Red
+        Write-Error "PowerShell execution policy: $(Get-ExecutionPolicy)" -ForegroundColor Red
     }
+
+    # Check OS version
+
+    $OSversion = (Get-ComputerInfo).OSName
+    Write-Host "The OS version is $OSversion"
 
     # Check if user is Administrator
 
     Write-Host "Checking currently logged user's role"
     $principal = New-Object System.Security.Principal.WindowsPrincipal([System.Security.Principal.WindowsIdentity]::GetCurrent()) 
     if (!( $principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)) ) {
-        Write-Host "The currently logged user is not Administrator" -ForegroundColor Red; break
+        Write-Error "The currently logged user is not Administrator" -ForegroundColor Red; break
     } else {
         Write-Host "Current user role: Administrator"
     }
@@ -146,13 +151,12 @@ function Install-IISFeatures {
 
     # Check OS type 
 
-    $OSDetails = Get-ComputerInfo
-    $OSType = $OSDetails.WindowsInstallationType
+    $OSType = $(Get-ComputerInfo).WindowsInstallationType
     Write-Host "Current OS type: $OSType"
 
     # Check if features file is present
 
-    if(!(Test-Path "$InstallLocation\IIS_features.csv")) { 
+    if( !(Test-Path "$InstallLocation\IIS_features.csv") ) { 
         Write-Host "IIS feature list not found! Please copy it to root folder." -ForegroundColor Red ; break
     } 
 
@@ -322,8 +326,8 @@ function Install-CrystalReports {
 }
 
 Set-Location Packages
-Install-MRTSuite
 Install-CrystalReports
+Install-MRTSuite
 
 $Root = 'C:/MPW'
 

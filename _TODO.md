@@ -1,19 +1,23 @@
 # DONE
+UNIPD - Analisi per export indirizzi IP
+SOLUZIONE SRL PILA - Upgrade Micronpass 7.5.6xx e MicronService 7.5.6xx
+SIEMENS ANGELINI - Configurazione, attivazione, test termoscanner tornello Esterno1 portineria Ancona
+GRIMALDI - Consegna Grimaldi-003 (Report presenze mensili in Excel) 
+FERRERO - WRT2_35 - Sostituzione MX200 con MXP450
+ILLY CAFFÉ - Call per modifica software (commessa Illy-007)
 
 
 # DOING
-
+SIEMENS ANGELINI - Scaricare log da ProgramFiles\Siemens\EventServer\MicPlugin e girarli a Luca
+SIEMENS ANGELINI - Controlla Micronpass 7.5.6xx per report Anagrafica Dipendenti modificato
+RGI FRANCE
 
 # TO-DO
+SIEMENS BCC - Problema tornelli di LR
 IC SRL BAUSCH - Richieste modifica personalizzazione (report già rilasciato, configurazione da modificare)
-UNIPD - Analisi richiesta di G.Neve
-UNIPD ODL 44 (Simone Tiveron)
-SIEMENS ANGELINI - Scaricare log da ProgramFiles\Siemens\EventServer\MicPlugin e girarli a Luca
 [ripianificare-definire-orario] SIEMENS CHIESI - Stampante 
 TELEPERFORMANCE - Info per prev
-SOLUZIONE SRL PILA - Upgrade Micronpass 7.5.6xx e MicronService 7.5.6xx
 SIGIT MAROCCO - Copiare MicronBadge
-ARCA ASST SETTELAGHI - Richiesta di Giusti 
 ARCA ASST SETTELAGHI - Richiesta di Palladino
 ASST GAETANO PINI - Completare configurazione terminali
     n.1 MXP450 172.17.130.194
@@ -31,9 +35,7 @@ ISS S.MARINO - Concludere assistenza per video MP4
 SYNTEC - Analisi Az.Osp. Verona
 SKYLOGIC TORINO - Pass visitatori personalizzato (Skylogic-005/Software/pass)
 
-
 # DEV
-AAP_ASSTGARDA-001 - Query host per terminali mensa
 AAP_FLOW-020 - Implementazioni PPC & tornello mensa
 AAP-CHIESI_026 - Modifiche layout badge
 ## TechDebt
