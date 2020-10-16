@@ -1304,12 +1304,14 @@ Caratteristiche della funzionalit�:
 		Non deve coincidere con le ultime tre password salvate per quell'utente	
 	- Nuovi utenti: non � possibile creare utenti con un codice gi� utilizzato in passato
 
-(*) AUTENTICAZIONE DI WINDOWS
+(*) AUTENTICAZIONE DI WINDOWS / AUTENTICAZIONE INTEGRATA
 Prerequisiti:
 Autenticazione di Windows installata tra le funzionalit� IIS
 
-	- MPW\Micronpass > Propriet� > Sicurezza > inserire gli utenti desiderati
-	- C:\inetpub\wwwroot > Propriet� > Sicurezza > inserire gli utenti desiderati
+	Configurazione
+
+	- MPW\Micronpass > Proprietà > Sicurezza > inserire gli utenti desiderati
+	- C:\inetpub\wwwroot > Proprietà > Sicurezza > inserire gli utenti desiderati
 	- Micronpass Web > Utenti > Gestione Utenti > inserire ogni singolo utente, con lo stesso username inserito in Windows Authentication (deve essere un utente dipendente)
 		(*) La password inserita durante la creazione dell'utente, pur essendo un campo obbligatorio su Micronpass Web, verr� ignorata dal processo di autenticazione; � comunque un buon backup nel caso di recupero dell'utente
 	- Modificare il file MPW\Micronpass\web.config nella seguente maniera (vanno modificate le sezioni AUTENTICAZIONE e AUTORIZZAZIONE)

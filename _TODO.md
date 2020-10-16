@@ -1,18 +1,14 @@
 # DONE
-UNIPD - Analisi per export indirizzi IP
-SOLUZIONE SRL PILA - Upgrade Micronpass 7.5.6xx e MicronService 7.5.6xx
-SIEMENS ANGELINI - Configurazione, attivazione, test termoscanner tornello Esterno1 portineria Ancona
-GRIMALDI - Consegna Grimaldi-003 (Report presenze mensili in Excel) 
-FERRERO - WRT2_35 - Sostituzione MX200 con MXP450
-ILLY CAFFÉ - Call per modifica software (commessa Illy-007)
-
+LASCOR - Upgrade Micronpass Web e predisposizione nuovi terminali
+REALE SEGUROS - Configurazione terminali Valencia
+SIEMENS ANGELINI - Istruzioni per configurazione terminale MCT700
 
 # DOING
 SIEMENS ANGELINI - Scaricare log da ProgramFiles\Siemens\EventServer\MicPlugin e girarli a Luca
-SIEMENS ANGELINI - Controlla Micronpass 7.5.6xx per report Anagrafica Dipendenti modificato
-RGI FRANCE
+
 
 # TO-DO
+KUKA - Problema videocamera
 SIEMENS BCC - Problema tornelli di LR
 IC SRL BAUSCH - Richieste modifica personalizzazione (report già rilasciato, configurazione da modificare)
 [ripianificare-definire-orario] SIEMENS CHIESI - Stampante 
