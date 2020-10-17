@@ -1,3 +1,16 @@
+<#
+.Synopsis
+    Import stampings (equivalent to timbra_import.bat)
+.DESCRIPTION
+    The script renames the presenze.txt into pres.tmp and type its content into pres.txt, pres_storico.txt and pres2.txt.
+    Then it starts the process tr1.exe.
+.EXAMPLE
+    PS> ./Get-Stampings.ps1
+.NOTES
+    TODO: tr1.exe part not yet ready
+#>
+
+
 Set-Location 'C:\MPW\Timbrature'
 
 if ( !(Test-Path pres.txt) ) { # pres.txt non esiste
