@@ -4,14 +4,13 @@ REALE SEGUROS - Configurazione terminali Valencia
 SIEMENS ANGELINI - Istruzioni per configurazione terminale MCT700
 
 # DOING
-SIEMENS ANGELINI - Scaricare log da ProgramFiles\Siemens\EventServer\MicPlugin e girarli a Luca
 
 
 # TO-DO
-KUKA - Problema videocamera
-SIEMENS BCC - Problema tornelli di LR
+SIEMENS ANGELINI - Scaricare log da ProgramFiles\Siemens\EventServer\MicPlugin e girarli a Luca
+SIEMENS CAMPARI - Recupero timbrature
 IC SRL BAUSCH - Richieste modifica personalizzazione (report già rilasciato, configurazione da modificare)
-[ripianificare-definire-orario] SIEMENS CHIESI - Stampante 
+[ripianificare-definire-orario] SIEMENS CHIESI - Stampante
 TELEPERFORMANCE - Info per prev
 SIGIT MAROCCO - Copiare MicronBadge
 ARCA ASST SETTELAGHI - Richiesta di Palladino

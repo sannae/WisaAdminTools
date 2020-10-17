@@ -1,6 +1,6 @@
 # netstat looking for a specific process
 
-$process = 'chrome' # Insert here process name
+$InputProcess = 'chrome' # Insert here process name
 
 # Well-known ports
 
@@ -11,6 +11,11 @@ $GNet = '3001' ; $http = '80' ; $https = '443' ; $SqlServer = '1433' ; $SSH = '2
 $nets = netstat -ano | Select-String -Pattern 'TCP';
 
 $n = 0
+
+# Define Connections list
+
+$Connections = New-Object System.Collections.ArrayList
+$Connections = [System.Collections.ArrayList]::new()
 
 # Define the Connection array
 
@@ -29,9 +34,7 @@ $Connection = @(
         }
    )
 
-# Loop through the results
-
-foreach ($net in $nets)    {    
+foreach ( $net in $nets ) {
 
     # Split the row
 
@@ -54,7 +57,6 @@ foreach ($net in $nets)    {
 
     # Type of connection
 
-    if ( $Connection[$n].ProcessName -match $process) {
         if ( ($nar[2] -match $Gnet) -or ($nar[3] -match $Gnet) ) {
             $Connection[$n].ConnectionType = 'CONNESSIONE A TERMINALE BASE'
         } elseif ( ($nar[2] -match $http) -or ($nar[3] -match $http) ) {
@@ -70,10 +72,15 @@ foreach ($net in $nets)    {
         } else {
             $Connection[$n].ConnectionType = 'N/A'
         }
-    }
+
+    # Test
+    Write-Host $Connection
 
     # Add item to the list
-
-    $Connections.Add($Connection)
+     if ( $Connection[$n].ProcessName -match $InputProcess ) {
+        $Connections.Add($Connection)
+    }
 
 }
+
+$Connections | Format-Table # | Out-file -FilePath netstat.txt
