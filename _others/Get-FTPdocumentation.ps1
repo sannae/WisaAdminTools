@@ -8,6 +8,7 @@
     PS> ./Get-FTPdocumentation.ps1
 .NOTES
     It requires WinSCP installed in C:\Program Files(x86)\WinSCP\WinSCP.exe
+    Just edit $LocalPath
 #>
 
 
@@ -60,5 +61,5 @@ if ($winscpResult -eq 0) {
 # Track performance
 
 $Clock.Stop()
-Add-Content -Path "$LocalLog" -Value "Execution time approx. $($Clock.Elapsed.Minutes) minutes"
+Add-Content -Path "$LocalLog" -Value "Execution time approx. $($Clock.Elapsed.Minutes) minutes $($Clock.Elapsed.Seconds) seconds"
 

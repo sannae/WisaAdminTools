@@ -1,9 +1,22 @@
 # DONE
-LASCOR - Upgrade Micronpass Web e predisposizione nuovi terminali
-REALE SEGUROS - Configurazione terminali Valencia
-SIEMENS ANGELINI - Istruzioni per configurazione terminale MCT700
+LASCOR - Completamento attività                 120'
+ITALIANA MILANO - Riavviato servizio btService presenze Milano, in errore da 16-10-2020 14:18       30'
+ITALIANA UDINE - Riavviato servizio btService accesso Udine                             45'
+ITALIANA UDINE - Chiarimenti su report presenti e transiti accesso Udine            30'        
+SIEMENS NOVARTIS - Questionario                                         60'
+SIEMENS NOVARTIS - Assistenza su terminale non funzionante Ed.6 Mezzanino       60'
+REALE MUTUA TORINO - Attivati log su termoscanner Bertola v.S.Maria     30'
+
 
 # DOING
+REALE MUTUA
+ARCA ASST GARDA - Connessione Teams e varco non funzionante
+ENVIGO
+TELEPERFORMANCE
+TECHNOVAA
+UNIPD - MicronPlate
+BAUSCH & LOMB
+GRIMALDI
 
 
 # TO-DO
