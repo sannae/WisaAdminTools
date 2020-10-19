@@ -6,6 +6,7 @@ ITALIANA UDINE - Chiarimenti su report presenti e transiti accesso Udine        
 SIEMENS NOVARTIS - Questionario                                         60'
 SIEMENS NOVARTIS - Assistenza su terminale non funzionante Ed.6 Mezzanino       60'
 REALE MUTUA TORINO - Attivati log su termoscanner Bertola v.S.Maria     30'
+REALE SEGUROS - Configurazione terminali La Coruna          120'
 
 
 # DOING
