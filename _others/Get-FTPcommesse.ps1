@@ -30,7 +30,7 @@ $LocalLog = "$RootPath\WinSCP_commesse.log"
 
 # LocalPath (CASE SENSITIVE) : cartella temporanea in cui verranno salvati tutti i documenti prima di essere filtrati
 
-New-Item -Path . -Name "temp" -ItemType "Directory"
+New-Item -Path $RootPath -Name "temp" -ItemType "Directory"
 $LocalPath = "$RootPath\temp"
 
 # Open connection and execute commands: execution is timed
@@ -51,13 +51,21 @@ if ( Test-Path "$RootPath\WinSCP_commesse.log" ) {
 
 # Spostare i file ricavati da LocalPath a RootPath, rimuovendo tutte le cartelle vuote e le commesse non chiuse
 
-Foreach ( $file in $(Get-ChildItem -Recurse *.doc, *.pdf) ) {
+Foreach ( $file in $(Get-ChildItem -Path "$LocalPath\*.doc", "$LocalPath\*.pdf" -Recurse) ) {
   Move-Item -Path $file -Destination $RootPath
 }
 Remove-Item -Recurse $LocalPath
 if ( Test-Path -Path "$RootPath\VR_Versione_rilasciata.doc" ) {
   Remove-Item -Path "$RootPath\VR_Versione_rilasciata.doc"
 }
+
+<# TODO: 
+Foreach ...
+
+  $NewName = $file.BaseName + " - " + $(Get-Content $file | Select-String -pattern "Progetto: ").Line.Split(":")[1] + ".doc"
+  Rename-Item -Path "$RootPath\$file" -NewName $NewName
+
+#>
 
 # Exit code
 
