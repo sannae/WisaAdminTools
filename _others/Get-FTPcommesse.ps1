@@ -3,7 +3,9 @@
     Automatically connects to Bitech's server and download VR (Released Version) from a specific order.
 .DESCRIPTION
     The script uses WinSCP CLI to connect to Bitech's SFTP server and downloads the listed documents.
-    The $Customer variable contains the order's end customer.
+    The $AllegedCustomer is the approximate description of the customer, used to search the corresponding order.
+    The script looks for $AllegedCustomer in the MC_COMMESSE folder
+    The $RealCustomer is the one used to download the files.
     The documents must match the VR_ (Released Version) prefix and can be .doc and .pdf.
     The destination path is customizable via the $RootPath variable.
     All the empty documents and folders are then removed.
@@ -16,35 +18,37 @@
     Just edit $Customer and $RootPath.
 #>
 
-# TODO: inserire una ricerca delle commesse per descrizione
-<#
-$Customer = 'Reale'
-$RemotePath = '""/MC_Commesse/CO ' + $Customer + '"*"'
+# Ricerca commesse per descrizione
+
+Write-host "Questo script effettua il download dei documenti VR contenuti in tutte le commesse di un determinato cliente."
+$AllegedCustomer = Read-Host -Prompt "Cliente cercato"
+$AllegedRemotePath = '""/MC_Commesse/CO ' + $AllegedCustomer + '"*"'
+
 Write-Host "Sono state trovate le seguenti commesse: "
 & "C:\Program Files (x86)\WinSCP\WinSCP.com" `
   /log="$LocalLog" /ini=nul `
   /command `
     "open ftpes://sanna:edo89%2B0304@79.11.21.211/ -certificate=`"`"3f:3f:9f:7a:49:0e:4d:80:12:69:af:70:cb:5c:72:a4:e7:3a:eb:f1`"`"" `
-    "dir $RemotePath" `
+    "ls $AllegedRemotePath" `
     "close" `
     "exit" `
-    | Out-Host
-#>
+    | Select-String -pattern "CO "
 
 # Remote Path (CASE SENSITIVE)
 
-$Customer = 'RealeS' # Inserire il nome esatto della commessa!
-
-$RemotePath = '""/MC_Commesse/CO ' + $Customer + '""'   # triple quotes are required for the script to consider the spaces
+Write-Host "`n"
+$RealCustomer = Read-Host -Prompt "Digitare di seguito il cliente di cui scaricare le commesse (ATTENZIONE: inserire la dicitura PRECISA del cliente, la ricerca sarà case-sensitive)"
+$RemotePath = '""/MC_Commesse/CO ' + $RealCustomer + '""'
 
 # RootPath: dove si vogliono salvare i documenti finali; viene anche creato un log
 
-$RootPath = 'C:\_TEMP'
+$RootPath = Read-Host -Prompt "Digitare il percorso completo in cui salvare i file"
 $LocalLog = "$RootPath\WinSCP_commesse.log"
+Write-Host "I file di commessa verranno scaricati in $RootPath . È disponibile un log della connessione FTP in $LocalLog"
 
 # LocalPath (CASE SENSITIVE) : cartella temporanea in cui verranno salvati tutti i documenti prima di essere filtrati
 
-New-Item -Path $RootPath -Name "temp" -ItemType "Directory"
+New-Item -Path $RootPath -Name "temp" -ItemType "Directory" | Out-Null
 $LocalPath = "$RootPath\temp"
 
 # Open connection and execute commands: execution is timed
@@ -61,7 +65,7 @@ if ( Test-Path "$RootPath\WinSCP_commesse.log" ) {
     "open ftpes://sanna:edo89%2B0304@79.11.21.211/ -certificate=`"`"3f:3f:9f:7a:49:0e:4d:80:12:69:af:70:cb:5c:72:a4:e7:3a:eb:f1`"`"" `
     "cd $RemotePath" `
     "get -filemask=VR_*.doc $RemotePath $LocalPath" `
-    "exit"
+    "exit" | Out-Null
 
 # Spostare i file ricavati da LocalPath a RootPath, rimuovendo tutte le cartelle vuote e le commesse non chiuse
 
@@ -74,10 +78,16 @@ if ( Test-Path -Path "$RootPath\VR_Versione_rilasciata.doc" ) {
 }
 
 <# TODO: 
-Foreach ...
 
-  $NewName = $file.BaseName + " - " + $(Get-Content $file | Select-String -pattern "Progetto: ").Line.Split(":")[1] + ".doc"
-  Rename-Item -Path "$RootPath\$file" -NewName $NewName
+Foreach ( $file in $(Get-ChildItem -Path "$RootPath\*.doc", "$RootPath\*.pdf") ) {
+
+  $OldName = $file.FullName
+  $OldName
+  $NewName = $file.BaseName + ' - ' + $(Get-Content $file | Select-String -pattern "Progetto: ").Line.Split(": ")[1] + '.doc'
+  $NewName
+  Rename-Item -Path ($OldName) -NewName ($NewName)
+
+}
 
 #>
 
@@ -86,8 +96,10 @@ Foreach ...
 $winscpResult = $LastExitCode
 if ($winscpResult -eq 0) {
   Add-Content -Path "$LocalLog" -Value "Download completed with success"
+  Write-Host "Tutti i file scaricati con successo!"
 } else {
   Add-Content -Path "$LocalLog" -Value " !!! Download NOT completed !!! "
+  Write-Host "C'è stato qualche problema con il download, controllare il log"
 }
 
 # Track performance

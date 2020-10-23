@@ -4,22 +4,23 @@ REALE MUTUA - Bollatrice via Traiano            30'
 [all-day] REALE MUTUA - Madrid Principe de Vergara - Attivare anche il Checkpoint - Problema lettore PCR300     300'
 OPE OTTANI già caricata
 
-REALE MUTUA - Tentativo di installazione lettore USB        90'
-FERRERO - Allineamento ticket Ottobre 2020          30'
-SIEMENS - Analisi vulnerabilità segnalate       40'
-
+REALE MUTUA - Tentativo di installazione lettore USB, da ripianificare in accordo con il Sig. Bobba
+FERRERO - Allineamento ticket Ottobre 2020 inviato a Marcella Mangano
+SIEMENS - Analisi vulnerabilità segnalate
+ETHOS ENERGY - Migrazione applicativi su nuovo server
+ILLY - Risposta 
+SIGIT - Risposta
+DUAL SANITALY - Assistenza 
+FERRERO - 4 chiamate
 
 
 # DOING
-ILLY
-SABELT
-SPERLARI
-SIGIT
 
+SABELT - Posticipato a lunedì pomeriggio per indisponibilità del riferimento (+39 011 6477911 Cristina Conti)
+COM. DI S.MAURO - Pirani non disponibile per test terminali GPRS, si può riprovare lunedì pomeriggio
+SPERLARI 16:00
 FERRERO
 GRIMALDI
-DUAL SANITALY
-COM. DI S.MAURO
 
 
 # TO-DO
@@ -28,8 +29,6 @@ RGI FRANCIA
 AURICCHIO
 UNIPD - MicronPlate
 BAUSCH & LOMB
-FERRERO
-GRIMALDI
 JABIL
 SIEMENS ANGELINI - Scaricare log da ProgramFiles\Siemens\EventServer\MicPlugin e girarli a Luca
 IC SRL BAUSCH - Richieste modifica personalizzazione (report già rilasciato, configurazione da modificare)

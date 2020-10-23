@@ -219,7 +219,7 @@ Espandere il volume del VDI su VM:
 	MAIL AZIENDALE:
 			Server:		giove.mailmox.it
 		MICRONTEL:
-			account:	edoardo.sanna@microntel.com
+			account:	edoardo.sanna@microntel.local
 			password:	EdS44MEs
 			URl web mail:	mail.microntel.com
 		ADP:	
