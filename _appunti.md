@@ -199,7 +199,8 @@ Espandere il volume del VDI su VM:
 			YC7DK-G2NP3-2QQC3-J6H88-GVGXT
 
 			Office Professional 2016
-			Account: SANNA
+			Account: SANNA (account Microsoft: edoardo.sanna@microntel.com)
+				È possibile scaricare il file di setup di Office direttamente dalla pagina account Microsoft > Abbonamenti
 			ID: 269-16805
 			https://setup.office.com/?token=BVqTFwe%2bc%2bW4c2znqMrNGru5noDiPNAjJUK4st%2fRwCZIqr1xMtjlbbHC6aDggDnS1g2s0JP23nW56gNddSA2B%2fwYpwVPR7XtlivKBfDY7d7eUR7Jm1alzgnBOdVMKBJvOjOtOygt3oW%2bxIOIYwa8HVNPGo%2f7%2bvOHsYdW5t%2fNs2DWgpbEPFkcO78w%2bR2YIaNaHAu%2ferZcvMVhaitzDQkDNDvQdb%2bjrTopX8rJHojpUTeXh2SE4wpLEXtASrDaRA2vDqfl%2bRQBfD5CP6XwGkqicYTk8j6Ic%2fZO7k9B4GzUjxNnonRgipoQWxqI17%2bEfgNUgIRVhOJdj7CvXpn1FcS1qQ%3d%3d&ctid=283215fa-b117-46ac-a3ea-424e9fea2488
 			8T2JH-NCYYP-G8QPB-XW83X-66M2F
