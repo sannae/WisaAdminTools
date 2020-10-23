@@ -1,5 +1,9 @@
 # DA ORDINARE/FINIRE: 
 
+* Eseguire un comando come altro utente
+runas /env /user:UTENTE@DOMINIO comando
+	esempio: runas /env /user:edoardo.sanna@microntel.local devmgmt.msc
+
 *Al fine di gestire meglio le richieste di assistenza, ricordo di scrivere sempre per eventuali necessit� mettendo il collega Vincenzo Mancuso (vincenzo.mancuso@microntel.com) in copia, in quanto il tecnico di riferimento potrebbe essere non disponibile o fuori ufficio al momento della segnalazione.
 
 *Indentazione automatica PSPAD:
@@ -193,6 +197,12 @@ Espandere il volume del VDI su VM:
 
 			Office 2013
 			YC7DK-G2NP3-2QQC3-J6H88-GVGXT
+
+			Office Professional 2016
+			Account: SANNA
+			ID: 269-16805
+			https://setup.office.com/?token=BVqTFwe%2bc%2bW4c2znqMrNGru5noDiPNAjJUK4st%2fRwCZIqr1xMtjlbbHC6aDggDnS1g2s0JP23nW56gNddSA2B%2fwYpwVPR7XtlivKBfDY7d7eUR7Jm1alzgnBOdVMKBJvOjOtOygt3oW%2bxIOIYwa8HVNPGo%2f7%2bvOHsYdW5t%2fNs2DWgpbEPFkcO78w%2bR2YIaNaHAu%2ferZcvMVhaitzDQkDNDvQdb%2bjrTopX8rJHojpUTeXh2SE4wpLEXtASrDaRA2vDqfl%2bRQBfD5CP6XwGkqicYTk8j6Ic%2fZO7k9B4GzUjxNnonRgipoQWxqI17%2bEfgNUgIRVhOJdj7CvXpn1FcS1qQ%3d%3d&ctid=283215fa-b117-46ac-a3ea-424e9fea2488
+			8T2JH-NCYYP-G8QPB-XW83X-66M2F
 
 	WiFi aziendale:
 		SSID/password:		MICRONTEL-Company/(autenticazione di dominio MICRONTEL)		% Per PC in dominio Microntel, non richiede autenticazione perch� la ricava dall'autenticazione di dominio - solo per utenti in AD
@@ -5825,7 +5835,7 @@ Matricola: doppio click per poter scegliere la matricola tra quelli esistenti ne
 GENERARE LA SELECT
 -----------------------------------------
 1) Strumenti > GENERA LISTA PERSONALE ABILITATO
-	- Si pu� filtrare la singola matricola cui apportare le modifiche
+	- Si può filtrare la singola matricola cui apportare le modifiche
 
 	KTACCESS01	Flag di inserimento
 	KTACCESS02	Inserimento badge
@@ -8989,6 +8999,12 @@ Configurazione Hardware:
 - MicronConfig > Tabelle > Tecnologie Testine > [aggiungere l
 ******************************
 
+### Note finali
+
+* Verifica versione PHP
+	da browser:		https://X.X.X.X/phpinfo.php
+
+
 
 # SMARTHOTEL
 ============================================================================================================================================
@@ -9449,8 +9465,10 @@ Procedure aggiuntive CUSTOM:
 
   -->
 
+- Il terminale la cui timbratura va validata DEVE avere la QY99 configurata
+- Se funzionante, il plugin scrive il log Checkpoint.log nella cartella MPW/ServicePlugins con query eseguita ed elapsed time associato ad ogni controllo
 - L'esito restituito dal plugin (esito=8, status=4 "Controllo plugin non superato", evento di tipo Generico) va a completare la timbratura nella T116ACCBUFFER
-- La descrizione dell'evento risiede nel parametro 
+
 
 A. Normale varco di controllo accessi
 	HEALTHCHECKS>Mode=Disabilitato
@@ -9472,6 +9490,15 @@ C. Mode=Controlli sanitari integrati con gestione documentale
 		HEALTHCHECKS>HDInNum=
 		HDLevel= Normal(High)/Inverted
 		HEALTHCHECKS>HDTime=
+
+!!!
+Il terminali 
+!!!
+
+Evitare commenti dentro alla sezione
+
+
+
 
 ### Tablet GANZ
 

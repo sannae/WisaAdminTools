@@ -1,23 +1,36 @@
 # DONE
-[8:30-11:30] INFRAGAS - Migrazione e upgrade MPW
-SIEMENS ROMA - Analisi su segnalazione vulnerabilità per MX200
-TECHNOSYSTEM - Info per password admin su Micronpass            5'
+REALE MUTUA - Problema termoscanner             60'
+REALE MUTUA - Bollatrice via Traiano            30'
+[all-day] REALE MUTUA - Madrid Principe de Vergara - Attivare anche il Checkpoint - Problema lettore PCR300     300'
+OPE OTTANI già caricata
+
+REALE MUTUA - Tentativo di installazione lettore USB        90'
+FERRERO - Allineamento ticket Ottobre 2020          30'
+SIEMENS - Analisi vulnerabilità segnalate       40'
+
 
 
 # DOING
-[14:30-15:30] KSB
-[MANMANO] REALE MUTUA
-SIEMENS - Analisi vulnerabilità segnalate
-RGI FRANCIA
-TELEPERFORMANCE - Info per prev
-UNIPD - MicronPlate
-BAUSCH & LOMB
-GRIMALDI
-AURICCHIO
 ILLY
+SABELT
+SPERLARI
+SIGIT
+
+FERRERO
+GRIMALDI
+DUAL SANITALY
+COM. DI S.MAURO
 
 
 # TO-DO
+TELEPERFORMANCE - Info per prev
+RGI FRANCIA
+AURICCHIO
+UNIPD - MicronPlate
+BAUSCH & LOMB
+FERRERO
+GRIMALDI
+JABIL
 SIEMENS ANGELINI - Scaricare log da ProgramFiles\Siemens\EventServer\MicPlugin e girarli a Luca
 IC SRL BAUSCH - Richieste modifica personalizzazione (report già rilasciato, configurazione da modificare)
 SIGIT MAROCCO - Copiare MicronBadge

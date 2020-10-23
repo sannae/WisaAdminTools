@@ -16,6 +16,7 @@
     Just edit $Customer and $RootPath.
 #>
 
+# TODO: inserire una ricerca delle commesse per descrizione
 
 # Remote Path (CASE SENSITIVE)
 
