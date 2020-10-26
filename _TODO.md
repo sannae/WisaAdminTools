@@ -1,24 +1,23 @@
 # DONE
-REALE MUTUA - Problema termoscanner             60'
-REALE MUTUA - Bollatrice via Traiano            30'
-[all-day] REALE MUTUA - Madrid Principe de Vergara - Attivare anche il Checkpoint - Problema lettore PCR300     300'
-OPE OTTANI già caricata
-
-REALE MUTUA - Tentativo di installazione lettore USB, da ripianificare in accordo con il Sig. Bobba
-FERRERO - Allineamento ticket Ottobre 2020 inviato a Marcella Mangano
-SIEMENS - Analisi vulnerabilità segnalate
-ETHOS ENERGY - Migrazione applicativi su nuovo server
-ILLY - Risposta 
-SIGIT - Risposta
-DUAL SANITALY - Assistenza 
-FERRERO - 4 chiamate
+ASST GARDA - Formazione
 
 
 # DOING
+BISCOPAN
+    MCT700 ID=Porta=6610 p1.3.6 
+    manutenzione@biscopan.it Stefano 340.2508388
+    <!-- Stringa di connessione al database SQL Server -->
+    <add key="SqlStr" value="Provider=SQLOLEDB.1;Persist Security Info=False;User ID=sa;Password=M1cr0nt3l!;Initial Catalog=MRT_BISCOPAN_WKI;Data Source=SRV01-SQL;Use Procedure for Prepare=1;Auto Translate=True;Packet Size=4096;Workstation ID=SRV01-APPS;Use Encryption for Data=False;Tag with column collation when possible=False"></add>
+ 
 
-SABELT - Posticipato a lunedì pomeriggio per indisponibilità del riferimento (+39 011 6477911 Cristina Conti)
+LASCOR - Assistenza per timbrature
+SPERLARI - Informazioni su Mpassw e assistenza per badge non funzionante - 3456527102 Sig.ra Balatti
+    Michele Merlini - michele.merlini@sperlari.it 0372.482406
+    1 600 694 288
+    9884
+2I RETE GAS - De Micheli
+
 COM. DI S.MAURO - Pirani non disponibile per test terminali GPRS, si può riprovare lunedì pomeriggio
-SPERLARI 16:00
 FERRERO
 GRIMALDI
 
@@ -28,21 +27,9 @@ TELEPERFORMANCE - Info per prev
 RGI FRANCIA
 AURICCHIO
 UNIPD - MicronPlate
-BAUSCH & LOMB
-JABIL
 SIEMENS ANGELINI - Scaricare log da ProgramFiles\Siemens\EventServer\MicPlugin e girarli a Luca
-IC SRL BAUSCH - Richieste modifica personalizzazione (report già rilasciato, configurazione da modificare)
-SIGIT MAROCCO - Copiare MicronBadge
-ASST GAETANO PINI - Completare configurazione terminali
-    n.1 MXP450 172.17.130.194
-        KK1 IO1     MEDICINA FISICA E RIABILITAZIONE - BLOCCO A - SX
-        KK2 IO2     MEDICINA FISICA E RIABILITAZIONE - BLOCCO A - DX
-        KK3 IO3     MEDICINA FISICA E RIABILITAZIONE - BLOCCO B - SX
-        KK4 IO4     MEDICINA FISICA E RIABILITAZIONE - BLOCCO B - DX
-    tasto F3,  da “Ambulatori Aperti” a “Area A Pagamento”.
-UNIPD - ODL41 - Assistenza per lettore ACR122U (S.Tiveron)
+IC SRL BAUSCH - Richieste modifica personalizzazione (report già rilasciato, configurazione da modificare)UNIPD - ODL41 - Assistenza per lettore ACR122U (S.Tiveron)
 FREUDENBERG - Rilascio Freud-005
-
 DEWAVE
 UNIPD - Videocamera 192.168.129.157 varco sbarra 
 ISS S.MARINO - Concludere assistenza per video MP4 
@@ -51,6 +38,4 @@ SKYLOGIC TORINO - Pass visitatori personalizzato (Skylogic-005/Software/pass)
 
 # DEV
 AAP_FLOW-020 - Implementazioni PPC & tornello mensa
-AAP-CHIESI_026 - Modifiche layout badge
-## TechDebt
-ISEO - Corso di aggiornamento per troubleshooting di basso livello su Atlas (creazione di impianto multi-slave, diagnostica su PuTTY e su web, uso di DebugClient)
+
