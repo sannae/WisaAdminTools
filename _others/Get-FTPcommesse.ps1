@@ -9,6 +9,7 @@
     The documents must match the VR_ (Released Version) prefix and can be .doc and .pdf.
     The destination path is customizable via the $RootPath variable.
     All the empty documents and folders are then removed.
+    Finally, the documents are converted from DOC/DOCX into PDF.
     The performance of the script is tracked via C# stopwatch class and logged.
 .EXAMPLE
     PS> ./Get-FTPcommesse.ps1
@@ -65,7 +66,7 @@ if ( Test-Path "$RootPath\WinSCP_commesse.log" ) {
     "open ftpes://sanna:edo89%2B0304@79.11.21.211/ -certificate=`"`"3f:3f:9f:7a:49:0e:4d:80:12:69:af:70:cb:5c:72:a4:e7:3a:eb:f1`"`"" `
     "cd $RemotePath" `
     "get -filemask=VR_*.doc $RemotePath $LocalPath" `
-    "exit" | Out-Null
+    "exit"
 
 # Spostare i file ricavati da LocalPath a RootPath, rimuovendo tutte le cartelle vuote e le commesse non chiuse
 
@@ -77,7 +78,7 @@ if ( Test-Path -Path "$RootPath\VR_Versione_rilasciata.doc" ) {
   Remove-Item -Path "$RootPath\VR_Versione_rilasciata.doc"
 }
 
-<# TODO: 
+<# TODO: Aggiungere la descrizione del progetto al filename, leggendolo dal contenuto del file con Get-Content
 
 Foreach ( $file in $(Get-ChildItem -Path "$RootPath\*.doc", "$RootPath\*.pdf") ) {
 
@@ -102,7 +103,31 @@ if ($winscpResult -eq 0) {
   Write-Host "C'è stato qualche problema con il download, controllare il log"
 }
 
+# Convert to PDF (thanks to Patrick Gruenauer, https://sid-500.com )
+
+Write-Host "Adesso li converto tutti in PDF"
+
+$word = New-Object -ComObject word.application 
+$FormatPDF = 17
+$word.visible = $false 
+$types = '*.docx','*.doc'
+  
+$files = Get-ChildItem -Path $RootPath -Include $Types -Recurse -ErrorAction Stop
+      
+foreach ($f in $files) {
+  $path = $RootPath + '\' + $f.Name.Substring(0,($f.Name.LastIndexOf('.')))
+  $doc = $word.documents.open($f.FullName) 
+  $doc.saveas($path,$FormatPDF) 
+  $doc.close()
+}
+
+Start-Sleep -Seconds 2 
+$word.Quit()
+
+Remove-item -Path "$RootPath\*.doc","$RootPath\*.docx"  
+
 # Track performance
 
 $Clock.Stop()
 Add-Content -Path "$LocalLog" -Value "Execution time approx. $($Clock.Elapsed.Minutes) minutes $($Clock.Elapsed.Seconds) seconds"
+

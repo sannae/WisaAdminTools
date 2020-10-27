@@ -3,3 +3,7 @@ MRT-install/Modules/
 
 # Installation packages
 MRT-install/Packages/
+
+# Personal files
+README.md
+_TODO.md
