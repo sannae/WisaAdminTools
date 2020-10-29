@@ -1,5 +1,5 @@
 <#
-.Synopsis
+.SYNOPSIS
     Automatically connects to Bitech's server and download VR (Released Version) from a specific order.
 .DESCRIPTION
     The script uses WinSCP CLI to connect to Bitech's SFTP server and downloads the listed documents.
@@ -46,6 +46,7 @@ $RemotePath = '""/MC_Commesse/CO ' + $RealCustomer + '""'
 $RootPath = Read-Host -Prompt "Digitare il percorso completo in cui salvare i file"
 $LocalLog = "$RootPath\WinSCP_commesse.log"
 Write-Host "I file di commessa verranno scaricati in $RootPath . È disponibile un log della connessione FTP in $LocalLog"
+Write-Host '`'
 
 # LocalPath (CASE SENSITIVE) : cartella temporanea in cui verranno salvati tutti i documenti prima di essere filtrati
 
@@ -66,6 +67,7 @@ if ( Test-Path "$RootPath\WinSCP_commesse.log" ) {
     "open ftpes://sanna:edo89%2B0304@79.11.21.211/ -certificate=`"`"3f:3f:9f:7a:49:0e:4d:80:12:69:af:70:cb:5c:72:a4:e7:3a:eb:f1`"`"" `
     "cd $RemotePath" `
     "get -filemask=VR_*.doc $RemotePath $LocalPath" `
+    "get -filemask=MT_*.doc $RemotePath $LocalPath" `
     "exit"
 
 # Spostare i file ricavati da LocalPath a RootPath, rimuovendo tutte le cartelle vuote e le commesse non chiuse
@@ -105,8 +107,7 @@ if ($winscpResult -eq 0) {
 
 # Convert to PDF (thanks to Patrick Gruenauer, https://sid-500.com )
 
-Write-Host "Adesso li converto tutti in PDF"
-
+Write-Host "Inizio conversione file DOC in PDF"
 $word = New-Object -ComObject word.application 
 $FormatPDF = 17
 $word.visible = $false 
@@ -124,10 +125,13 @@ foreach ($f in $files) {
 Start-Sleep -Seconds 2 
 $word.Quit()
 
-Remove-item -Path "$RootPath\*.doc","$RootPath\*.docx"  
+Remove-item -Path "$RootPath\*.doc","$RootPath\*.docx"
+Write-Host "Fine conversione file DOC in PDF"
 
 # Track performance
 
 $Clock.Stop()
+
 Add-Content -Path "$LocalLog" -Value "Execution time approx. $($Clock.Elapsed.Minutes) minutes $($Clock.Elapsed.Seconds) seconds"
+Write-Host "Estrazione durata circa $($Clock.Elapsed.Minutes) minuti"
 

@@ -1,25 +1,26 @@
 # DONE
-ASST GARDA - Formazione
+SIEMENS NOVARTIS - Assistenza per Ed.6 P.Rialzato       60'
+GRIMALDI - Attivazione controllo integrità su Mimp e recupero tabelle utenti da backup  60'
 
 
 # DOING
-SIEMENS CHIESI - Conferma per il pomeriggio
-REALE BOBBA - Conferma per il pomeriggio, se no disponibilità
 
-LASCOR - Assistenza per timbrature
+MGH ITALFARMACO - 
+
+SPERLARI
+ISRI
+YAMAHA
+
 GRIMALDI
-
-[mattino] IT CONSULTING poi Giancarlo
-AURICCHIO
-
 2I RETE GAS - De Micheli
-
-COM. DI S.MAURO - Pirani non disponibile per test terminali GPRS, si può riprovare lunedì pomeriggio
+AURICCHIO
 FERRERO
 
 
-
 # TO-DO
+KSB - Assistenza
+SIEMENS CHIESI - Esportazione dati
+ACOA - Terminale GPRS non gestisce APB
 TELEPERFORMANCE - Info per prev
 RGI FRANCIA
 UNIPD - MicronPlate
