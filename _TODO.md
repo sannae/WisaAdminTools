@@ -1,17 +1,11 @@
 # DONE
 SIEMENS NOVARTIS - Assistenza per Ed.6 P.Rialzato       60'
 GRIMALDI - Attivazione controllo integrità su Mimp e recupero tabelle utenti da backup  60'
-
+ISRI - Analisi veloce di aggiornamento per problema reports     10'
 
 # DOING
+TELEPERFORMANCE
 
-MGH ITALFARMACO - 
-
-SPERLARI
-ISRI
-YAMAHA
-
-GRIMALDI
 2I RETE GAS - De Micheli
 AURICCHIO
 FERRERO
