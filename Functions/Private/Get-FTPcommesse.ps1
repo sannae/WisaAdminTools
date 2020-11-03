@@ -46,7 +46,6 @@ $RemotePath = '""/MC_Commesse/CO ' + $RealCustomer + '""'
 $RootPath = Read-Host -Prompt "Digitare il percorso completo in cui salvare i file"
 $LocalLog = "$RootPath\WinSCP_commesse.log"
 Write-Host "I file di commessa verranno scaricati in $RootPath . È disponibile un log della connessione FTP in $LocalLog"
-Write-Host '`'
 
 # LocalPath (CASE SENSITIVE) : cartella temporanea in cui verranno salvati tutti i documenti prima di essere filtrati
 

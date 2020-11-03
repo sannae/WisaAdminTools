@@ -35,7 +35,7 @@ The following requirements involve the standard components of the Micronpass App
 * TCP Port 23 (Telnet)
 * TCP Port 22 (SSH/SFTP)
 * TCP Port 80/443 (HTTP/HTTPS)
-* TCP Port 1433 (default SQL Server) [in case of separated DB server]
-* TCP Port 1521 (default Oracle) [in case of separated DB server]
+* TCP Port 1433 (default SQL Server) (in case of separated DB server)
+* TCP Port 1521 (default Oracle) (in case of separated DB server)
  
 
