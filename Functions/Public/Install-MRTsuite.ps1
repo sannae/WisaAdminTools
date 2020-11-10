@@ -145,62 +145,6 @@ Get-SystemRequirements
 
 # Install IIS features
 
-function Install-IISFeatures {
-
-    [CmdletBinding()] param ()
-
-    # Check OS type 
-
-    $OSType = $(Get-ComputerInfo).WindowsInstallationType
-    Write-Host "Current OS type: $OSType"
-
-    # Check if features file is present
-
-    if( !(Test-Path "$InstallLocation\IIS_features.csv") ) { 
-        Write-Host "IIS feature list not found! Please copy it to root folder." -ForegroundColor Red ; break
-    } 
-
-    # Load IIS Features from CSV file
-
-    $IISFeaturesList = @(Import-CSV "$InstallLocation\IIS_features.csv" -Delimiter ';' -header 'FeatureName','Client','Server').$OSType
-
-    # Install on workstation (DISM installation module)
-
-    if ($OSType -eq "Client"){
-        foreach ($feature in $IISFeaturesList){
-            Enable-WindowsOptionalFeature -All -Online -FeatureName $feature | Out-Null 
-            if (!(Get-WindowsOptionalFeature -Online -FeatureName $feature).State -eq "Enabled"){
-                Write-Host "Something went wrong installing $feature, please check again!" -ForegroundColor Red ; break
-            } 
-        }
-    }
-
-    # Install on server (ServerManager installation module)
-
-    elseif ($OSType -eq "Server"){
-        foreach ($feature in $IISFeaturesList){
-            Install-WindowsFeature -Name $feature  | Out-Null
-            if (!(Get-WindowsFeature -name $feature).Installed -eq $True){
-                Write-Host "Something went wrong installing $feature, please check again!" -ForegroundColor Red ; break
-            }
-        }
-    }
-
-    # Reset IIS
-
-    Invoke-Command -ScriptBlock {iisreset} | Out-Null
-
-    # Check IIS Version
-
-    if (Get-ChildItem 'HKLM:\SOFTWARE\Microsoft' | Where-Object {$_.Name -match 'InetStp'}) {
-        $IISVersion = (Get-ItemProperty HKLM:\SOFTWARE\Microsoft\InetStp\).MajorVersion
-        Write-Host "IIS $IISVersion successfully installed!"
-    } else {
-        Write-Host "IIS not fully installed, please check again" -ForegroundColor Red
-    }
-
-}
-
 Install-IISFeatures
 
 # Install SQL Server

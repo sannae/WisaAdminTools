@@ -3,6 +3,8 @@ GOAL: Raccogli il contenuto di più log dalla cartella di MicronService, filtran
 
 Il formato data-ora è dd-MM-yyyy hh:mm:ss:fff e vale per tutti i file Micronservice\*.log
 
+## TODO: Da finire di testare
+
 #>
 
 Clear-Host
@@ -29,7 +31,7 @@ New-Item -Path "$RootPath\temp.log" | Out-null
 $TempOutFile = "$RootPath\temp.log"
 $OutFile = "$RootPath\MRTEventLog.log"
 
-#using max and min value for the example so all correct dates will comply
+# using max and min value for the example so all correct dates will comply
 
 $lowerLimit = Get-Date -Date '16-05-2018 00:00:00' # <-- replace with your own date
 $upperLimit = Get-Date -Date '17-05-2018 00:00:00'  # <-- replace with your own date

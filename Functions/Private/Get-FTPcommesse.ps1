@@ -1,22 +1,22 @@
 <#
 .SYNOPSIS
-    Automatically connects to Bitech's server and download VR (Released Version) from a specific order.
+    Lo script si collega automaticamente al server Bitech e scarica le VR (Versioni Rilasciate) e i MT (Manuali tecnici) di un determinato cliente
 .DESCRIPTION
-    The script uses WinSCP CLI to connect to Bitech's SFTP server and downloads the listed documents.
-    The $AllegedCustomer is the approximate description of the customer, used to search the corresponding order.
-    The script looks for $AllegedCustomer in the MC_COMMESSE folder
-    The $RealCustomer is the one used to download the files.
-    The documents must match the VR_ (Released Version) prefix and can be .doc and .pdf.
-    The destination path is customizable via the $RootPath variable.
-    All the empty documents and folders are then removed.
-    Finally, the documents are converted from DOC/DOCX into PDF.
-    The performance of the script is tracked via C# stopwatch class and logged.
+    Lo script usa la CLI di WinSCP per connettersi al server Bitech via SFTP e scaricare i documenti indicati.
+    La variabile $AllegedCustomer è la descrizione approssimativa del cliente, usata come filtro di ricerca nelle commesse.
+    Lo script cerca la stringa $AllegedCustomer nella cartella /MC_COMMESSE per mostrare all'utente quali clienti corrispondono alla stringa cercata.
+    La variabile $RealCustomer, richiesta all'utente, è quella usata per cercare i documenti VR e MT.
+    La cartella di destinazione è scritta nella variabile $RootPath.
+    I documenti vuoti (quelli che si chiamano "VR_Versione Rilasciata") vengono eliminati, e i rimanenti convertiti da DOC/DOCX in PDF.
+    Un oggetto C# di classe Stopwatch misura la performance dello script e la scrive nel log.
 .EXAMPLE
     PS> ./Get-FTPcommesse.ps1
 .NOTES
-    It requires WinSCP installed in C:\Program Files(x86)\WinSCP\WinSCP.exe
-    The order's name must be precise and case-sensitive.
-    Just edit $Customer and $RootPath.
+    Richiede WinSCP installato e presente in C:\Program Files(x86)\WinSCP\WinSCP.exe
+    Il nome del cliente nella variabile $RealCustomer deve essere preciso e case-sensitive.
+    
+    ### IMPORTANTE: Questo script dà per scontate una serie di convenzioni di nomenclatura.
+    ### Bisogna testare con commesse particolarmente vecchie che probabilmenten non seguono queste convenzioni.
 #>
 
 # Ricerca commesse per descrizione
@@ -84,13 +84,10 @@ if ( Test-Path -Path "$RootPath\VR_Versione_rilasciata.doc" ) {
 Foreach ( $file in $(Get-ChildItem -Path "$RootPath\*.doc", "$RootPath\*.pdf") ) {
 
   $OldName = $file.FullName
-  $OldName
   $NewName = $file.BaseName + ' - ' + $(Get-Content $file | Select-String -pattern "Progetto: ").Line.Split(": ")[1] + '.doc'
-  $NewName
   Rename-Item -Path ($OldName) -NewName ($NewName)
 
 }
-
 #>
 
 # Exit code

@@ -1,5 +1,5 @@
 # v1.0.0, tested
-function Configure-IIS {
+function Set-IISApplication {
 
     [CmdletBinding()]
     Param(
