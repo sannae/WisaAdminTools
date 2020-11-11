@@ -17,6 +17,8 @@
     
     ### IMPORTANTE: Questo script dà per scontate una serie di convenzioni di nomenclatura.
     ### Bisogna testare con commesse particolarmente vecchie che probabilmenten non seguono queste convenzioni.
+
+    ### TODO: E se volessi invece i documenti di una specifica commessa?
 #>
 
 # Ricerca commesse per descrizione
