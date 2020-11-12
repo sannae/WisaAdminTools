@@ -12,6 +12,7 @@
 "Web Sockets protocol";"IIS-WebSockets";"Web-WebSockets";
 "Basic Authentication";"IIS-BasicAuthentication";"Web-Basic-Auth";
 "Windows Authentication";"IIS-WindowsAuthentication";"Web-Windows-Auth";
+"Static Content";"IIS-StaticContent";"Web-Static-Content"
 "Management Tools";"IIS-WebServerManagementTools";"Web-Mgmt-Tools"
 "IIS Management Console";"IIS-ManagementConsole";"Web-Mgmt-Console";
 "IIS 6 Management Compatibility";"IIS-IIS6ManagementCompatibility";"Web-Mgmt-Compat";

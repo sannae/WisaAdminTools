@@ -24,20 +24,24 @@ Import-Module .\MrtAdminTools.psm1
 Import-Module IISAdministration
 Import-Module Dbatools
 
+# Cartella in cui si trova lo script (e quindi tutti gli altri zip)
+$PSScriptRoot
 
 # Estraggo tutti gli zip sotto MPW_INSTALL
 
 # Vedo se esiste MPW_INSTALL, se no la creo
 $RootFolder = Get-MPWRootFolder
 $RootDisk = $RootFolder.PSDrive.Root
+if ( !(Test-Path "$RootDisk\MPW_INSTALL") ) {
+    New-Item -Path "$RootDisk\MPW_INSTALL" -ItemType Directory
+}
+Move-Item -Path "$PSScriptRoot\*.zip" -Destinatio "$RootDisk\MPW_INSTALL"
 #   Verifico che siano presenti gli ZIP di tutti gli applicativi interdipendenti
 ##  Es. warning nel caso in cui ci fosse MicronService ma non NoService
 # ...
 #   Estraggo i file ZIP nelle corrispettive cartelle
-ForEach ( $file in $(Get-ChildItem "$(Get-Location)\*.zip") ) {
-    $FileBaseName = $file.BaseName 
-    $FileName = $file.Name
-    Expand-Archive -LiteralPath $FileName -DestinationPath $FileBaseName
+ForEach ( $file in "$RootDisk\MPW_INSTALL\*.zip") {
+    Expand-Archive -LiteralPath $file.Name -DestinationPath $file.BaseName
     Remove-Item $file
 }
 
