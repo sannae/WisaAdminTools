@@ -1,13 +1,14 @@
 <#
 .SYNOPSIS
-    Finds the MPW folder in the OS file system.
+    Cerca la cartella MPW nel file system.
 .DESCRIPTION
-    It loops all the filesystem disks and search for any child item named 'MPW'.
+    Fa una ricerca ricorsiva su tutto il filesystem cercando ogni cartella chiamata esattamente MPW.
+    Il valore può essere ritornato su stdout oppure salvato in una variabile (v. esempi)
 .EXAMPLE
     PS> $Root = Get-MPWRootFolder
     PS> Get-MPWRootFolder
 .NOTES
-
+    versione 1.0.0
 #>
 
 function Get-MPWRootFolder {
@@ -19,7 +20,7 @@ function Get-MPWRootFolder {
 
         Write-Verbose "Now looking for MPW in disk $Disk"
 
-        $Root = Get-ChildItem $Disk | Where-Object {$_.PSIsContainer -eq $true -and $_.Name -match "MPW"}
+        $Root = Get-ChildItem $Disk | Where-Object {$_.PSIsContainer -eq $true -and $_.Name -eq "MPW"}
         if ( $null -eq $Root) { 
             Write-Error "MPW folder not found in disk $Disk, proceeding with the next one"
             continue 

@@ -1,4 +1,17 @@
-# v1.0.0, tested
+<#
+.SYNOPSIS
+    Inserisce un'applicazione web già installata in un application pool.
+.DESCRIPTION
+    Lo script richiede il nome dell'applicazione web e l'application pool di destinazione.
+    Se l'application pool non esiste, viene creato.
+    L'application pool viene configurato con una serie di proprietà (app a 32bit, idle timeout, ecc.).
+
+.EXAMPLE
+    PS> Set-IISApplication "/mpassw" "MyAppPoolName"
+.NOTES
+    Richiede IISAdministration (https://www.powershellgallery.com/packages/IISAdministration/) 
+    TODO:
+#>
 function Set-IISApplication {
 
     [CmdletBinding()]
@@ -21,18 +34,16 @@ function Set-IISApplication {
 
     Import-Module IISAdministration
 
-    # Crea application pool
+    # Crea application pool se non esiste
 
     $manager = Get-IISServerManager
-    $pool = $manager.ApplicationPools.Add("$AppPoolName")
+    if ( !( Get-IISAppPool | Where-Object {$_.Name -eq "$AppPoolName"} ) ) {
+        $pool = $manager.ApplicationPools.Add("$AppPoolName")
+    }
     $pool.ManagedPipelineMode = "Integrated"
     $pool.ManagedRuntimeVersion = "v4.0"
     $pool.Enable32BitAppOnWin64 = $true
     $manager.CommitChanges()
-
-    # Test
-
-    Get-IISAppPool | Where-Object {$_.Name -eq "$AppPoolName"}
 
     # Crea applicazione in directory virtuale sotto Default Web Site
 

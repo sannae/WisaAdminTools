@@ -14,8 +14,8 @@ Lo script deve:
 Lo script dà per scontato che venga lanciato da una cartella che contiene gli ZIP alle ultime release 
 di tutto ciò che si vuole aggiornare (come preparare questa cartella potrebbe essere oggetto di un altro script).
 La cartella dovrà anche contenere i moduli PowerShell 
-    IISAdministration (https://www.powershellgallery.com/packages/IISAdministration/1.1.0.0) 
-    Dbatools (https://www.powershellgallery.com/packages/dbatools/1.0.130)
+    IISAdministration (https://www.powershellgallery.com/packages/IISAdministration/) 
+    Dbatools (https://www.powershellgallery.com/packages/dbatools/)
 
 #>
 
@@ -31,16 +31,14 @@ $PSScriptRoot
 
 # Vedo se esiste MPW_INSTALL, se no la creo
 $RootFolder = Get-MPWRootFolder
-$RootDisk = $RootFolder.PSDrive.Root
-if ( !(Test-Path "$RootDisk\MPW_INSTALL") ) {
-    New-Item -Path "$RootDisk\MPW_INSTALL" -ItemType Directory
+$RootParent = ( Get-Item $RootFolder ).parent
+if ( !(Test-Path "$RootParent\MPW_INSTALL") ) {
+    New-Item -Path "$RootParent\MPW_INSTALL" -ItemType Directory
 }
-Move-Item -Path "$PSScriptRoot\*.zip" -Destinatio "$RootDisk\MPW_INSTALL"
-#   Verifico che siano presenti gli ZIP di tutti gli applicativi interdipendenti
-##  Es. warning nel caso in cui ci fosse MicronService ma non NoService
-# ...
-#   Estraggo i file ZIP nelle corrispettive cartelle
-ForEach ( $file in "$RootDisk\MPW_INSTALL\*.zip") {
+# Ci sposto dentro tutti i file zip
+Move-Item -Path "$PSScriptRoot\*.zip" -Destination "$RootParent\MPW_INSTALL"
+#   Estraggo i file ZIP nelle corrispettive cartelle, rimuovo gli zip
+ForEach ( $file in "$RootParent\MPW_INSTALL\*.zip") {
     Expand-Archive -LiteralPath $file.Name -DestinationPath $file.BaseName
     Remove-Item $file
 }
@@ -49,11 +47,7 @@ ForEach ( $file in "$RootDisk\MPW_INSTALL\*.zip") {
 
 Interfaccia web:
 + Aggiorno Micronpass
-    Trovo app pool in cui si trova mpassw
-    Stoppo suddetto app pool
-    Copio cartella Micronpass in Micronpass_VERSIONE
-    Installo cartella virtuale aggiornata
-    (DA FINIRE)
+# Update-MrtWebAppLight.ps1
 
 Applicativi C di configurazione e diagnostica:
 + Aggiorno MicronConfig
