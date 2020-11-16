@@ -1,60 +1,58 @@
-# TODO: Dettagli servizi SQL Server
+<#
+.SYNOPSIS
+    Crea un file contenente lo stato di un'installazione MPW.
+.DESCRIPTION
+    
+.EXAMPLE
 
-# Modules
+.EXAMPLE
 
-Import-Module IISAdministration
-Import-Module dbatools
+.NOTES
+    TODO: Aggiungere i dettagli dei servizi dalla T103, es. parametri di scarico timbrature
+    TODO: Lista delle operazioni pianificate che includono il percorso 'MPW' o che includono i percorsi di export presenze trovati in T103COMPARAMS
+#>
 
-# Controllo di versione di Powershell: ALMENO la 5.0!
 
-if ( $PVersionTable.PSVersion.Major -lt 5 ) {
-    Write-Host "La tua versione di Powershell è obsoleta! Non posso eseguire questo script..."
-    Write-Host "Per aggiornare Windows Powershell: https://docs.microsoft.com/en-us/powershell/scripting/windows-powershell/install/installing-windows-powershell?view=powershell-7"
-    Write-Host "Per passare direttamente a Powershell Core: https://github.com/PowerShell/PowerShell"
-    Write-Host ""
+function Get-MpwPlantStatus {
+
+    [CmdletBinding()] param ()
+
+    # Trova la cartella MPW e crea il file MpwPlantStatus
+
+    $Root = Get-MPWRootFolder
+    $StatusFile = "$Root\MpwPlantStatus.txt"
+
+    # Scrivi la ragione sociale del cliente da MRT.LIC
+
+    Add-Content -Path $StatusFile -Value "Cliente: " 
+    $($(Get-Content -Path "$Root\MicronService\MRT.LIC" | Select-String -Pattern 'Licence') -Split '=')[1] | Out-File $StatusFile -Append
+
+   # Lista dei servizi attivi, il cui percorso contiene \MPW
+   # TODO: Export dei parametri importanti relativi ai servizi dalla T103COMPARAMS
+
+    Get-Service | 
+        Where-Object { $_.BinaryPathName -like "*$Root*" -AND $_.Status -eq 'Running' } | 
+        Select-Object Name,DisplayName,Status,StartupType,BinaryPathName | 
+        Format-Table | 
+        Out-File $StatusFile -Append
+
+    # Lista delle applicazioni web il cui percorso contiene \MPW
+
+    $manager = Get-IISServerManager
+    $manager.Sites.Applications | 
+        Where-Object {$_.VirtualDirectories.PhysicalPath -like "*$Root*" } | 
+        Select-Object path,applicationPoolName,enabledProtocols | 
+        Format-Table | 
+        Out-File $StatusFile -Append
+
+    # Build connection string
+
+    $ConnectionString = Get-MPWConnectionStrings
+
+    # Query di stato impianto
+
+    Add-Content -Path $StatusFile -Value "Versione installata: " 
+    Invoke-MPWDatabaseQuery -ConnectionString $ConnectionString -Query $(Get-Content 'PlantStatus.sql') | 
+        Out-File $StatusFile -Append
+
 }
-
-# Define root folder
-
-foreach ( $Disk in (Get-PSDrive -PSPRovider 'FileSystem' | Where-Object Used).Root ) {
-    $Root = Get-ChildItem $Disk | Where-Object {$_.PSIsContainer -eq $true -and $_.Name -match "MPW"}
-    if ( $null -ne $Root) { break }
-}
-$StatusFile = "$Root\PlantStatus.txt"
-
-# Ragione sociale del cliente da MRT.LIC
-
-Add-Content -Path $StatusFile -Value "Cliente: " 
-$($(Get-Content -Path "$Root\MicronService\MRT.LIC" | Select-String -Pattern 'Licence') -Split '=')[1] | Out-File $StatusFile -Append
-
-# Lista dei servizi il cui percorso contiene \MPW
-
-Get-Service | Where-Object {$_.BinaryPathName -like "*$Root*"} | Select-Object Name,DisplayName,Status,StartupType,BinaryPathName | Format-Table | Out-File $StatusFile -Append
-
-# TODO: Export dei parametri importanti relativi ai servizi dalla T103COMPARAMS
-
-# Lista delle applicazioni web il cui percorso contiene \MPW
-
-Get-Webapplication | Where-Object {$_.PhysicalPath -like "*$Root*" } | Select-Object path,PhysicalPath,applicationPool,enabledProtocols | Format-Table | Out-File $StatusFile -Append
-
-# Build connection string
-
-$ConfigFile = "$Root\MicronConfig\config.exe.config"
-$ConfigXml = [xml] (Get-Content $ConfigFile)
-$DBEngine = $ConfigXml.SelectSingleNode('//add[@key="dbEngine"]').Value
-$MyDBEngine = "$("//add[@key='")$($DBEngine)$("Str']")"
-$ConnectionString = $ConfigXml.SelectSingleNode($MyDBEngine).Value
-$DBDataSource = [regex]::Match($ConnectionString, 'Data Source=([^;]+)').Groups[1].Value
-$DBInitialCatalog = [regex]::Match($ConnectionString, 'Initial Catalog=([^;]+)').Groups[1].Value
-$DBUserId = [regex]::Match($ConnectionString, 'User ID=([^;]+)').Groups[1].Value
-$DBPassword = [regex]::Match($ConnectionString, 'Password=([^;]+)').Groups[1].Value
-$ConnectionString = "Persist Security Info=False;User ID=$DBUserID;Password=$DBPassword;Initial Catalog=$DBInitialCatalog;Data Source=$DBDataSource"
-
-# Query di stato impianto
-
-Add-Content -Path $StatusFile -Value "Versione installata: " 
-Invoke-DbaQuery -sqlinstance $DBDataSource -Database $DBInitialCatalog -File 'PlantStatus.sql' -MessagesToOutput | Out-File $StatusFile -Append
-
-# TODO: Lista delle operazioni pianificate che includono il percorso 'MPW' o che includono i percorsi di export presenze trovati in T103COMPARAMS
-
-# TODO (su script esterno): usando la descrizione del cliente da MRT.LIC, andare via FTP a cercare eventuali commesse esistenti e - se esistono - cercare solo i file VR

@@ -6,9 +6,10 @@
     Il valore può essere ritornato su stdout oppure salvato in una variabile (v. esempi)
 .EXAMPLE
     PS> $Root = Get-MPWRootFolder
+.EXAMPLE
     PS> Get-MPWRootFolder
 .NOTES
-    versione 1.0.0
+    TODO: 
 #>
 
 function Get-MPWRootFolder {

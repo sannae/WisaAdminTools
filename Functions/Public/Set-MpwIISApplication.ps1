@@ -12,7 +12,7 @@
     Richiede IISAdministration (https://www.powershellgallery.com/packages/IISAdministration/) 
     TODO:
 #>
-function Set-IISApplication {
+function Set-MpwIISApplication {
 
     [CmdletBinding()]
     Param(

@@ -15,7 +15,7 @@
 # Paths (CASE SENSITIVE)
 
 $RemotePath = '/MRT/MRT_FascicoloTecnico/MRT_Fascicolo_work'
-$LocalPath = 'C:\Users\edoardo.sanna\Desktop\Documentazione\_MT_MRT_Fascicolo_Tecnico'
+$LocalPath = 'C:\_Docs\_MT_MRT_Fascicolo_Tecnico'
 $LocalLog = "$LocalPath\WinSCP_docs.log"
 
 # Docs (CASE SENSITIVE)

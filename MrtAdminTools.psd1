@@ -12,7 +12,7 @@
 RootModule = 'MrtAdminTools.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.0'
+ModuleVersion = '0.0.1'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -24,16 +24,16 @@ GUID = '7b0b42c9-0fa4-42c3-9f61-e94e957421a9'
 Author = 'Edoardo Sanna'
 
 # Company or vendor of this module
-CompanyName = 'Unknown'
+CompanyName = 'Microntel S.p.A.'
 
 # Copyright statement for this module
-Copyright = '(c) Edoardo Sanna. All rights reserved.'
+Copyright = '(c) Microntel S.p.A.. All rights reserved.'
 
 # Description of the functionality provided by this module
 Description = 'Functions for MRT Application Suite administrators.'
 
 # Minimum version of the PowerShell engine required by this module
-# PowerShellVersion = ''
+PowerShellVersion = '5.1'
 
 # Name of the PowerShell host required by this module
 # PowerShellHostName = ''
@@ -42,7 +42,7 @@ Description = 'Functions for MRT Application Suite administrators.'
 # PowerShellHostVersion = ''
 
 # Minimum version of Microsoft .NET Framework required by this module. This prerequisite is valid for the PowerShell Desktop edition only.
-# DotNetFrameworkVersion = ''
+DotNetFrameworkVersion = '4.8'
 
 # Minimum version of the common language runtime (CLR) required by this module. This prerequisite is valid for the PowerShell Desktop edition only.
 # ClrVersion = ''
@@ -51,7 +51,9 @@ Description = 'Functions for MRT Application Suite administrators.'
 # ProcessorArchitecture = ''
 
 # Modules that must be imported into the global environment prior to importing this module
-# RequiredModules = @()
+RequiredModules = @(
+    IISAdministration
+)
 
 # Assemblies that must be loaded prior to importing this module
 # RequiredAssemblies = @()
