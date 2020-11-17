@@ -7,7 +7,7 @@
     L'application pool viene configurato con una serie di proprietà (app a 32bit, idle timeout, ecc.).
 
 .EXAMPLE
-    PS> Set-IISApplication "/mpassw" "MyAppPoolName"
+    PS> Set-MpwIISApplication "/mpassw" "MyAppPoolName"
 .NOTES
     Richiede IISAdministration (https://www.powershellgallery.com/packages/IISAdministration/) 
     TODO:
@@ -20,7 +20,7 @@ function Set-MpwIISApplication {
             Mandatory = $false,
             ValueFromPipelineByPropertyName = $true,
             Position = 0)] 
-            [string] $AppName = "/mpassw",
+            [string] $AppName = "mpassw",
         [Parameter(
             Mandatory = $false,
             ValueFromPipelineByPropertyName = $true,
@@ -33,6 +33,8 @@ function Set-MpwIISApplication {
         )
 
     Import-Module IISAdministration
+
+    $AppName = "/" + $AppName
 
     # Crea application pool se non esiste
 
