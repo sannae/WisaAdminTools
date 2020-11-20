@@ -62,3 +62,5 @@ if ($winscpResult -eq 0) {
 
 $Clock.Stop()
 Add-Content -Path "$LocalLog" -Value "Execution time approx. $($Clock.Elapsed.Minutes) minutes $($Clock.Elapsed.Seconds) seconds"
+
+# Scheduled Task
