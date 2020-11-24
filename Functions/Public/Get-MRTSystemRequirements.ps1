@@ -1,6 +1,6 @@
 
 
-function Get-MpwSystemRequirements {
+function Get-MRTSystemRequirements {
 
     [CmdletBinding()] param ()
 

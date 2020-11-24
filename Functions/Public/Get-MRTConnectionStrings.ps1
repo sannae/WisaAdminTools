@@ -7,15 +7,15 @@
     Dipende dalla funzione Get-MPWRootFolder per trovare suddetto file.
     Ritorna una stringa di connessione 'semplice' contenente solo DBDataSource, DBInitialCatalog, DBUsername e DBPassword.
 .EXAMPLE
-    PS> Get-MPWConnectionStrings
+    PS> Get-MRTConnectionStrings
 .EXAMPLE
-    PS> $DBConnectionString = Get-MPWConnectionStrings
+    PS> $DBConnectionString = Get-MRTConnectionStrings
 .NOTES
     TODO:
     - Criptare la password, qui appare in plain text
 #>
 
-function Get-MPWConnectionStrings {
+function Get-MRTConnectionStrings {
 
     [CmdletBinding()] 
     param ()

@@ -4,6 +4,7 @@
 .DESCRIPTION
     Lo script utilizza l'oggetto SqlClient.SqlConnection per aprire una connessione su un'istanza SQL Server.
     Il parametro ConnectionString deve essere nel formato "User ID =;Password=;Initial Catalog=;Data Source="
+    Questo formato è usato per esempio nei file config della MRT app suite, ad eccezione dei web.config.
     Nel caso di SELECT, i dati vengono scritti in output come array.
     Nel caso di UPDATE/DELETE, i dati non vengono scritti in output.
 .EXAMPLE
@@ -12,7 +13,7 @@
     PS> Invoke-MPWDatabaseQuery -ConnectionString $ConnectionString -Query $(Get-Content File.sql)
 .NOTES
     0.0.9
-    TODO:
+    TODO: 
 
 #>
 function Invoke-MPWDatabaseQuery
