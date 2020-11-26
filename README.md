@@ -24,7 +24,8 @@ To get help from any function:
 ```powershell
 Get-Help FUNCTIONNAME
 ```
-Available & tested functions:
+
+### Available & tested functions:
 * `Get-MpwApplicationPool`: returns the application pool of a specific web application
 * `Get-MPWConnectionStrings`: returns the connection string to the SQL Server MRT database
 * `Get-MPWCurrentVersion`: returns the current version of Micronpass Web application
