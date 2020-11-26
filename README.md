@@ -1,6 +1,5 @@
 # MrtAdminTools
 PowerShell module to assist administrators of the MRT Application Suite
----
 
 ## Get the module
 
@@ -15,7 +14,6 @@ If already installed on the system:
 ```powershell
 Import-Module MRTAdminTools
 ```
----
 
 ## Use the module
 You can list the included commands using:
