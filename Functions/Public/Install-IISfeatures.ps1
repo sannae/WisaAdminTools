@@ -9,10 +9,9 @@
 .EXAMPLE
     PS> ./Install-IISFeatures.ps1
 .NOTES
-    TODO: da testare la funzionalità con hash table
-    TODO: aggiungere test automatici
+    TODO: aggiungere dei test automatici con Pester
 .VERSION
-    1.0
+    1.0 (testato)
 #>
 
 function Install-IISFeatures {

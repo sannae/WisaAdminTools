@@ -19,6 +19,10 @@ You can list the included commands using:
 ```powershell
 Get-command -Module MrtAdminTools
 ```
+To get help from any function:
+```powershell
+Get-Help FUNCTIONNAME
+```
 Available & tested functions:
 * `Get-MPWConnectionStrings`: returns the connection string to the SQL Server MRT database
 * `Get-MPWCurrentVersion`: returns the current version of Micronpass Web application
