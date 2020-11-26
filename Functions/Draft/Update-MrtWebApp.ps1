@@ -12,21 +12,9 @@
     TODO: da testare alla prima installazione 'vergine'
 #>
 
-function Update-MrtWebAppLight {
+function Update-MrtWebApp {
 
-    [CmdletBinding()]
-    param (
-        [Parameter(
-            Mandatory = $false,
-            ValueFromPipelineByPropertyName = $true,
-            Position = 0)] 
-            [string] $AppName = "mpassw"
-    )
-
-    # Trovo app pool in cui si trova l'app web
-    $AppPoolName = $manager.Sites.Applications | Where-Object { $_.Path -eq "$AppName" } | Select-Object ApplicationPoolName
-    $AppPool = $manager.ApplicationPools | Where-Object { $_.Name -eq $AppPoolName.ApplicationPoolName }
-    Write-Verbose "Micronpass Web trovato nell'application pool $AppPool, arresto in corso..."
+    # AppPool = Trova application pool a cui appartiene web app
 
     # Stoppo suddetto app pool
     $AppPool.Stop()
