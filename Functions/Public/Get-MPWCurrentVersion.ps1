@@ -29,6 +29,8 @@ function Get-MpwCurrentVersion {
     }
     $VersionString = $(Get-Item "$RootFolder\Micronpass\bin\mpassw.dll").versioninfo.fileversion
     $Version = [version]$VersionString
+
+    # Return
     $Version
 
 }

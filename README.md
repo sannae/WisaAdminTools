@@ -15,8 +15,13 @@ If already installed on the system:
 Import-Module MRTAdminTools
 ```
 ## Use the module
-Available functions:
+You can list the included commands using:
+```powershell
+Get-command -Module MrtAdminTools
+```
+Available & tested functions:
 * `Get-MPWConnectionStrings`: returns the connection string to the SQL Server MRT database
 * `Get-MPWCurrentVersion`: returns the current version of Micronpass Web application
 * `Get-MPWRootFolder`: finds the path of the MPW folder in the filesystem
 * `Install-IISFeatures`: installs all the required IIS roles and features
+* `Invoke-MPWDatabaseQuery`: runs a selected query provided as input on the MRT database
