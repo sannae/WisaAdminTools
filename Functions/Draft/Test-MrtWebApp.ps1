@@ -1,0 +1,1 @@
+# Fai un check (con la funzione Invoke-WebRequest) che l'applicazione web non risponda con errori di IIS
