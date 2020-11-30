@@ -98,6 +98,7 @@ function Update-MrtWebApp {
         "/a"
         "$MsiFile"
         "/qb"
+        "/norestart"
         "targetvdir=webupgrade"
     ) 
     Start-Process -PassThru -Wait "msiexec.exe" -ArgumentList $MSIArguments -Verb RunAs | Out-null
