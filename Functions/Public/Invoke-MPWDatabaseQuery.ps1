@@ -3,10 +3,14 @@
     Esegue una query SQL specifica su un database di cui va fornita la stringa di connessione.
 .DESCRIPTION
     Lo script utilizza l'oggetto SqlClient.SqlConnection per aprire una connessione su un'istanza SQL Server.
-    Il parametro ConnectionString deve essere nel formato "User ID =;Password=;Initial Catalog=;Data Source="
     Questo formato è usato per esempio nei file config della MRT app suite, ad eccezione dei web.config.
     Nel caso di SELECT, i dati vengono scritti in output come array.
     Nel caso di UPDATE/DELETE, i dati non vengono scritti in output.
+.PARAMETER CONNECTIONSTRING
+    Stringa di connessione al database; deve essere nel formato "User ID =;Password=;Initial Catalog=;Data Source="
+.PARAMETER QUERY
+    Query da eseguire, in formato stringa (es. "SELECT * FROM TABLE").
+    Eventualmente si può acquisire da un file esterno usando $Query = $(Get-Content FILE.sql)
 .EXAMPLE
     PS> Invoke-MPWDatabaseQuery -ConnectionString $ConnectionString -Query "SELECT * FROM TABLE"
 .EXAMPLE

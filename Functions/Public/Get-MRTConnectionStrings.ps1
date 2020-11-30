@@ -11,8 +11,7 @@
 .EXAMPLE
     PS> $DBConnectionString = Get-MRTConnectionStrings
 .NOTES
-    TODO:
-    - Criptare la password, qui appare in plain text
+    TODO: Criptare la password, qui appare in plain text
 #>
 
 function Get-MRTConnectionStrings {

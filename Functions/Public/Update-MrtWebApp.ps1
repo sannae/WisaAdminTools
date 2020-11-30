@@ -1,8 +1,8 @@
 <#
 .SYNOPSIS
-    Aggiorna Micronpass all'ultima versione (entro la stessa minor).
+    Aggiorna un'applicazione web all'ultima versione (entro la stessa minor).
 .DESCRIPTION
-    Lo script richiede il .zip di Micronpass Web alla versione minor/patch più recente.
+    Lo script richiede il .zip dell'applicazione alla versione minor/patch più recente.
     Ad esempio, questo script può aggiornare una 7.5.4 a una 7.5.600, ma NON a una 7.6.0.
     I file della versione 'vecchia' vengono salvati in una cartella Applicazione_OLDVERSION
     Attenzione : vengono esclusi dalla sovrascrittura i file web.config e LIC
@@ -18,6 +18,8 @@
 .NOTES
     0.0
     TODO: testare con applicazioni diverse da Micronpass Web
+    TODO: sostituire Start-Process "msiexec" con nuova funzione Invoke-MsiExec
+    TODO: test del Copy-Item, in particolare negli errore che restituisce sui file .tff (fonts)
 #>
 
 function Update-MrtWebApp {
@@ -31,6 +33,9 @@ function Update-MrtWebApp {
         HelpMessage="Digitare il percorso completo con i file aggiornati: ")]
             [string] $ZipPath
     )
+
+    # Start clock
+    $Clock = [Diagnostics.Stopwatch]::StartNew()
 
     # Controllo che lo zip sia presente
     if ( !(Test-Path "$ZipPath\*.zip") ) {
@@ -54,7 +59,7 @@ function Update-MrtWebApp {
 
     # Trovo application pool dell'applicazione
     $AppPool = Get-MpwApplicationPool -AppName $AppName
-    Write-Verbose "L'application pool $AppPool verrà stoppato"
+    Write-Verbose "L'application pool $($AppPool.Name) verrà stoppato"
 
     # Stoppo suddetto app pool
     if ( $AppPool.State -eq "Started" ) {
@@ -72,14 +77,14 @@ function Update-MrtWebApp {
     $RootFolder = Get-MPWRootFolder
     $OldVersionString = $(Get-Item "$RootFolder\$AppFullName\bin\$AppName.dll").versioninfo.fileversion.substring(0,7)
     $OldVersion = [version]$OldVersionString
-    $OldFolder = "$AppFullName_$OldVersionString"
+    $OldFolder = "$AppFullName"+"_"+"$OldVersionString"
     if ( !(Test-Path "$RootFolder\$OldFolder")) {
         New-Item -Path "$RootFolder\$OldFolder" -ItemType Directory | Out-Null
     } else {
         Write-Error "La cartella $RootFolder\$OldFolder esiste già!"
         break
     }
-    Copy-Item -Path "$RootFolder\$AppFullName\*" -Destination "$RootFolder\$OldFolder"
+    Copy-Item -Path "$RootFolder\$AppFullName\*" -Destination "$RootFolder\$OldFolder" -Force
     Write-Verbose "I file della vecchia applicazione sono stati copiati in '$RootFolder\$OldFolder'"
 
     # Estraggo installer dallo zip e ricavo nuova versione
@@ -105,18 +110,25 @@ function Update-MrtWebApp {
 
     # Sovrascrivo ricorsivamente i file appena unzippati in MPW\Micronpass (escludi web.config e licenza)
     Copy-Item -Path  "C:\inetpub\wwwroot\webupgrade\*" -Destination "$RootFolder\$AppFullName\" -Exclude @('Web.config','MRT.lic') -Recurse -force
-    # TODO : Test
-
-    # TODO : Cancella inetpub\wwwroot\webupgrade
+    Write-Verbose "File copiati da \inetpub\wwwroot a $RootFolder\$AppFullName"
 
     # Comparazione di versioni
     $NewVersionString = $( Get-Item "$RootFolder\$AppFullName\bin\$AppName.dll").versioninfo.fileversion.substring(0,7)
     $NewVersion = [version]$NewVersionString
-    Write-Host "Applicazione aggiornata da $OldVersion a $NewVersion"
+    Write-Host "L'applicazione $AppFullName è stata aggiornata da $OldVersion a $NewVersion"
+
+    # Cancella inetpub\wwwroot\webupgrade e altri cadaveri penzolanti
+    Remove-Item -LiteralPath "$ZipPath\$FolderName" -Force -Recurse
+    Remove-Item -LiteralPath "$InstallFile"
+    Remove-Item -LiteralPath "C:\inetpub\wwwroot\webupgrade" -Force -Recurse
 
     # Riavvio app pool
     $AppPool.Start() | Out-null
     Start-Sleep -Seconds 5
+
+    # Stop clock
+    $Clock.Stop | Out-null
+    Write-verbose "Tempo totale: $($Clock.Elapsed.Seconds) secondi"
 
     # Apri l'applicazione da browser
     Start-Process "http://localhost/$AppName"

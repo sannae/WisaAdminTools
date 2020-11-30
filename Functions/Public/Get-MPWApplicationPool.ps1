@@ -5,6 +5,9 @@
     Utilizza il modulo IISAdministration per cercare l'application pool a cui appartiene la web app data come input.
     Se non viene specificata alcuna web app, il default è "mpassw".
     Ritorna un oggetto Microsoft.WebAdministration.ConfigurationElement.
+.PARAMETER APPNAME
+    Nome esatto dell'applicazione (ad es. 'mpassw' nel caso di Micronpass Web).
+    Valore di default uguale a "mpassw".
 .EXAMPLE
     PS> $AppPool = Get-MpwApplicationPool -AppName "mpassw"
 .EXAMPLE

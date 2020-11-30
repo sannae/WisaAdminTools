@@ -14,8 +14,8 @@
 .EXAMPLE
     PS> Set-MPWIISApplication
 .NOTES
-    0.0 (da rivedere e testare)
-    Richiede IISAdministration (https://www.powershellgallery.com/packages/IISAdministration/)
+    0.0
+    TODO: Da rivedere completamente e testare
 #>
 function Set-MpwIISApplication {
 

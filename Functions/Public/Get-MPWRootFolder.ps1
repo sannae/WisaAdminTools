@@ -19,16 +19,16 @@ function Get-MPWRootFolder {
 
     foreach ( $Disk in (Get-PSDrive -PSPRovider 'FileSystem' | Where-Object Used).Root ) {
 
-        Write-Verbose "Now looking for MPW in disk $Disk"
+        Write-Verbose "Sto cercando la cartella MPW nel disco $Disk"
 
         $Root = Get-ChildItem $Disk | Where-Object {$_.PSIsContainer -eq $true -and $_.Name -eq "MPW"}
         if ( $null -eq $Root) { 
-            Write-Error "MPW folder not found in disk $Disk, proceeding with the next one"
+            Write-Error "Non ho trovato la cartella MPW nel disco $Disk, provo con il prossimo"
             continue 
         }
         else { 
             $Root
-            Write-Verbose "MPW Folder found in $Root"
+            Write-Verbose "Ho trovato la cartella MPW nel disco $Root"
             break 
         }
     }
