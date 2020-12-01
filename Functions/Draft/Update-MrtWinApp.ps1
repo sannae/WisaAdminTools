@@ -2,40 +2,51 @@ function Update-MrtWinApp {
 
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $false, Position = 0)] 
-            [string] $AppName
+        [Parameter(Mandatory = $true, Position = 0, 
+        HelpMessage="Digitare il nome completo dell'applicazione: ")] 
+            [string] $AppFullName,
+        [Parameter(Mandatory = $true, Position = 1, 
+        HelpMessage="Digitare il percorso completo con i file aggiornati: ")]
+            [string] $ZipPath
     )
 
+    # Start clock
+    $Clock = [Diagnostics.Stopwatch]::StartNew()
+
     # Root folder
-    $Root = Get-MPWRootFolder
+    $RootFolder = Get-MpwRootFolder
 
-    # Zip con aggiornamento
-    $UpdatePackage = Get-Item "$PSScriptRoot\*.zip" | Where-Object { $_.Name -match $AppName }
+    # Trova l'applicazione specificata e chiudila se aperta
+    Get-Process | Where-Object { $_.Path -match "$RootFolder\$AppFullName"} | Stop-Process
 
-    # Verifica che ci sia lo ZIP di aggiornamento
-    if ( !($UpdatePackage) ) {
-        Write-Error "File ZIP non trovato per l'aggiornamento! Depositare il file ZIP nella stessa cartella di questo script."
+    # Tolgo il simbolo '$' dal nome dei file da installare, se no fa casino
+    $ZipFile = Get-item "$ZipPath\*.zip"
+    ForEach ( $file in $ZipFile ) {
+        if ( $file.Name.Substring(0,1) -eq '$') {
+            Rename-Item $File -NewName $File.Name.Substring(1)
+        }
     }
+    $InstallFile = $(Get-item "$ZipPath\$AppFullName*.zip")
 
-    # Verifica se l'app è un servizio (la flag è True se AppName è un servizio)
-    $serviceflag = ( $null -eq $(Get-Service | Where-Object { $_.BinaryPathName -match $appname }) )
-
-    # Se è un servizio stoppalo, se è un'applicazione chiudila
-    if ( $serviceflag ) {
-        Get-Service | Where-Object { $_.BinaryPathName -match $AppName } | Stop-Service
+    # Copia vecchia cartella
+    $OldVersionString = $(Get-Item "$RootFolder\$AppFullName\*.exe" -Exclude "JSONEdit.exe").versioninfo.fileversion.substring(0,7)
+    $OldVersion = [version]$OldVersionString
+    $OldFolder = "$AppFullName"+"_"+"$OldVersionString"
+    if ( !(Test-Path "$RootFolder\$OldFolder")) {
+        New-Item -Path "$RootFolder\$OldFolder" -ItemType Directory | Out-Null
     } else {
-        Get-Process | Where-Object { $_.Path -match $AppName } | Stop-Process
+        Write-Error "La cartella $RootFolder\$OldFolder esiste già!"
+        break
     }
+    Copy-Item -Path "$RootFolder\$AppFullName\*" -Destination "$RootFolder\$OldFolder" -Force
+    Write-Verbose "I file della vecchia applicazione sono stati copiati in '$RootFolder\$OldFolder'"
 
-    # Estrai dall'archivio in una cartella omonima
-    Expand-Archive -Path $( Get-Item $UpdatePackage ).Name -DestinationPath $( Get-Item $UpdatePackage ).BaseName
+    # Estraggo ZIP in una cartella locale
 
-    # Copia la cartella originale come NomeApplicazione_VersioneOld
-    # Se servizi, fallo per tutti i servizi
+    # Copio ricorsivamente i file estratti nella cartella sotto MPW (escludi .exe.config e MRT.LIC se presenti)
 
-    # Sovrascrivi il contenuto dell'archivio nella cartella originale NomeApplicazione
+    # Cancello cadaveri pendenti
 
-    # Se è un servizio: riavvialo , Se l'avvio va in errore, effettua un rollback
-    # Se non è un servizio: aprilo ,  Se l'apertura va in errore, effettua un rollback 
+    # ...
 
 }

@@ -18,6 +18,7 @@
 .NOTES
     0.0
     TODO: testare con applicazioni diverse da Micronpass Web
+    TODO: Sostituire lo Start-Process URL al fondo con una funzione Test-MrtWebApp che restituisca errori HTTP
     TODO: sostituire Start-Process "msiexec" con nuova funzione Invoke-MsiExec
     TODO: test del Copy-Item, in particolare negli errore che restituisce sui file .tff (fonts)
 #>
@@ -68,10 +69,12 @@ function Update-MrtWebApp {
 
     # Tolgo il simbolo '$' dal nome dei file da installare, se no fa casino
     $ZipFile = Get-item "$ZipPath\*.zip"
-    if ( $ZipFile.Name.Substring(0,1) -eq '$') {
-        Rename-Item $ZipFile -NewName $ZipFile.Name.Substring(1)
+    ForEach ( $file in $ZipFile ) {
+        if ( $file.Name.Substring(0,1) -eq '$') {
+            Rename-Item $File -NewName $File.Name.Substring(1)
+        }
     }
-    $InstallFile = $(Get-item "$ZipPath\*.zip")
+    $InstallFile = $(Get-item "$ZipPath\$AppFullName*.zip")
 
     # Copio cartella Micronpass in Micronpass_OLDVER ricavando vecchia versione
     $RootFolder = Get-MPWRootFolder
@@ -92,7 +95,7 @@ function Update-MrtWebApp {
     Expand-Archive -Path $( Get-Item "$ZipPath\*.zip" ) -DestinationPath "$ZipPath\$FolderName"
     Write-Verbose "I file della nuova applicazione sono stati estratti in '$ZipPath\$FolderName'"
 
-    #Installo cartella virtuale aggiornata sotto \inetpub\wwwroot\webupgrade
+    # Installo cartella virtuale aggiornata sotto \inetpub\wwwroot\webupgrade
     $MsiFile = (Get-item "$ZipPath\$Foldername\*.msi" ).FullName
     $MsiArguments = @(
         "/a"

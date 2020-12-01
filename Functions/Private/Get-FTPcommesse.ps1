@@ -9,6 +9,8 @@
     La cartella di destinazione è scritta nella variabile $RootPath.
     I documenti vuoti (quelli che si chiamano "VR_Versione Rilasciata") vengono eliminati, e i rimanenti convertiti da DOC/DOCX in PDF.
     Un oggetto C# di classe Stopwatch misura la performance dello script e la scrive nel log.
+.PARAMETER CLIENTE
+
 .EXAMPLE
     PS> ./Get-FTPcommesse.ps1
 .NOTES
@@ -25,6 +27,8 @@
 
 function Get-FTPCommesse {
 
+
+
   Write-host "Questo script effettua il download dei documenti VR contenuti in tutte le commesse di un determinato cliente."
   $AllegedCustomer = Read-Host -Prompt "Cliente cercato"
   $AllegedRemotePath = '""/MC_Commesse/CO ' + $AllegedCustomer + '"*"'
@@ -40,24 +44,20 @@ function Get-FTPCommesse {
       | Select-String -pattern "CO "
 
   # Remote Path (CASE SENSITIVE)
-
   Write-Host "`n"
   $RealCustomer = Read-Host -Prompt "Digitare di seguito il cliente di cui scaricare le commesse (ATTENZIONE: inserire la dicitura PRECISA del cliente, la ricerca sarà case-sensitive)"
   $RemotePath = '""/MC_Commesse/CO ' + $RealCustomer + '""'
 
   # RootPath: dove si vogliono salvare i documenti finali; viene anche creato un log
-
   $RootPath = Read-Host -Prompt "Digitare il percorso completo in cui salvare i file"
   $LocalLog = "$RootPath\WinSCP_commesse.log"
   Write-Host "I file di commessa verranno scaricati in $RootPath . È disponibile un log della connessione FTP in $LocalLog"
 
   # LocalPath (CASE SENSITIVE) : cartella temporanea in cui verranno salvati tutti i documenti prima di essere filtrati
-
   New-Item -Path $RootPath -Name "temp" -ItemType "Directory" | Out-Null
   $LocalPath = "$RootPath\temp"
 
   # Open connection and execute commands: execution is timed
-
   $Clock = [Diagnostics.Stopwatch]::StartNew()
 
   if ( Test-Path "$RootPath\WinSCP_commesse.log" ) {
@@ -74,7 +74,6 @@ function Get-FTPCommesse {
       "exit"
 
   # Spostare i file ricavati da LocalPath a RootPath, rimuovendo tutte le cartelle vuote e le commesse non chiuse
-
   Foreach ( $file in $(Get-ChildItem -Path "$LocalPath\*.doc", "$LocalPath\*.pdf" -Recurse) ) {
     Move-Item -Path $file -Destination $RootPath
   }
@@ -83,19 +82,14 @@ function Get-FTPCommesse {
     Remove-Item -Path "$RootPath\VR_Versione_rilasciata.doc"
   }
 
-  <# TODO: Aggiungere la descrizione del progetto al filename, leggendolo dal contenuto del file con Get-Content
-
+  # Crea un sommario
   Foreach ( $file in $(Get-ChildItem -Path "$RootPath\*.doc", "$RootPath\*.pdf") ) {
-
-    $OldName = $file.FullName
+    # $OldName = $file.FullName
     $NewName = $file.BaseName + ' - ' + $(Get-Content $file | Select-String -pattern "Progetto: ").Line.Split(": ")[1] + '.doc'
-    Rename-Item -Path ($OldName) -NewName ($NewName)
-
+    Add-Content -Path "$RootPath\Sommario.txt" -value $NewName
   }
-  #>
-
+  
   # Exit code
-
   $winscpResult = $LastExitCode
   if ($winscpResult -eq 0) {
     Add-Content -Path "$LocalLog" -Value "Download completed with success"
@@ -106,7 +100,6 @@ function Get-FTPCommesse {
   }
 
   # Convert to PDF (thanks to Patrick Gruenauer, https://sid-500.com )
-
   Write-Host "Inizio conversione file DOC in PDF"
   $word = New-Object -ComObject word.application 
   $FormatPDF = 17
@@ -125,13 +118,12 @@ function Get-FTPCommesse {
   Start-Sleep -Seconds 2 
   $word.Quit()
 
+  # Pulizia dei file DOC
   Remove-item -Path "$RootPath\*.doc","$RootPath\*.docx"
   Write-Host "Fine conversione file DOC in PDF"
 
   # Track performance
-
   $Clock.Stop()
-
   Add-Content -Path "$LocalLog" -Value "Execution time approx. $($Clock.Elapsed.Minutes) minutes $($Clock.Elapsed.Seconds) seconds"
   Write-Host "Estrazione durata circa $($Clock.Elapsed.Minutes) minuti"
 
