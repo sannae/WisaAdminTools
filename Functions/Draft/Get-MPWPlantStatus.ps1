@@ -19,18 +19,15 @@ function Get-MpwPlantStatus {
     [CmdletBinding()] param ()
 
     # Trova la cartella MPW e crea il file MpwPlantStatus
-
     $Root = Get-MPWRootFolder
     $StatusFile = "$Root\MpwPlantStatus.txt"
 
     # Scrivi la ragione sociale del cliente da MRT.LIC
-
     Add-Content -Path $StatusFile -Value "Cliente: " 
     $($(Get-Content -Path "$Root\MicronService\MRT.LIC" | Select-String -Pattern 'Licence') -Split '=')[1] | Out-File $StatusFile -Append
 
    # Lista dei servizi attivi, il cui percorso contiene \MPW
    # TODO: Export dei parametri importanti relativi ai servizi dalla T103COMPARAMS
-
     Get-Service | 
         Where-Object { $_.BinaryPathName -like "*$Root*" -AND $_.Status -eq 'Running' } | 
         Select-Object Name,DisplayName,Status,StartupType,BinaryPathName | 
@@ -38,7 +35,6 @@ function Get-MpwPlantStatus {
         Out-File $StatusFile -Append
 
     # Lista delle applicazioni web il cui percorso contiene \MPW
-
     $manager = Get-IISServerManager
     $manager.Sites.Applications | 
         Where-Object {$_.VirtualDirectories.PhysicalPath -like "*$Root*" } | 
@@ -47,11 +43,9 @@ function Get-MpwPlantStatus {
         Out-File $StatusFile -Append
 
     # Build connection string
-
     $ConnectionString = Get-MPWConnectionStrings
 
     # Versione installata
-
     Add-Content -Path $StatusFile -Value "Versione installata: " 
     $SqlVersioneInstallata = "
         -- Versione installata
@@ -62,7 +56,6 @@ function Get-MpwPlantStatus {
         Out-File $StatusFile -Append
 
     # Servizi btService con rispettiva GNetPath
-
     Add-Content -Path $StatusFile -Value "Servizi btService con rispettiva GNetPath: " 
     $SqlBtServices = "
         SELECT 
@@ -76,7 +69,6 @@ function Get-MpwPlantStatus {
         Out-File $StatusFile -Append
 
     # Famiglie di firmware presenti sul campo
-
     Add-Content -Path $StatusFile -Value "Famiglie di firmware presenti sul campo: " 
     $SqlFirmwareFamilies = "
         SELECT T22GNTYPE AS [Versione Firmware],COUNT(T22CODICE) AS [Terminali base attivi] 
@@ -87,7 +79,6 @@ function Get-MpwPlantStatus {
         Out-File $StatusFile -Append    
     
     # Terminali base attivi
-
     Add-Content -Path $StatusFile -Value "Terminali base attivi: " 
     $SqlTerminaliBase = "
         SELECT T22CODICE AS Codice, T22DESCRIZIONE AS Descrizione, T22GNTYPE AS [Firmware], 

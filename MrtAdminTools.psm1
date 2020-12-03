@@ -9,6 +9,7 @@ if ( $PVersionTable.PSVersion.Major -lt 5 ) {
     break
 }
 #>
+
 # Export public functions
 
 $PublicFunctionsFiles = [System.IO.Path]::Combine($PSScriptRoot,"Functions","Public","*.ps1")
