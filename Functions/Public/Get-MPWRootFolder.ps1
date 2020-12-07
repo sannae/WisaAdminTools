@@ -9,7 +9,7 @@
 .EXAMPLE
     PS> Get-MPWRootFolder
 .NOTES
-    1.0.0
+    1.0 (testato)
 #>
 
 function Get-MPWRootFolder {

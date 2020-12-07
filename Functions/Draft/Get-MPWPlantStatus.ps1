@@ -10,7 +10,8 @@
 .NOTES
     TODO: Aggiungere i dettagli dei servizi dalla T103, es. parametri di scarico timbrature
     TODO: Lista delle operazioni pianificate che includono il percorso 'MPW' o che includono i percorsi di export presenze trovati in T103COMPARAMS
-    TODO. Tecnologie usate nell'impianto (T22ACCTERMINALI) ed evemtuali codifiche (T54)
+    TODO: Tecnologie usate nell'impianto (T22ACCTERMINALI) ed evemtuali codifiche (T54)
+    TODO: Raccogliere le query SQL in una cartella da allegare al modulo Powershell e richiamarle da lì
 #>
 
 

@@ -10,7 +10,7 @@ function New-MrtMicronService {
     $Root = Get-MPWRootFolder
     New-Item -Path "$Root\MicronService$ServiceNumber" -ItemType Directory
 
-    # Installazione con installutil
+    # Installazione con New-Service
 
     # Modifica parametro Code nel file config
 

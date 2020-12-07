@@ -7,10 +7,11 @@
     I file della versione 'vecchia' vengono salvati in una cartella Applicazione_OLDVERSION
     Attenzione : vengono esclusi dalla sovrascrittura i file web.config e LIC
 .PARAMETER APPFULLNAME
-    Nome completo dell'applicazione (es. Micronpass, Micronsin, MicronpassMVC) 
+    Nome completo dell'applicazione (valori ammessi: Micronpass, Micronsin, MicronpassMVC) 
     Digitare correttamente, in quanto verrà usato per cercare la cartella omonima sotto MPW.
 .PARAMETER ZIPPATH
     Percorso in cui si trova il file zip contenente i file aggiornati.
+    Il percorso inserito viene validato dalla funzione stessa.
 .EXAMPLE
     PS> Update-MrtWebApp "Micronpass" "C:\temp"
 .EXAMPLE
@@ -28,23 +29,17 @@ function Update-MrtWebApp {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, Position = 0, 
-        HelpMessage="Digitare il nome completo dell'applicazione web: ")] 
+        HelpMessage="Digitare il nome completo dell'applicazione web: ")]
+        [ValidateSet("Micronpass","Micronsin","MicronpassMVC")]
             [string] $AppFullName,
         [Parameter(Mandatory = $true, Position = 1, 
         HelpMessage="Digitare il percorso completo con i file aggiornati: ")]
+        [ValidateScript ( { Test-Path $_} )]
             [string] $ZipPath
     )
 
     # Start clock
     $Clock = [Diagnostics.Stopwatch]::StartNew()
-
-    # Controllo che lo zip sia presente
-    if ( !(Test-Path "$ZipPath\*.zip") ) {
-        Write-Error "File ZIP non trovato al percorso $ZipPath ! Impossibile proseguire con l'aggiornamento."
-        break
-    } else {
-        Write-Verbose "Trovato file $(Get-Item "$ZipPath\*.zip")"
-    }
 
     # Seleziona l'application name
     if ( $AppFullName -eq "Micronpass" ) {

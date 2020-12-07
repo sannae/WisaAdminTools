@@ -1,6 +1,8 @@
 # MrtAdminTools.psm1
+# Write PowerShell to automate your business processes in order to reduce human input, errors and cost!
 
 # Controllo di versione di Powershell: ALMENO la 5.0!
+
 <#
 if ( $PVersionTable.PSVersion.Major -lt 5 ) {
     Write-Host "La tua versione di Powershell è obsoleta! Non posso eseguire questo script..."
@@ -21,7 +23,8 @@ Get-ChildItem -Path $PublicFunctionsFiles -Exclude *.tests.ps1, *profile.ps1 | F
     }
 }
 
-# Export private functions
+# Export private functions (not for now...)
+
 <#
 $PrivateFunctionsFiles = [System.IO.Path]::Combine($PSScriptRoot,"Functions","Private","*.ps1")
 Get-ChildItem -Path $PrivateFunctionsFiles -Exclude *.tests.ps1, *profile.ps1 | ForEach-Object {
