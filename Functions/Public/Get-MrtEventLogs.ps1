@@ -110,7 +110,7 @@ function Get-MrtEventLogs {
 
                     if ($LogRow.Content -match $SearchString) {
 
-                        # Aggiungi l'oggetto all'arraylist
+                        # Aggiungi l'oggetto all'arraylist LogResults
                         $LogResults.Add($LogRow) | Out-Null
                     }
                 }
@@ -118,7 +118,7 @@ function Get-MrtEventLogs {
         }
     }
 
-    # Print out results
+    # Stampa i risultati
     $LogResults = $LogResults | Sort-Object -Property DateTime
     $LogResults
 
