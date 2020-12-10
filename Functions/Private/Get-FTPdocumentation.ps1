@@ -40,7 +40,7 @@ function Get-FTPdocumentation {
   }
 
   # Download
-  $OpenConnectionString = Get-FTPOpenConnection
+  $OpenConnectionString = Open-FtpConnection
   & "C:\Program Files (x86)\WinSCP\WinSCP.com" `
     /log="$LocalLog" /ini=nul `
     /command `

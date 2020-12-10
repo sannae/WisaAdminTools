@@ -1,6 +1,6 @@
 <#
 .Synopsis
-    Import stampings (equivalent to timbra_import.bat)
+    Import stampings (equivalent to timbra_import.bat) - Not a function
 .DESCRIPTION
     The script renames the presenze.txt into pres.tmp and type its content into pres.txt, pres_storico.txt and pres2.txt.
     Then it starts the process tr1.exe.

@@ -1,4 +1,5 @@
 # MrtAdminTools.psm1
+#-----------------------------------------------------------------------------------------------------
 # Write PowerShell to automate your business processes in order to reduce human input, errors and cost!
 
 # Controllo di versione di Powershell: ALMENO la 5.0!
@@ -12,8 +13,7 @@ if ( $PVersionTable.PSVersion.Major -lt 5 ) {
 }
 #>
 
-# Export public functions
-
+# Export public functions (tested ones)
 $PublicFunctionsFiles = [System.IO.Path]::Combine($PSScriptRoot,"Functions","Public","*.ps1")
 Get-ChildItem -Path $PublicFunctionsFiles -Exclude *.tests.ps1, *profile.ps1 | ForEach-Object {
     try {
@@ -23,9 +23,7 @@ Get-ChildItem -Path $PublicFunctionsFiles -Exclude *.tests.ps1, *profile.ps1 | F
     }
 }
 
-# Export private functions (not for now...)
-
-<#
+# Export private functions (maintenance)
 $PrivateFunctionsFiles = [System.IO.Path]::Combine($PSScriptRoot,"Functions","Private","*.ps1")
 Get-ChildItem -Path $PrivateFunctionsFiles -Exclude *.tests.ps1, *profile.ps1 | ForEach-Object {
     try {
@@ -34,4 +32,3 @@ Get-ChildItem -Path $PrivateFunctionsFiles -Exclude *.tests.ps1, *profile.ps1 | 
         Write-Warning "$($_.Exception.Message)"
     }
 }
-#>

@@ -15,30 +15,32 @@
   Percorso locale in cui salvare i pacchetti scaricati.
   Lo script ne testa l'esistenza prima di procedere.
 .EXAMPLE
-  Get-FTPPackages Micronpass C:\.temp
+  Get-FtpLastPackages Micronpass C:\.temp
 .NOTES
   1.0 (testato per tutti i programmi elencati)
+  TODO: Incorporare NoService quando si scarica MicronService, invece di doverlo specificare separatamente
 #>
 
-function Get-FTPpackages {
+function Get-FtpLastPackages {
 
   [CmdletBinding()]
   param(
-    [Parameter(Mandatory = $true, Position = 0, 
-    HelpMessage="Inserire il nome del pacchetto (ATTENZIONE: Case-sensitive) (Tab-completion disponibile)")]
-    [ValidateSet(
-      "MRTInstaller",
-      "Micronpass",
-      "MicronService",
-      "NoService",
-      "MicronConfig",
-      "MicronMail",
-      IgnoreCase = $false)]
-      [string] $PackageName,
-    [Parameter(Mandatory = $true, Position = 1, 
-    HelpMessage="Digitare il percorso completo in cui salvare i file")]
-    [ValidateScript ( { Test-Path $_} )]
-          [string] $LocalPath
+  [Parameter(Mandatory = $true, Position = 0, 
+  HelpMessage="Digitare il percorso completo in cui salvare i file")]
+  [ValidateScript ( { Test-Path $_} )]
+    [string] $LocalPath,
+  [Parameter(Mandatory = $true, Position = 1, 
+  HelpMessage="Inserire il nome del pacchetto (ATTENZIONE: Case-sensitive) (Tab-completion disponibile)")]
+  [ValidateSet(
+    "MRTInstaller",
+    "Micronpass",
+    "MicronService",
+    "MicronServiceOffline",
+    "MicronConfig",
+    "MicronMail",
+    "NoService",
+    IgnoreCase = $false)]
+    [string] $PackageName
   )
 
   # Version
@@ -47,7 +49,7 @@ function Get-FTPpackages {
 
   # File mask (con l'eccezione di NoService)
   if ( $PackageName -eq "NoService" ) {
-    $FileMask = "*NOSRV.zip"
+    $FileMask = "*NOSRV.zip" # Quando scarichi MicronService, scarica anche NoService
     $RemotePath = "/MRT/MRT_FX4_PC_EXE/MicronService" + "/$Version"
   } else {
     $FileMask = "$*.zip"
@@ -55,7 +57,7 @@ function Get-FTPpackages {
   }
 
   # Download
-  $OpenConnectionString = Get-FTPOpenConnection
+  $OpenConnectionString = Open-FtpConnection
 
   & "C:\Program Files (x86)\WinSCP\WinSCP.com" `
     /ini=nul `

@@ -26,7 +26,7 @@
 
 # Ricerca commesse per descrizione
 
-function Get-FTPCommesse {
+function Get-FtpCommesseVR {
 
   [CmdletBinding()]
   param(
@@ -43,7 +43,7 @@ function Get-FTPCommesse {
   $AllegedRemotePath = '""/MC_Commesse/CO ' + $AllegedCustomer + '"*"'
 
   # Connection credentials
-  $OpenConnectionString = Get-FTPOpenConnection  
+  $OpenConnectionString = Open-FtpConnection 
 
   # Connessione FTP
   Write-Host "Sono state trovate le seguenti commesse: "

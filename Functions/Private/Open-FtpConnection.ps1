@@ -7,14 +7,14 @@
     Uno script equivalente può essere creato da WinSCP > Sessione > Genera URL/Script > Script Powershell.
     Il risultato viene richiamato da tutte le altre funzioni che richiedono di connettersi ad un server FTP.
 .EXAMPLE
-    Get-FTPOpenConnection
+    Open-FtpConnection
 .EXAMPLE
-    $FTPOpenConnectionString = GEt-FTPOpenConnection
+    $FTPOpenConnectionString = Open-FtpConnection
 .NOTES
     1.0 (tested)
 #>
 
-Function Get-FTPOpenConnection {
+Function Open-FtpConnection {
 
     # Eventualmente inserire qui dentro le credenziali
     $OpenConnectionString = "open ftpes://sanna:edo89%2B0304@79.11.21.211/ -certificate=`"`"3f:3f:9f:7a:49:0e:4d:80:12:69:af:70:cb:5c:72:a4:e7:3a:eb:f1`"`""

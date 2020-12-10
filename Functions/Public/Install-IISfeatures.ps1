@@ -10,6 +10,7 @@
     PS> ./Install-IISFeatures.ps1
 .NOTES
     TODO: aggiungere dei test automatici con Pester
+    TODO: Aggiungere nei parametri uno switch che permetta di leggere da file CSV
 .VERSION
     1.0 (testato)
 #>
@@ -19,7 +20,6 @@ function Install-IISFeatures {
     [CmdletBinding()] param ()
 
     # Controlla il tipo di OS
-
     $OSType = $(Get-ComputerInfo).WindowsInstallationType
     Write-Host "Current OS type: $OSType"
 
@@ -64,7 +64,6 @@ function Install-IISFeatures {
         #>
 
     # Crea array list da hash table: ogni chiave della hash table è una funzionalità con due sottochiavi client e server
-
     $IISFeaturesTable = @{
         ".NET Framework Features" = @{
             "Client" = "NetFx4-AdvSrvs"
@@ -141,7 +140,6 @@ function Install-IISFeatures {
         
 
     # Installa su workstation (modulo DISM)
-
     if ($OSType -eq "Client"){
         foreach ($feature in $IISFeaturesList){
             Write-verbose -Message "Installing $feature..."
@@ -153,7 +151,6 @@ function Install-IISFeatures {
     }
 
     # Installa su server modulo ServerManager
-
     elseif ($OSType -eq "Server"){
         foreach ($feature in $IISFeaturesList){
             Write-Verbose "Installing $feature..."
@@ -164,12 +161,10 @@ function Install-IISFeatures {
         }
     }
 
-    # RiavviaIIS
-
+    # Riavvia IIS
     Invoke-Command -ScriptBlock { iisreset } | Out-Null
 
     # Verifica versione di IIS
-
     if (Get-ChildItem 'HKLM:\SOFTWARE\Microsoft' | Where-Object {$_.Name -match 'InetStp'}) {
         $IISVersion = (Get-ItemProperty HKLM:\SOFTWARE\Microsoft\InetStp\).MajorVersion
         Write-Host "IIS $IISVersion successfully installed!"
