@@ -1,49 +1,49 @@
 # :hammer: MrtAdminTools :wrench:
-PowerShell module with helpful tools to assist administrators of the MRT Application Suite!
+Questo è un modulo PowerShell con alcuni strumenti utili (si spera!) per amministratori e installatori della MRT Application Suite!
 
-## Get the module
+## Ottenere il modulo
 
-### Install the module
-The module is _not_ available in [Powershell Gallery](https://www.powershellgallery.com/). 
-To have it available in every PS session, copy the whole `MrtAdminTools` folder in your default module paths.
-The list of existing default module paths is available with:
+### Installare il modulo
+Il modulo _non_ è pubblicato sulla [Powershell Gallery](https://www.powershellgallery.com/). 
+Per averlo disponibile in ogni sessione PowerShell, copiare l'intera cartella `MrtAdminTools` nei propri percorsi di default dei moduli.
+La lista dei percorsi di default dei moduli è visibile col comando:
 ```powershell
 $env:PSModulePath -split ';' | Where-Object { Test-Path $_ }
 ``` 
 
-### Import the module in the current Powershell session
-If already copied in the default module path:
+### Importare il modulo nella propria sessione PowerShell
+Se già copiato nei percorsi di default dei moduli:
 ```powershell
 Import-Module MrtAdminTools
 ```
-Otherwise,
+Altrimenti,
 ```powershell
 Import-Module \path\to\module\MrtAdminTools\MrtAdminTools.psm1
 ```
-The `Import-module` command will dot-source all the _public_ and _private_ functions.
+Il comando `Import-module` esporterà nella sessione (tramite _dot-source_) tutte le funzioni pubbliche e private.
 
-## Use the module
-You can list the included commands using:
+## Usare il modulo
+Per avere l'elenco dei _cmdlet_ inclusi nel modulo:
 ```powershell
 Get-command -Module MrtAdminTools
 ```
-To get help from any function:
+Per avere informazioni e aiuto riguardo ad una specifica funzione:
 ```powershell
 Get-Help FUNCTIONNAME
 ```
 
-### Available & tested functions:
-The tested functions are available in the `Functions\Public` subfolder:
-* `Get-MpwApplicationPool`: returns the application pool of a specific web application
-* `Get-MpwCurrentVersion`: returns the current version of Micronpass Web application
-* `Get-MpwRootFolder`: finds the path of the `MPW` folder in the filesystem
-* `Get-MrtConnectionStrings`: returns the connection string to the SQL Server MRT database
-* `Get-MrtEventLogs` :star: : it collects and displays all the logs of a specific application folder
-* `Install-IISFeatures` :star: : installs all the required IIS roles and features
-* `Invoke-MPWDatabaseQuery`: runs a selected query provided as input on the MRT database
-* `Update-MrtWebApp` :star: : updates a web application to the latest patch, provided the zip file
+### Funzioni testate:
+Le funzioni testate sono disponibili nella sottocartella `Functions\Public`:
+* `Get-MpwApplicationPool`: restituisce l'application pool di una specifica applicazione web
+* `Get-MpwCurrentVersion`: restituisce la versione corrente di Micronpass Web
+* `Get-MpwRootFolder`: trova la cartella `MPW` nel filesystem
+* `Get-MrtConnectionStrings`: restituisce la stringa di connessione SQL Server al database MRT
+* `Get-MrtEventLogs` :star: : raccoglie e visualizza il contenuto di tutti i log di una specifica applicazione
+* `Install-IISFeatures` :star: : installa tutti i ruoli e funzionalità IIS
+* `Invoke-MpwDatabaseQuery`: esegue una specifica query sul database MRT
+* `Update-MrtWebApp` :star: : esegue l'aggiornamento di un'applicazione web all'ultima release
 
-A bunch of private functions (`Functions\Public`) are available as well:
-* `Get-FtpCommesseVR`: downloads via FTPES all the VR (released versions) of a specific customer's orders
-* `Get-FtpLastPackages`: download via FTPES the latest release ZIP package of a specified application
-* `Open-FtpConnection`: it opens a FTPES connection to the Dev server
+Sono disponibili anche alcune funzioni private di manutenzione (`Functions\Private`):
+* `Get-FtpCommesseVR`: scarica via FTPES tutti i documenti VR (Versione Rilasciata) di uno specifico cliente
+* `Get-FtpLastPackages`: scarica via FTPES il pacchetto ZIP corrispondente all'ultima release di una o più applicazioni
+* `Open-FtpConnection`: apre una connessione FTPES verso il repository di sviluppo
