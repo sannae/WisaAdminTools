@@ -3,7 +3,7 @@ PowerShell module with helpful tools to assist administrators of the MRT Applica
 
 ## Get the module
 
-# Install the module
+### Install the module
 The module is _not_ available in [Powershell Gallery](https://www.powershellgallery.com/). 
 To have it available in every PS session, copy the whole `MrtAdminTools` folder in your default module paths.
 The list of existing default module paths is available with:
