@@ -8,18 +8,18 @@
     Nel caso di UPDATE/DELETE, i dati non vengono scritti in output.
 .PARAMETER CONNECTIONSTRING
     Stringa di connessione al database; deve essere nel formato "User ID =;Password=;Initial Catalog=;Data Source="
-    Se non fornita dall'utente sottoforma di parametro, viene data per scontata la stringa di connessione ricavata dalla funzione Get-MrtConnectionString (v. help relativo).
+    Se non fornita dall'utente sottoforma di parametro, viene data per scontata la stringa di connessione ricavata dalla funzione Get-MrtConnectionStrings (v. help relativo).
 .PARAMETER QUERY
     Query da eseguire, in formato stringa (es. "SELECT * FROM TABLE").
     Eventualmente si può acquisire da un file esterno usando $Query = $(Get-Content FILE.sql)
 .EXAMPLE
     PS> Invoke-MPWDatabaseQuery -ConnectionString $ConnectionString -Query "SELECT * FROM TABLE"
+    Esegue la query indicata connettendosi con la stringa di connessione specificata.
 .EXAMPLE
-    PS> Invoke-MPWDatabaseQuery -ConnectionString $ConnectionString -Query $(Get-Content File.sql)
+    PS> Invoke-MPWDatabaseQuery -Query $(Get-Content File.sql)
+    Esegue la query contenuta in File.sql connettendosi all'istanza ricavata dalla funzione Get-MrtConnectionStrings
 .NOTES
-    0.0.9
-    TODO: 
-
+    1.0 (testato in locale)
 #>
 function Invoke-MPWDatabaseQuery
 {
@@ -29,7 +29,7 @@ function Invoke-MPWDatabaseQuery
         [Parameter(
             HelpMessage="Digita la stringa di connessione rispettando il pattern 'User ID =;Password=;Initial Catalog=;Data Source='",
             ValueFromPipeline=$true)]
-                [string]$ConnectionString,
+                [string]$ConnectionString = (Get-MrtConnectionStrings),
         [Parameter(Mandatory=$True)][string]$Query
     )
 

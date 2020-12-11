@@ -24,7 +24,7 @@ function Get-MpwPlantStatus {
     $StatusFile = "$Root\MpwPlantStatus.txt"
 
     # Scrivi la ragione sociale del cliente da MRT.LIC
-    Add-Content -Path $StatusFile -Value "Cliente: " 
+    Add-Content -Path $StatusFile -Value "Licenza d'uso concessa a: " 
     $($(Get-Content -Path "$Root\MicronService\MRT.LIC" | Select-String -Pattern 'Licence') -Split '=')[1] | Out-File $StatusFile -Append
 
    # Lista dei servizi attivi, il cui percorso contiene \MPW

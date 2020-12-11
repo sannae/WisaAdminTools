@@ -14,7 +14,7 @@
 #>
 
 
-function Get-FTPdocumentation {
+function Get-FtpDocumentation {
 
   # Paths (CASE SENSITIVE)
   $RemotePath = '/MRT/MRT_FascicoloTecnico/MRT_Fascicolo_work'

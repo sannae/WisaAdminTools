@@ -1,20 +1,22 @@
 <#
 .SYNOPSIS
-  Lo script si collega automaticamente al server Bitech e scarica le VR (Versioni Rilasciate) e i MT (Manuali tecnici) di un determinato cliente
+  Lo script si collega automaticamente al server Bitech e scarica le VR (Versioni Rilasciate) e i MT (Manuali tecnici) di un determinato cliente.
 .DESCRIPTION
+  L'idea è quella di avere una panoramica delle personalizzazioni software/firmware richieste da un cliente.
   Lo script usa la CLI di WinSCP per connettersi al server Bitech via SFTP e scaricare i documenti indicati.
   La variabile $AllegedCustomer è la descrizione approssimativa del cliente, usata come filtro di ricerca nelle commesse.
   Lo script cerca la stringa $AllegedCustomer nella cartella /MC_COMMESSE per mostrare all'utente quali clienti corrispondono alla stringa cercata.
   La variabile $RealCustomer, richiesta all'utente, è quella usata per cercare i documenti VR e MT.
-  La cartella di destinazione è scritta nella variabile $RootPath.
+  La cartella di destinazione è scritta nella variabile $LocalPath.
   I documenti vuoti (quelli che si chiamano "VR_Versione Rilasciata") vengono eliminati, e i rimanenti convertiti da DOC/DOCX in PDF.
-   n oggetto C# di classe Stopwatch misura la performance dello script e la scrive nel log.
+  Un oggetto C# di classe Stopwatch misura la performance dello script e la scrive nel log.
 .PARAMETER ALLEGEDCUSTOMER
-  Nome del cliente cercato, anche approssimativo.
+  Nome del cliente cercato, anche approssimativo. 
+  Lo script prevede uno step interattivo in cui l'utente deve selezionare il risultato corretto tra quelli trovati. 
 .PARAMETER ROOTPATH
   Percorso in cui scaricare i file. La validità del percorso viene testata.
 .EXAMPLE
-  PS> ./Get-FTPcommesse.ps1 Cliente "C:\.temp"
+  PS> ./Get-FTPcommesse.ps1 -AllegedCustomer Cliente -LocalPath "C:\.temp"
 .NOTES
   0.9 (da completare)
   Richiede WinSCP installato e presente in C:\Program Files(x86)\WinSCP\WinSCP.exe
@@ -36,7 +38,7 @@ function Get-FtpCommesseVR {
     [Parameter(Mandatory = $true, Position = 1, 
     HelpMessage="Digitare il percorso completo in cui salvare i file")]
     [ValidateScript ( { Test-Path $_} )]
-          [string] $RootPath  
+          [string] $LocalPath  
   )
 
   # Percorso remoto
@@ -64,17 +66,17 @@ function Get-FtpCommesseVR {
   $RemotePath = '""/MC_Commesse/CO ' + $RealCustomer + '""'
 
   # Dove si vogliono salvare i documenti finali; viene anche creato un log
-  $LocalLog = "$RootPath\WinSCP_commesse.log"
-  Write-Host "I file di commessa verranno scaricati in $RootPath . È disponibile un log della connessione FTP in $LocalLog"
+  $LocalLog = "$LocalPath\WinSCP_commesse.log"
+  Write-Host "I file di commessa verranno scaricati in $LocalPath . È disponibile un log della connessione FTP in $LocalLog"
 
   # LocalPath (CASE SENSITIVE) : cartella temporanea in cui verranno salvati tutti i documenti prima di essere filtrati
-  New-Item -Path $RootPath -Name "temp" -ItemType "Directory" | Out-Null
-  $LocalPath = "$RootPath\temp"
+  New-Item -Path $LocalPath -Name "temp" -ItemType "Directory" | Out-Null
+  $LocalPath = "$LocalPath\temp"
 
   # Open connection and execute commands: execution is timed
   $Clock = [Diagnostics.Stopwatch]::StartNew()
   
-  if ( Test-Path "$RootPath\WinSCP_commesse.log" ) {
+  if ( Test-Path "$LocalPath\WinSCP_commesse.log" ) {
     Remove-Item -Path "$LocalLog"
   }
 
@@ -87,17 +89,17 @@ function Get-FtpCommesseVR {
       "get -filemask=MT_*.doc $RemotePath $LocalPath" `
       "exit"
 
-  # Spostare i file ricavati da LocalPath a RootPath, rimuovendo tutte le cartelle vuote e le commesse non chiuse
+  # Spostare i file ricavati da LocalPath a LocalPath, rimuovendo tutte le cartelle vuote e le commesse non chiuse
   Foreach ( $file in $(Get-ChildItem -Path "$LocalPath\*.doc", "$LocalPath\*.pdf" -Recurse) ) {
-    Move-Item -Path $file -Destination $RootPath
+    Move-Item -Path $file -Destination $LocalPath
   }
   Remove-Item -Recurse $LocalPath
-  if ( Test-Path -Path "$RootPath\VR_Versione_rilasciata.doc" ) {
-    Remove-Item -Path "$RootPath\VR_Versione_rilasciata.doc"
+  if ( Test-Path -Path "$LocalPath\VR_Versione_rilasciata.doc" ) {
+    Remove-Item -Path "$LocalPath\VR_Versione_rilasciata.doc"
   }
 
   # Rinomina i file come da oggetto di ciascun Word 
-  Foreach ( $file in $(Get-ChildItem -Path "$RootPath\*.doc", "$RootPath\*.pdf") ) {
+  Foreach ( $file in $(Get-ChildItem -Path "$LocalPath\*.doc", "$LocalPath\*.pdf") ) {
     $Titolo = $(Get-Content $file | Select-String -pattern "Progetto: ").Line.Split(": ")[1] # Titolo del progetto
     $Titolo = $Titolo.Substring(0,$Titolo.Length-2) # Gli ultimi due caratteri, non validi per la stringa, sono scartati
     $Titolo = $Titolo -Replace "/","-"
@@ -122,10 +124,10 @@ function Get-FtpCommesseVR {
   $word.visible = $false 
   $types = '*.docx','*.doc'
     
-  $files = Get-ChildItem -Path $RootPath -Include $Types -Recurse -ErrorAction Stop
+  $files = Get-ChildItem -Path $LocalPath -Include $Types -Recurse -ErrorAction Stop
         
   foreach ($f in $files) {
-    $path = $RootPath + '\' + $f.Name.Substring(0,($f.Name.LastIndexOf('.')))
+    $path = $LocalPath + '\' + $f.Name.Substring(0,($f.Name.LastIndexOf('.')))
     $doc = $word.documents.open($f.FullName) 
     $doc.saveas($path,$FormatPDF) 
     $doc.close()
@@ -135,7 +137,7 @@ function Get-FtpCommesseVR {
   $word.Quit()
 
   # Pulizia dei file DOC
-  Remove-item -Path "$RootPath\*.doc","$RootPath\*.docx"
+  Remove-item -Path "$LocalPath\*.doc","$LocalPath\*.docx"
   Write-Host "Fine conversione file DOC in PDF"
 
   # Track performance
@@ -144,6 +146,6 @@ function Get-FtpCommesseVR {
   Write-Host "Estrazione durata circa $($Clock.Elapsed.Minutes) minuti"
 
   # Open folder
-  Invoke-Item $RootPath
+  Invoke-Item $LocalPath
 
 }

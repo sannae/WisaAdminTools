@@ -8,6 +8,7 @@
     Data e contenuto di ogni riga sono poi usati per costruire un PSCustomObject.
     La data è filtrata con i parametri $StartDate e $StopDate.
     Eventualmente è possibile fare in modo che vengano filtrate solo le righe contenenti una cerca stringa, indicata nella variabile $SearchString.
+    L'oggetto ritornato è un ArrayList che viene outputato su host ordinato per DateTime crescente.
 .PARAMETER APPLICATIONNAME
     È il nome dell'applicazione, win o web, di cui estrarre i log. È un parametro obbligatorio.
     Il nome va specificato in maniera esatta, perché viene usato per cercare la cartella omonima da cui estrarre i log.
@@ -35,6 +36,7 @@
 .NOTES
     1.0
     TODO: Cambiare il parametro $SearchString da stringa singola ad array di stringhe
+    TODO: Gestire il parametro $SearchString con -Include ed -Exclude, così da poter omettere le righe inutili
 #>
 
 function Get-MrtEventLogs {
@@ -74,7 +76,7 @@ function Get-MrtEventLogs {
 
         # Nome del log
         $LogName = $Log.Name
-        Write-Verbose "Mi sto leggendo il log $LogName..."
+        Write-Verbose "Mi sto leggendo tutto il log $LogName..."
 
         # Contenuto del log, splittato per riga
         $logContent = Get-Content $Log | Select-Object -skip 1 # Rimuove la prima riga di servicelog.log
@@ -95,10 +97,7 @@ function Get-MrtEventLogs {
             $RowDate = $RowDate.Substring(0, 19) + '.' + $RowDate.Substring(21, 2) # Per il confronto di seguito
             $RowContent = ($_ -split '\s', 3)[2]
 
-            # Parsing della data per poterla confrontare dopo
-
-
-                # Confronto di date
+            # Confronto di date
                 if (([DateTime]::Parse("$Rowdate") -gt [DateTime]::Parse("$StartDate")) -and ([DateTime]::PArse("$Rowdate") -lt [DateTime]::Parse("$StopDate"))) {
 
                     # Crea l'oggetto riga

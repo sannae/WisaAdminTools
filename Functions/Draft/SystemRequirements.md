@@ -7,7 +7,7 @@ The following requirements involve the standard components of the Micronpass App
 * Web & DB Server combined: 4 vCPU, 8GB RAM, 100GB HD dedicated data partition
 
 ### Supported OSs
-* OS Server 32-64 bit: Windows Server 2012 R2 or higher
+* OS Server 32-64 bit: Windows Server 2012 R2 (end of extended support: 10 Jan 2023) or higher
 * OS Client 32-64 bit: Windows 7 / Windows 8.1 / Windows 10
 
 ### Software requirements

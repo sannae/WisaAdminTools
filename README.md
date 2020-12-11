@@ -1,20 +1,26 @@
-# MrtAdminTools
-PowerShell module to assist administrators of the MRT Application Suite
+# :hammer: MrtAdminTools :wrench:
+PowerShell module with helpful tools to assist administrators of the MRT Application Suite!
 
 ## Get the module
 
-### Install the module
-The module is *not* available on Powershell Gallery.
+# Install the module
+The module is _not_ available in [Powershell Gallery](https://www.powershellgallery.com/). 
+To have it available in every PS session, copy the whole `MrtAdminTools` folder in your default module paths.
+The list of existing default module paths is available with:
 ```powershell
-Install-Module MrtAdminTools
-```
+$env:PSModulePath -split ';' | Where-Object { Test-Path $_ }
+``` 
 
 ### Import the module in the current Powershell session
-If already installed on the system:
+If already copied in the default module path:
 ```powershell
-Import-Module MRTAdminTools
+Import-Module MrtAdminTools
 ```
-The `Import-module` command will dot-source all the _public_ functions.
+Otherwise,
+```powershell
+Import-Module \path\to\module\MrtAdminTools\MrtAdminTools.psm1
+```
+The `Import-module` command will dot-source all the _public_ and _private_ functions.
 
 ## Use the module
 You can list the included commands using:
@@ -36,3 +42,8 @@ The tested functions are available in the `Functions\Public` subfolder:
 * `Install-IISFeatures` :star: : installs all the required IIS roles and features
 * `Invoke-MPWDatabaseQuery`: runs a selected query provided as input on the MRT database
 * `Update-MrtWebApp` :star: : updates a web application to the latest patch, provided the zip file
+
+A bunch of private functions (`Functions\Public`) are available as well:
+* `Get-FtpCommesseVR`: downloads via FTPES all the VR (released versions) of a specific customer's orders
+* `Get-FtpLastPackages`: download via FTPES the latest release ZIP package of a specified application
+* `Open-FtpConnection`: it opens a FTPES connection to the Dev server
