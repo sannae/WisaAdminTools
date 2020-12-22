@@ -1,5 +1,7 @@
 # Imposta il valore NEWVALUE sul parametro PARAMETER nel file config CONFIGFILE
 
+# Da finire di testare !
+
 function Update-MrtConfigFile {
 
     [CmdletBinding()]

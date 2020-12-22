@@ -206,25 +206,7 @@ function Install-CrystalReports {
 
     [CmdletBinding()] param()
 
-    # Check if setup file is present
 
-    $CRsetupfile32 = (Get-Item CRRuntime_32bit*.msi).Name
-    $CRsetupfile64 = (Get-Item CRRuntime_64bit*.msi).Name
-    if(!(Test-Path ".\$CRsetupfile32" -or Test-Path ".\$CRsetupfile64")) {
-        Write-Error "Crystal Reports setup file not found! Please copy it to root folder."  
-        break
-    } 
-
-    # Silently install msi and create error log using msiexec
-
-    $msi32Arguments = '/qn','/i',"$CRsetupfile32",'/l*e ".\LOGS\CR32_MSI_install.log"'
-    $InstallProcess32 = Start-Process -PassThru -Wait msiexec -ArgumentList $msi32Arguments
-    Start-sleep -s 20
-    $msi64Arguments = '/qn','/i',"$CRsetupfile64",'/l*e ".\LOGS\CR64_MSI_install.log"'
-    $InstallProcess64 = Start-Process -PassThru -Wait msiexec -ArgumentList $msi64Arguments
-    Start-sleep -s 20
-
-    ## TODO: Check if installation was successful in the list of Programs
 
 }
 

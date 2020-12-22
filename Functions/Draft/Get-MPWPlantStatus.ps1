@@ -34,6 +34,8 @@ function Get-MpwPlantStatus {
         Select-Object Name,DisplayName,Status,StartupType,BinaryPathName | 
         Format-Table | 
         Out-File $StatusFile -Append
+    # Per Powershell < 6.0 :Get-WmiObject win32_service | where-object { $_.PathName -like "*$Root*" } | ft
+
 
     # Lista delle applicazioni web il cui percorso contiene \MPW
     $manager = Get-IISServerManager
