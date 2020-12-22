@@ -6,6 +6,9 @@
     Vengono lette sia la chiave di registro con i programmi a 32bit sia quella con i programmi a 64bit.
     Per ogni record, viene confrontata la proprietà DisplayName con la stringa inserita come input.
     Per ogni risultato, scrive le proprietà DisplayName, DisplayVersion, InstallDate e Version.
+.PARAMETER NAME
+    Descrizione anche parziale del programma da cercare.
+    Il confronto è fatto con operatore -match rispetto alla proprietà DisplayName.
 .EXAMPLE
     PS> Test-InstalledProgram Notepad
     Verifica che esistano programmi installati la cui descrizione contiene "notepad"
