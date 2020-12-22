@@ -10,11 +10,8 @@ function Install-CrystalReports {
         [string] $MsiPath
     )
     
-    # Check if setup file is present
-
     (Get-Item "$MsiPath\CRRuntime_*.msi").Name | ForEach-Object {
 
-        # Silently install msi and create error log using msiexec
         $MsiArgs = @(
             "/qn"
             "/i"
@@ -23,10 +20,8 @@ function Install-CrystalReports {
         )
 
         $InstallProcess = Start-Process -PassThru -Wait "MsiExec.exe" -ArgumentList $MsiArgs
+        Write-Host $InstallProcess.ExitCode
 
     }
-
-    # Test
-    Test-InstalledProgram "Crystal Reports"
 
 }
