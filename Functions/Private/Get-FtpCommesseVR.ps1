@@ -5,7 +5,7 @@
   L'idea è quella di avere una panoramica delle personalizzazioni software/firmware richieste da un cliente.
   Lo script usa la CLI di WinSCP per connettersi al server Bitech via SFTP e scaricare i documenti indicati.
   La variabile $AllegedCustomer è la descrizione approssimativa del cliente, usata come filtro di ricerca nelle commesse.
-  Lo script cerca la stringa $AllegedCustomer nella cartella /MC_COMMESSE per mostrare all'utente quali clienti corrispondono alla stringa cercata.
+  Per passare dal cliente 'approssimativo' $AllegedCustomer al cliente con dicitura 'reale' $RealCustomer viene chiamata la funzione Get-FtpCustomer.
   La variabile $RealCustomer, richiesta all'utente, è quella usata per cercare i documenti VR e MT.
   La cartella di destinazione è scritta nella variabile $LocalPath.
   I documenti vuoti (quelli che si chiamano "VR_Versione Rilasciata") vengono eliminati, e i rimanenti convertiti da DOC/DOCX in PDF.
@@ -18,15 +18,11 @@
 .EXAMPLE
   PS> ./Get-FTPcommesse.ps1 -AllegedCustomer Cliente -LocalPath "C:\.temp"
 .NOTES
-  0.9 (da completare)
+  1.0 (Testato)
   Richiede WinSCP installato e presente in C:\Program Files(x86)\WinSCP\WinSCP.exe
-  Il nome del cliente nella variabile $RealCustomer deve essere preciso e case-sensitive.
   IMPORTANTE: Questo script dà per scontate una serie di convenzioni di nomenclatura.
-  TODO: Bisogna testare con commesse particolarmente vecchie che probabilmenten non seguono queste convenzioni.
-  TODO: E se volessi invece i documenti di una specifica commessa?
+  TODO: Bisogna testare con commesse particolarmente vecchie che probabilmente non seguono queste convenzioni.
 #>
-
-# Ricerca commesse per descrizione
 
 function Get-FtpCommesseVR {
 
@@ -41,70 +37,58 @@ function Get-FtpCommesseVR {
           [string] $LocalPath  
   )
 
-  # Percorso remoto
-  $AllegedRemotePath = '""/MC_Commesse/CO ' + $AllegedCustomer + '"*"'
-
-  # Connection credentials
-  $OpenConnectionString = Open-FtpConnection 
-
-  # Connessione FTP
-  Write-Host "Sono state trovate le seguenti commesse: "
-  & "C:\Program Files (x86)\WinSCP\WinSCP.com" `
-    /log="$LocalLog" /ini=nul `
-    /command `
-      $OpenConnectionString `
-      "ls $AllegedRemotePath" `
-      "close" `
-      "exit" `
-      | Select-String -pattern "CO "
-
-  # Remote Path (CASE SENSITIVE)
-  Write-Host "`n"
-  Write-Host "Sulla base dell'elenco riportato, inserire la ragione sociale esatta del cliente di cui scaricare le commesse."
-  Write-Host " !!! ATTENZIONE: inserire la dicitura PRECISA del cliente, la ricerca sarà case-sensitive !!! "
-  $RealCustomer = Read-Host -Prompt "Digitare di seguito il nome completo del cliente"
+  # Fai selezionare all'utente il cliente
+  Write-Verbose "Sto cercando il cliente $AllegedCustomer nel repository delle commesse..."
+  $RealCustomer = Get-FtpCustomer $AllegedCustomer
+  Write-Verbose "È stato selezionato il cliente $RealCustomer"
   $RemotePath = '""/MC_Commesse/CO ' + $RealCustomer + '""'
 
   # Dove si vogliono salvare i documenti finali; viene anche creato un log
   $LocalLog = "$LocalPath\WinSCP_commesse.log"
-  Write-Host "I file di commessa verranno scaricati in $LocalPath . È disponibile un log della connessione FTP in $LocalLog"
-
-  # LocalPath (CASE SENSITIVE) : cartella temporanea in cui verranno salvati tutti i documenti prima di essere filtrati
-  New-Item -Path $LocalPath -Name "temp" -ItemType "Directory" | Out-Null
-  $LocalPath = "$LocalPath\temp"
-
-  # Open connection and execute commands: execution is timed
-  $Clock = [Diagnostics.Stopwatch]::StartNew()
-  
   if ( Test-Path "$LocalPath\WinSCP_commesse.log" ) {
     Remove-Item -Path "$LocalLog"
   }
+  Write-Verbose "I file di commessa verranno scaricati in $LocalPath . È disponibile un log della connessione FTP in $LocalLog"
 
+  # LocalPath (CASE SENSITIVE) : cartella temporanea in cui verranno salvati tutti i documenti prima di essere filtrati
+  New-Item -Path $LocalPath -Name "temp" -ItemType "Directory" | Out-Null
+  $LocalTempPath = "$LocalPath\temp"
+
+  # Inizio orologio
+  $Clock = [Diagnostics.Stopwatch]::StartNew()
+  
+  # Credenziali di connessione
+  $OpenConnectionString = Open-FtpConnection 
+
+  # Download
+  Write-Verbose "Download in corso dal server FTP..."
   & "C:\Program Files (x86)\WinSCP\WinSCP.com" `
     /log="$LocalLog" /ini=nul `
     /command `
       $OpenConnectionString `
       "cd $RemotePath" `
-      "get -filemask=VR_*.doc $RemotePath $LocalPath" `
-      "get -filemask=MT_*.doc $RemotePath $LocalPath" `
-      "exit"
-
+      "get -filemask=VR_*.doc $RemotePath $LocalTempPath" `
+      "get -filemask=MT_*.doc $RemotePath $LocalTempPath" `
+      "exit" | Out-Null
+ 
   # Spostare i file ricavati da LocalPath a LocalPath, rimuovendo tutte le cartelle vuote e le commesse non chiuse
-  Foreach ( $file in $(Get-ChildItem -Path "$LocalPath\*.doc", "$LocalPath\*.pdf" -Recurse) ) {
+  Foreach ( $file in $(Get-ChildItem -Path "$LocalTempPath\*.doc", "$LocalTempPath\*.pdf" -Recurse) ) {
     Move-Item -Path $file -Destination $LocalPath
   }
-  Remove-Item -Recurse $LocalPath
+  Remove-Item -Recurse $LocalTempPath
   if ( Test-Path -Path "$LocalPath\VR_Versione_rilasciata.doc" ) {
     Remove-Item -Path "$LocalPath\VR_Versione_rilasciata.doc"
   }
 
   # Rinomina i file come da oggetto di ciascun Word 
+  Write-Verbose "Rinomino i file scaricati con la corrispondente descrizione..."
   Foreach ( $file in $(Get-ChildItem -Path "$LocalPath\*.doc", "$LocalPath\*.pdf") ) {
     $Titolo = $(Get-Content $file | Select-String -pattern "Progetto: ").Line.Split(": ")[1] # Titolo del progetto
     $Titolo = $Titolo.Substring(0,$Titolo.Length-2) # Gli ultimi due caratteri, non validi per la stringa, sono scartati
     $Titolo = $Titolo -Replace "/","-"
     $NewName = $file.BaseName + ' - ' + $Titolo + '.doc'
     Rename-Item -Path $file -NewName $NewName
+    Write-Verbose "Ho rinominato il file $file"
   }
   
   # Exit code
@@ -118,34 +102,15 @@ function Get-FtpCommesseVR {
   }
 
   # Convert to PDF (thanks to Patrick Gruenauer, https://sid-500.com )
-  Write-Host "Inizio conversione file DOC in PDF"
-  $word = New-Object -ComObject word.application 
-  $FormatPDF = 17
-  $word.visible = $false 
-  $types = '*.docx','*.doc'
-    
-  $files = Get-ChildItem -Path $LocalPath -Include $Types -Recurse -ErrorAction Stop
-        
-  foreach ($f in $files) {
-    $path = $LocalPath + '\' + $f.Name.Substring(0,($f.Name.LastIndexOf('.')))
-    $doc = $word.documents.open($f.FullName) 
-    $doc.saveas($path,$FormatPDF) 
-    $doc.close()
-  }
-
-  Start-Sleep -Seconds 2 
-  $word.Quit()
-
-  # Pulizia dei file DOC
-  Remove-item -Path "$LocalPath\*.doc","$LocalPath\*.docx"
-  Write-Host "Fine conversione file DOC in PDF"
+  ConvertTo-PdfFromWord $LocalPath
 
   # Track performance
   $Clock.Stop()
   Add-Content -Path "$LocalLog" -Value "Execution time approx. $($Clock.Elapsed.Minutes) minutes $($Clock.Elapsed.Seconds) seconds"
-  Write-Host "Estrazione durata circa $($Clock.Elapsed.Minutes) minuti"
+  Write-Verbose "Estrazione durata circa $($Clock.Elapsed.Minutes) minuti"
 
   # Open folder
+  Write-Verbose "Sto aprendo la cartella $LocalPath..."
   Invoke-Item $LocalPath
 
 }

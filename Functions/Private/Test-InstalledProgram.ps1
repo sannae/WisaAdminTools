@@ -3,6 +3,7 @@
     Verifica che un programma sia installato nel sistema operativo.
 .DESCRIPTION
     Lo script va a leggere le chiavi di registro contenenti l'elenco dei programmi installati.
+    Si tratta solo dei programmi "disinstallabili" listabili dal menu Programs And Features del Pannello di Controllo.
     Vengono lette sia la chiave di registro con i programmi a 32bit sia quella con i programmi a 64bit.
     Per ogni record, viene confrontata la proprietà DisplayName con la stringa inserita come input.
     Per ogni risultato, scrive le proprietà DisplayName, DisplayVersion, InstallDate e Version.
@@ -10,8 +11,8 @@
     Descrizione anche parziale del programma da cercare.
     Il confronto è fatto con operatore -match rispetto alla proprietà DisplayName.
 .EXAMPLE
-    PS> Test-InstalledProgram Notepad
-    Verifica che esistano programmi installati la cui descrizione contiene "notepad"
+    PS> Test-InstalledProgram SQL
+    Verifica che esistano programmi installati la cui descrizione contiene "SQL"
 .NOTES
     1.0 (tested)
 #>

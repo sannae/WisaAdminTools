@@ -14,19 +14,20 @@ function Get-MRTSystemRequirements {
     }
 
     # Check OS version
-
     Write-Verbose "Checking OS version"
     $OSversion = (Get-ComputerInfo).OSName
     Write-Verbose "The OS version is $OSversion"
 
     # Check if user is Administrator
-
     Write-Host "Checking currently logged user's role"
     $principal = New-Object System.Security.Principal.WindowsPrincipal([System.Security.Principal.WindowsIdentity]::GetCurrent()) 
     if (!( $principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)) ) {
         Write-Error "The currently logged user is not Administrator" -ForegroundColor Red; 
         break
     }
+
+    # Rimuovi UAC (User Account Control) - cioè il pannello che chiede il prompt amministrativo all'utente
+    New-ItemProperty -Path HKLM:Software\Microsoft\Windows\CurrentVersion\policies\system -Name EnableLUA -PropertyType DWord -Value 0 -Force
 
     # Check .NET Framework version 
 

@@ -23,11 +23,13 @@ function Get-FtpDocumentation {
 
   # Docs (CASE SENSITIVE)
   $DocInstaller = 'MT_MRT_Installer_II.doc'
+  $DocMicronImport = 'MT_MRT_MicronImport.doc'
   $DocMicronpass = 'MT_MRT_MicronPass_VI.doc'
   $DocMicronpassMVC = 'MT_MRT_MicronPassMVC.docx'
   $DocMicronService = 'MT_MRT_MicronService_III.doc'
   $DocMicronServiceOffline = 'MT_MRT_MicronServiceOFFLine.doc'
   $DocMicronConfig = 'MT_MRT_MicronConfig.doc'
+  $DocMicronStart = 'MT_MRT_MicronStart.doc'
   $DocKARM_all_docs = "MT_MRT_KARM_*.doc"
   $DocKARM_all_docxs = "MT_MRT_KARM_*.docx"
 
@@ -47,11 +49,13 @@ function Get-FtpDocumentation {
       $OpenConnectionString `
       "cd $RemotePath" `
       "get $DocInstaller $LocalPath\" `
+      "get $DocMicronImport $LocalPath\" `
       "get $DocMicronpass $LocalPath\" `
       "get $DocMicronpassMVC $LocalPath\" `
       "get $DocMicronService $LocalPath\" `
       "get $DocMicronServiceOffline $LocalPath\" `
       "get $DocMicronConfig $LocalPath\" `
+      "get $DocMicronStart $LocalPath\" `
       "get $DocKARM_all_docs $DocKARM_all_docxs $LocalPath\" `
       "exit"
 

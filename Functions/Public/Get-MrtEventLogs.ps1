@@ -50,7 +50,8 @@ function Get-MrtEventLogs {
         [ValidateSet(
             "MicronService", 
             "NoService",
-            "Micronpass")]
+            "Micronpass",
+            "MicronConfig")]
         [string]$ApplicationName,
         [Parameter(
             HelpMessage = "Digitare data ora di inizio (dd-MM-yyyy hh:mm:ss)")]
@@ -92,12 +93,13 @@ function Get-MrtEventLogs {
 
                 continue
             
-            } else {
+            }
+            else {
 
-            $RowDate = $RowDate.Substring(0, 19) + '.' + $RowDate.Substring(21, 2) # Per il confronto di seguito
-            $RowContent = ($_ -split '\s', 3)[2]
+                $RowDate = $RowDate.Substring(0, 19) + '.' + $RowDate.Substring(21, 2) # Per il confronto di seguito
+                $RowContent = ($_ -split '\s', 3)[2]
 
-            # Confronto di date
+                # Confronto di date
                 if (([DateTime]::Parse("$Rowdate") -gt [DateTime]::Parse("$StartDate")) -and ([DateTime]::PArse("$Rowdate") -lt [DateTime]::Parse("$StopDate"))) {
 
                     # Crea l'oggetto riga
