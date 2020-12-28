@@ -4,3 +4,7 @@
 
 # Personal files
 Functions/.Personal/
+
+# Critical files
+Functions/Private/Add-HotlineTicket.ps1
+Functions/Private/Get-MSAccessCustomer.ps1

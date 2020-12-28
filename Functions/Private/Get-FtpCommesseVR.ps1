@@ -69,7 +69,7 @@ function Get-FtpCommesseVR {
       "cd $RemotePath" `
       "get -filemask=VR_*.doc $RemotePath $LocalTempPath" `
       "get -filemask=MT_*.doc $RemotePath $LocalTempPath" `
-      "exit" | Out-Null
+      "exit"
  
   # Spostare i file ricavati da LocalPath a LocalPath, rimuovendo tutte le cartelle vuote e le commesse non chiuse
   Foreach ( $file in $(Get-ChildItem -Path "$LocalTempPath\*.doc", "$LocalTempPath\*.pdf" -Recurse) ) {

@@ -23,8 +23,20 @@ function Get-MpwApplicationPool {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false, Position = 0)] 
-            [string] $AppName = "mpassw"
+            [string] $AppFullName = "Micronpass"
     )
+
+    # Seleziona l'application name
+    if ( $AppFullName -eq "Micronpass" ) {
+        $AppName = "mpassw"
+    } elseif ( $AppFullName -eq "Micronsin" ) {
+        $AppName = "msinw"
+    } elseif ( $AppFullName -eq "MicronpassMVC") {
+        $AppName = "micronpassmvc"
+    } else {
+        Write-Error "Applicazione $AppFullName non trovata! Inserire un nome valido."
+        break
+    }
 
     # Inizializza IISAdministration
     $manager = Get-IISServerManager
