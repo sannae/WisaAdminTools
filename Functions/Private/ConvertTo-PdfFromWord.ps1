@@ -1,4 +1,20 @@
-# Converte i file Word (doc, docx) nel percorso LOCALPATH in Pdf
+<#
+.SYNOPSIS
+  Converte i file Word (doc, docx) nel percorso LOCALPATH in PDF.
+.DESCRIPTION
+  Lo script lavora esclusivamente nel percorso specificato nella variabile LOCALPATH, ma agisce ricorsivamente anche nelle sottocartelle.
+  Vengono presi in considerazione solo i file con estensione specificata nella variabile TYPES (nella fattispecie, DOC e DOCX).
+  Per ogni file nel percorso e nelle relative sottocartelle, il file viene aperto con un oggetto app Word e viene salvato come PDF.
+  Il file Doc originale viene poi rimosso.
+.PARAMETER LOCALPATH
+  Stringa con il percorso locale contenente i file DOC o DOCX da convertire in PDF.
+  La ricerca è fatta ricorsivamente anche su tutte le sottocartelle.
+.EXAMPLE
+  PS> ConvertTo-PdfFromWord -LocalPath C:\.temp
+.NOTES
+  1.0 (testato)
+#>
+
 function ConvertTo-PdfFromWord {
 
     [CmdletBinding()]

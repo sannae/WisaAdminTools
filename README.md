@@ -10,6 +10,14 @@ La lista dei percorsi di default dei moduli è visibile col comando:
 ```powershell
 $env:PSModulePath -split ';' | Where-Object { Test-Path $_ }
 ``` 
+Un altro modo è aggiungere il percorso della cartella `MrtAdminTools` nel percorso salvato nella variabile `$profile`.
+Nel caso in cui tale file non esistesse, è sufficiente eseguire:
+```powershell
+New-Item $profile
+Add-content -Value 'Import-Module -Value \PATH\TO\MrtAdminTools -Path $profile'
+```
+In questa maniera, ogni nuova sessione Powershell importa il modulo dal percorso specificato.
+
 
 ### Importare il modulo nella propria sessione PowerShell
 Se già copiato nei percorsi di default dei moduli:
