@@ -21,7 +21,7 @@ function Install-IISFeatures {
 
     # Controlla il tipo di OS
     $OSType = $(Get-ComputerInfo).WindowsInstallationType
-    Write-Host "Current OS type: $OSType"
+    Write-Verbose "Current OS type: $OSType"
 
     <#
     # Crea lista da file CSV ( in fase di dismissione )

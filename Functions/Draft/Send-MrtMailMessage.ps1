@@ -2,7 +2,7 @@
 
 # Invia una notifica mail a Microntel se succede qualcosa
 
-# Da testare
+# Da finire di testare
 
 function Send-MrtMailMessage {
 

@@ -34,7 +34,7 @@
     PS> Get-MrtServiceEventLog -ApplicationName NoService -SearchString "Disconnessione"
     Restituisce tutti i log dell'applicativo NoService contenenti la stringa "Disconnessione" 
 .NOTES
-    1.0
+    1.0 (testato)
     TODO: Cambiare il parametro $SearchString da stringa singola ad array di stringhe
     TODO: Gestire il parametro $SearchString con -Include ed -Exclude, così da poter omettere le righe inutili
 #>
