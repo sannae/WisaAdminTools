@@ -202,18 +202,6 @@ function Install-MRTSuite {
 
 }
 
-function Install-CrystalReports {
-
-    [CmdletBinding()] param()
-
-
-
-}
-
-Set-Location Packages
-Install-CrystalReports
-Install-MRTSuite
-
 $Root = 'C:/MPW'
 
 # Open GeneraABL and generate ABL code

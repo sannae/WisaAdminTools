@@ -7,7 +7,7 @@
     2) Alimentando la hash table a codice, così da non dipendere da un file esterno
     Lo script verifica su quale tipo di sistema operativo sta girando e installa le corrispondenti funzionalità.
 .EXAMPLE
-    PS> ./Install-IISFeatures.ps1
+    PS> Install-IISFeatures
 .NOTES
     TODO: aggiungere dei test automatici con Pester
     TODO: Aggiungere nei parametri uno switch che permetta di leggere da file CSV

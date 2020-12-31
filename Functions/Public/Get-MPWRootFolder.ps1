@@ -2,7 +2,7 @@
 .SYNOPSIS
     Cerca la cartella MPW nel file system.
 .DESCRIPTION
-    Fa una ricerca ricorsiva su tutto il filesystem cercando ogni cartella chiamata esattamente MPW.
+    Fa una ricerca sulle partizioni principali cercando ogni cartella chiamata esattamente MPW.
     Il valore può essere ritornato su stdout oppure salvato in una variabile (v. esempi)
 .EXAMPLE
     PS> $Root = Get-MPWRootFolder
@@ -10,6 +10,7 @@
     PS> Get-MPWRootFolder
 .NOTES
     1.0 (testato)
+    NOTA : La cartella MPW non deve trovarsi in una sottocartella! Questo perché una ricerca ricorsiva su tutto il filesystem richiederebbe un sacco di tempo...
 #>
 
 function Get-MPWRootFolder {

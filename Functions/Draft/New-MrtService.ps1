@@ -55,11 +55,12 @@ function New-MrtService {
     Update-MrtConfigFile("$RootFolder\$NewServiceFolder\$ServiceName.exe.config","codService",$NewServiceCode)
 
     # Duplicazione dei parametri nella T103COMPARAMS, copiandoli dal servizio precedente
-      # ...
+    
 
     # Elaborazione dei parametri T03COMSERVICES
-      # ... Questo è più un casino
+    # ... Questo è più un casino, c'è da calcolare tutte le porte
     
-      
+     
 
+    
 }

@@ -47,7 +47,9 @@ Le funzioni testate sono disponibili nella sottocartella `Functions\Public`:
 * `Get-MpwRootFolder`: trova la cartella `MPW` nel filesystem
 * `Get-MrtConnectionStrings`: restituisce la stringa di connessione SQL Server al database MRT
 * `Get-MrtEventLogs` :star: : raccoglie e visualizza il contenuto di tutti i log di una specifica applicazione
+* `Install-CrystalReports` :star: : installa i file MSI dei Crystal Reports
 * `Install-IISFeatures` :star: : installa tutti i ruoli e funzionalità IIS
+* `Install-MrtSuite` :star: : installa la MRT Application Suite
 * `Invoke-MpwDatabaseQuery`: esegue una specifica query sul database MRT
 * `Update-MrtWebApp` :star: : esegue l'aggiornamento di un'applicazione web all'ultima release
 
