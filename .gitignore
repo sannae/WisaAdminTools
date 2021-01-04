@@ -1,6 +1,6 @@
 # Personal files
 .TODO.md
-.appunti.mds
+.appunti.md
 
 # Critical files
 Functions/Private/Get-MSAccessDatabase.ps1
