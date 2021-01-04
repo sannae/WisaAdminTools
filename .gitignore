@@ -1,9 +1,6 @@
-# PowerShell Modules
-
-# Installation packages
-
 # Personal files
-Functions/.Personal/
+/.TODO.md
+/.appunti.md
 
 # Critical files
 Functions/Private/Get-MSAccessDatabase.ps1
