@@ -6,5 +6,6 @@
 Functions/.Personal/
 
 # Critical files
-Functions/Private/Add-HotlineTicket.ps1
-Functions/Private/Get-MSAccessCustomer.ps1
+Functions/Private/Get-MSAccessDatabase.ps1
+Functions/Private/Get-SqlAssistenzaConnString.ps1
+Functions/Private/Open-FtpConnection.ps1
