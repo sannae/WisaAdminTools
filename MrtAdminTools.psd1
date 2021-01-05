@@ -27,7 +27,7 @@ Author = 'Edoardo Sanna'
 CompanyName = 'Microntel S.p.A.'
 
 # Copyright statement for this module
-Copyright = '(c) Microntel S.p.A.. All rights reserved.'
+Copyright = '(c) Microntel S.p.A. All rights reserved.'
 
 # Description of the functionality provided by this module
 Description = 'Functions for MRT Application Suite administrators.'

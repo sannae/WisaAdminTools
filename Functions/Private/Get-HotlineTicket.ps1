@@ -34,6 +34,7 @@
   Restituisce i dettagli del ticket 97656
 .NOTES
   1.0 (testato)
+  TODO: Svincolare la presenza del VALIDATESET in un file di testo da ignorare
   TODO: Trovare un modo di fare una ricerca più puntuale
 #>
 
