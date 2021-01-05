@@ -34,6 +34,7 @@
   Restituisce i dettagli del ticket 97656
 .NOTES
   1.0 (testato)
+  TODO: Trovare un modo di fare una ricerca più puntuale
 #>
 
 function Get-HotlineTicket {
