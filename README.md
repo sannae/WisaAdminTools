@@ -56,5 +56,4 @@ Le funzioni testate sono disponibili nella sottocartella `Functions\Public`:
 Sono disponibili anche alcune funzioni private di manutenzione (`Functions\Private`):
 * `Get-FtpCommesseVR`: scarica via FTPES tutti i documenti VR (Versione Rilasciata) di uno specifico cliente
 * `Get-FtpLastPackages`: scarica via FTPES il pacchetto ZIP corrispondente all'ultima release di una o più applicazioni
-* `Open-FtpConnection`: apre una connessione FTPES verso il repository di sviluppo
 * `Test-InstalledProgram` : verifica che un programma risulti tra i programmi installati di Windows

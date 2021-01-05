@@ -10,6 +10,7 @@
     PS> Get-MPWRootFolder
 .NOTES
     1.0 (testato)
+    NOTA : Attenzione alla differenza tra Windows PowerShell e PowerShell Core! (MPW e C:\MPW)
     NOTA : La cartella MPW non deve trovarsi in una sottocartella! Questo perché una ricerca ricorsiva su tutto il filesystem richiederebbe un sacco di tempo...
 #>
 
@@ -28,7 +29,7 @@ function Get-MPWRootFolder {
             continue 
         }
         else { 
-            $Root
+            $($Root).FullName
             Write-Verbose "Ho trovato la cartella MPW nel disco $Root"
             break 
         }

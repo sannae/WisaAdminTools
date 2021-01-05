@@ -29,21 +29,22 @@ function Get-FtpLastPackages {
 
   [CmdletBinding()]
   param(
-  [Parameter(Mandatory = $true, Position = 0, 
-  HelpMessage="Digitare il percorso completo in cui salvare i file")]
-  [ValidateScript ( { Test-Path $_} )]
+    [Parameter(Mandatory = $true, Position = 0, 
+      HelpMessage = "Digitare il percorso completo in cui salvare i file")]
+    [ValidateScript ( { Test-Path $_ } )]
     [string] $LocalPath,
-  [Parameter(Mandatory = $true, Position = 1, 
-  HelpMessage="Inserire i nome dei pacchetti separati da virgola (ATTENZIONE: Case-sensitive) (Tab-completion disponibile)")]
-  [ValidateSet(
-    "MRTInstaller",
-    "Micronpass",
-    "MicronService",
-    "MicronServiceOffline",
-    "MicronConfig",
-    "MicronMail",
-    "NoService",
-    IgnoreCase = $false)]
+    [Parameter(Mandatory = $true, Position = 1, 
+      HelpMessage = "Inserire i nome dei pacchetti separati da virgola (ATTENZIONE: Case-sensitive) (Tab-completion disponibile)")]
+    [ValidateSet(
+      "MRTInstaller",
+      "Micronpass",
+      "MicronService",
+      "MicronServiceOffline",
+      "MicronConfig",
+      "MicronMail",
+      "NoService",
+      "TrayClient",
+      IgnoreCase = $false)]
     [string[]] $PackageList
   )
 
@@ -51,30 +52,35 @@ function Get-FtpLastPackages {
   $Version = "V750"
   Write-Verbose "Versione corrente: $Version"
 
-Foreach ( $Package in $PackageList) {
+  Foreach ( $Package in $PackageList) {
 
-  # File mask (con l'eccezione di NoService)
-  if ( $Package -eq "NoService" ) {
-    $FileMask = "*NOSRV.zip" # Quando scarichi MicronService, scarica anche NoService
-    $RemotePath = "/MRT/MRT_FX4_PC_EXE/MicronService" + "/$Version"
-  } else {
-    $FileMask = "$*.zip"
-    $RemotePath = "/MRT/MRT_FX4_PC_EXE/$Package" + "/$Version"
-  }
+    # File mask (con l'eccezione di NoService)
+    if ( $Package -eq "NoService" ) {
+      $FileMask = "*NOSRV.zip" # Quando scarichi MicronService, scarica anche NoService
+      $RemotePath = "/MRT/MRT_FX4_PC_EXE/MicronService" + "/$Version"
+    }
+    else {
+      if ($Package -eq "TrayClient") {
+        # Eccezioni che non hanno la sottocartella $VERSION
+        $Version = ''
+      }
+      $FileMask = "$*.zip"
+      $RemotePath = "/MRT/MRT_FX4_PC_EXE/$Package" + "/$Version"
+    }
 
-  # Download
-  $OpenConnectionString = Open-FtpConnection
-  Write-Verbose "Sto scaricando il pacchetto $Package..."
-  & "C:\Program Files (x86)\WinSCP\WinSCP.com" `
-    /ini=nul `
-    /command `
+    # Download
+    $OpenConnectionString = Open-FtpConnection
+    Write-Verbose "Sto scaricando il pacchetto $Package..."
+    & "C:\Program Files (x86)\WinSCP\WinSCP.com" `
+      /ini=nul `
+      /command `
       $OpenConnectionString `
       "cd $RemotePath" `
       "get -latest $FileMask $LocalPath\" `
       "close" `
       "exit"    
 
-}
+  }
 
   Write-Verbose "I pacchetti selezionati sono stati scaricati in $LocalPath"
 

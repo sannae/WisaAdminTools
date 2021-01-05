@@ -5,6 +5,7 @@
     Lo script utilizza l'oggetto SqlClient.SqlConnection per aprire una connessione su un'istanza SQL Server.
     Questo formato è usato per esempio nei file config della MRT app suite, ad eccezione dei web.config.
     Nel caso di SELECT, i dati vengono scritti in output come array.
+    È possibile richiamare i valori di una particolare colonna dell'array usando $_.NOMECOLONNA.
     Nel caso di UPDATE/DELETE, i dati non vengono scritti in output.
 .PARAMETER CONNECTIONSTRING
     Stringa di connessione al database; deve essere nel formato "User ID =;Password=;Initial Catalog=;Data Source="

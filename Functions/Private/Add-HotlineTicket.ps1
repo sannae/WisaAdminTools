@@ -6,6 +6,7 @@
   Vengono chiesti all'utente diversi parametri non fissi, come durata, descrizione breve-lunga e una descrizione approssimativa del cliente.
   Quest'ultima viene usata per trovare la Ragione Sociale vera e propria nel database CLIENTIA.
   Il confronto è fatto interattivamente dall'utente tramite la funzione Get-MSAccessCustomer.
+  In ultima istanza, viene verificato che l'ultimo ticket inserito nel database coincida per CUSTOMER e DURATA.
 .PARAMETER CLIENTECERCATO
   Stringa contenente parte del nome del cliente, con cui fare un confronto sul campo RagSoc del database CLIENTIA.
 .PARAMETER RIFERIMENTOCLIENTE
@@ -28,7 +29,6 @@
 .NOTES
   1.0 (testato)
   NOTE: Lo script inserisce di default Ricevente=MANCUSO, Tecnico_hot=SANNA, Tipo=Software e Esito=Positivo
-  TODO: Test di corretto inserimento del ticket
 #>
 function Add-HotlineTicket {
 
@@ -57,8 +57,8 @@ function Add-HotlineTicket {
     $ConnString = Get-SqlAssistenzaConnString
   }
   
-  # Variabili
-  $DataOraExtended = $(Get-Date -Uformat "%F %T.000").ToString()
+  # Variabili (ATTENZIONE: DataOraExtended ha mese e giorno invertiti!)
+  $DataOraExtended = $(Get-Date -Uformat "%Y-%d-%m %T.000").ToString()
   $DataOraShort = $(Get-Date -Uformat "%d/%m/%Y %T").ToString()
   $Customer = Get-MSAccessCustomer $ClienteCercato
 
@@ -78,5 +78,11 @@ function Add-HotlineTicket {
   Write-Verbose "Riassunto - Durata: $DurataTicket"
   Write-Verbose "Riassunto - Descrizione corta: $DescrizioneCorta"
   Invoke-MpwDatabaseQuery -ConnectionString $ConnString -Query $Query
+
+  # Test: verifica solo che l'ultima chiamata corrisponda al cliente e alla durata inseriti
+  $UltimoTicket = Invoke-MpwDatabaseQuery -ConnectionString $ConnString -Query "SELECT TOP(1) * FROM T_INTERVENTI ORDER BY N_CHIAMATA DESC"
+  if ( ( $($UltimoTicket.Cliente) -eq $Customer) -and ( $($UltimoTicket.Durata_TH) -eq $DurataTicket) ) {
+    Write-Host "Ticket inserito con successo per il cliente $Customer" -ForegroundColor Green
+  }
 
 }
