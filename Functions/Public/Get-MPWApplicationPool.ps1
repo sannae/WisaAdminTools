@@ -15,6 +15,7 @@
     PS> Get-MpwApplicationPool
 .NOTES
     1.0 (testato)
+    TODO: Introdurre la funzione Get-Application
 #>
 
 

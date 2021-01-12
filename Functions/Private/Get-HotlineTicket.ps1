@@ -44,7 +44,7 @@ function Get-HotlineTicket {
         [Parameter(Mandatory = $false, Position = 0)]
         [AllowEmptyString()]
         [string]$ClienteCercato = $null,
-        [ValidateSet( {$(Get-MsAccessTechnician) -join ","} ) ]   # <--- Da mettere a posto
+        [ValidateSet( { "(""" + $($(Get-MsAccessTechnician) -join """, """) + """)" } ) ]   # <--- Da mettere a posto
         [string]$Tecnico,
         [switch]$TestMode = $false,
         [switch]$MinimalDisplay = $false
