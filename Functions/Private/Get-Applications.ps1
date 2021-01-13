@@ -1,10 +1,12 @@
-# Converte file JSON in oggetto array
-# Specificare il full path del JSON
-# Il JSON contiene i dettagli dell'applicazione .NET e ASP.NET
-
-# Struttura JSON:
-#
-#
+<#
+.SYNOPSIS
+    Converte il contenuto di un file JSON in un oggetto PSCustomObject.
+.DESCRIPTION
+    Questa funzione è richiamata dal file principale del modulo
+    In questo modo viene resa globale la variabile contenente i parametri principali dell'application suite.
+.NOTES
+    0.9 (da testare)
+#>
 
 function Get-Applications {
     [CmdletBinding()]

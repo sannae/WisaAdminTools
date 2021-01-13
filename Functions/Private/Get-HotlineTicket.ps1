@@ -97,6 +97,6 @@ function Get-HotlineTicket {
         AND Tecnico_hot LIKE '%$Tecnico%'
         ORDER BY Data DESC"
     }
-    Invoke-MpwDatabaseQuery -ConnectionString $ConnString -Query $Query
+    Invoke-DatabaseQuery -ConnectionString $ConnString -Query $Query
 
 }

@@ -45,11 +45,12 @@ function Install-CrystalReports {
         $InstallProcess = Start-Process -PassThru -Wait "MsiExec.exe" -ArgumentList $MsiArgs
         
         # ExitCode
-        if ( $InstallProcess.ExitCode -ne 0 ){
+        if ( $InstallProcess.ExitCode -ne 0 ) {
             Write-Error "Qualcosa è andato storto nell'installazione del file $($_.Name), il processo è uscito con Exit Code $($InstallProcess.ExitCode). Controlla su 'https://docs.microsoft.com/en-us/windows/win32/msi/error-codes'"
-        } else {
+        }
+        else {
             Write-Verbose "$($_.Name) è stato installato con successo!"
-            }
+        }
     }
 
 }

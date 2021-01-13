@@ -63,7 +63,7 @@ function Get-MrtEventLogs {
     )
 
     # Cartella root MPW
-    $RootFolder = Get-MPWRootFolder
+    $RootFolder = Get-AppSuiteRootFolder
     $Path = "$RootFolder\$ApplicationName"
 
     # Salva i log in una variabile

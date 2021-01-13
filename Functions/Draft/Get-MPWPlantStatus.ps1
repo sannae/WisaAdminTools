@@ -20,7 +20,7 @@ function Get-MpwPlantStatus {
     [CmdletBinding()] param ()
 
     # Trova la cartella MPW e crea il file MpwPlantStatus
-    $Root = Get-MPWRootFolder
+    $Root = Get-AppSuiteRootFolder
     $StatusFile = "$Root\MpwPlantStatus.txt"
 
     # Scrivi la ragione sociale del cliente da MRT.LIC
@@ -55,7 +55,7 @@ function Get-MpwPlantStatus {
         SELECT T05VALORE AS [Versione installata] 
         FROM T05COMFLAGS 
         WHERE T05TIPO='DBVER'"
-    Invoke-MPWDatabaseQuery -ConnectionString $ConnectionString -Query $SqlVersioneInstallata | 
+    Invoke-DatabaseQuery -ConnectionString $ConnectionString -Query $SqlVersioneInstallata | 
         Out-File $StatusFile -Append
 
     # Servizi btService con rispettiva GNetPath
@@ -68,7 +68,7 @@ function Get-MpwPlantStatus {
             ELSE T03CONFIGGN 
             END AS [GNet Path] 
         FROM T03COMSERVICES"
-    Invoke-MPWDatabaseQuery -ConnectionString $ConnectionString -Query $SqlBtServices | 
+    Invoke-DatabaseQuery -ConnectionString $ConnectionString -Query $SqlBtServices | 
         Out-File $StatusFile -Append
 
     # Famiglie di firmware presenti sul campo
@@ -78,7 +78,7 @@ function Get-MpwPlantStatus {
         FROM T22ACCTERMINALI 
         WHERE T22KK='0' AND T22ABILITATO='1' 
         GROUP BY T22GNTYPE"
-    Invoke-MPWDatabaseQuery -ConnectionString $ConnectionString -Query $SqlFirmwareFamilies | 
+    Invoke-DatabaseQuery -ConnectionString $ConnectionString -Query $SqlFirmwareFamilies | 
         Out-File $StatusFile -Append    
     
     # Terminali base attivi
@@ -88,7 +88,7 @@ function Get-MpwPlantStatus {
             T22GNNUN AS RamoNodo, T22GNIP AS IndirizzoIP 
         FROM T22ACCTERMINALI 
         WHERE T22KK='0' AND T22ABILITATO='1'"
-    Invoke-MPWDatabaseQuery -ConnectionString $ConnectionString -Query $SqlTerminaliBase | 
+    Invoke-DatabaseQuery -ConnectionString $ConnectionString -Query $SqlTerminaliBase | 
         Out-File $StatusFile -Append  
 
 

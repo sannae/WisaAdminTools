@@ -5,7 +5,7 @@
 
 function New-MrtService {
 
-    $RootFolder = Get-MpwRootFolder
+    $RootFolder = Get-AppSuiteRootFolder
 
     # Selezione del tipo di servizio
     if ( $ApplicationName -eq "MicronService") 

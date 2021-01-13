@@ -1,7 +1,7 @@
 function Initialize-MrtSuite {
 
     # Trova cartella MPW
-    $RootFolder = Get-MPWRootFolder
+    $RootFolder = Get-AppSuiteRootFolder
     
     # Crea cartella \_LICENZA
     New-Item -Path "$RootFolder\_LICENZA" -ItemType Directory
@@ -23,7 +23,7 @@ function Initialize-MrtSuite {
     Start-process $Root/MicronStart/mStart.exe -Wait
 
     # Verifica connessione al database
-    if ( !( Test-SqlConnection $( Get-MrtConnectionStrings  ) ) ) {
+    if ( !( Test-SqlConnection $( Get-AppConnectionStrings  ) ) ) {
             Write-Error "Database SQL non raggiungibile! Verificare di aver aggiornato le stringhe di connessione."
             break
         }
@@ -34,7 +34,7 @@ function Initialize-MrtSuite {
         # Ancora non funziona...
     $SqlQueriesFolder = "$RootFolder\DBUpgrade750Scripts\SQLServer"
     ForEach ( $query in $(Get-ChildItem "$SqlQueriesFolder\20*") ) {
-        Invoke-MpwDatabaseQuery -Query "$( Get-Content $query )"
+        Invoke-DatabaseQuery -Query "$( Get-Content $query )"
     }
 
         # Setta flag GDPR
@@ -45,12 +45,12 @@ function Initialize-MrtSuite {
     UPDATE T05COMFLAGS SET T05VALORE='1' WHERE T05TIPO='GDPRMODEVIS'
     UPDATE T05COMFLAGS SET T05VALORE='1' WHERE T05TIPO='GDPRMODEUSR'
     UPDATE T05COMFLAGS SET T05VALORE='ANONYMOUS' WHERE T05TIPO='GDPRANONYMTEXT' "
-        Invoke-MpwDatabaseQuery -Query $SQLGDPR
+        Invoke-DatabaseQuery -Query $SQLGDPR
 
         # Setta flag CrossBrowser
         $SQLXBrowser =
         "UPDATE T103COMPARAMS SET T103VALUE='1' WHERE T103PARAM = 'XBrowserHW'"
-        Invoke-MpwDatabaseQuery -Query $SQLXBrowser
+        Invoke-DatabaseQuery -Query $SQLXBrowser
 
         # Crea azienda interna UTIL e DIPRIF, associandolo all'utente admin
         $SQLUtilities = 
@@ -61,7 +61,7 @@ function Initialize-MrtSuite {
     -- Assign ref.empl. to admin user
     UPDATE T21COMUTENTI SET T21DEFDIPRIFEST='00000001',T21DEFAZINTEST='UTIL',T21DEFDIPRIFVIS='00000001',T21DEFAZINTVIS='UTIL' WHERE T21UTENTE='admin'
     "
-        Invoke-MpwDatabaseQuery -Query $SQLUtilities
+        Invoke-DatabaseQuery -Query $SQLUtilities
 
         # Imposta le autorizzazioni utente e le autorizzazioni report per l'utente ADMIN
         # ...

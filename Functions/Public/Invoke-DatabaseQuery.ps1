@@ -18,11 +18,12 @@
     Esegue la query indicata connettendosi con la stringa di connessione specificata.
 .EXAMPLE
     PS> Invoke-MPWDatabaseQuery -Query $(Get-Content File.sql)
-    Esegue la query contenuta in File.sql connettendosi all'istanza ricavata dalla funzione Get-MrtConnectionStrings
+    Esegue la query contenuta in File.sql connettendosi all'istanza ricavata dalla funzione Get-AppConnectionStrings
 .NOTES
     1.0 (testato in locale)
+    TODO: Gestire l'autenticazione di Windows?
 #>
-function Invoke-MPWDatabaseQuery
+function Invoke-DatabaseQuery
 {
 
     [CmdletBinding()]    
@@ -30,7 +31,7 @@ function Invoke-MPWDatabaseQuery
         [Parameter(
             HelpMessage="Digita la stringa di connessione rispettando il pattern 'User ID =;Password=;Initial Catalog=;Data Source='",
             ValueFromPipeline=$true)]
-                [string]$ConnectionString = (Get-MrtConnectionStrings),
+                [string]$ConnectionString = (Get-AppConnectionStrings),
         [Parameter(Mandatory=$True)][string]$Query
     )
 

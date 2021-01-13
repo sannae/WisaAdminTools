@@ -7,14 +7,14 @@
     Ritorna un oggetto Microsoft.WebAdministration.ConfigurationElement.
 .PARAMETER APPNAME
     Nome completo dell'applicazione.
-    I valori ammessi vengono letti da Json con dettagli della suite di applicazioni alla sezione WebApplications.ApplicationFullName.
+    I valori ammessi vengono letti da Json con dettagli della suite di applicazioni alla sezione WebApplications.WebApplicationFullName.
     Non ha valore di default.
 .EXAMPLE
     PS> $AppPool = Get-WebApplicationPool -AppFullName MyWebApplicationName
 .EXAMPLE
     PS> Get-WebApplicationPool
 .NOTES
-    1.0 (testato)
+    0.9 (testare dopo refactoring)
 #>
 
 
@@ -23,12 +23,12 @@ function Get-WebApplicationPool {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, Position = 0)]
-        [ValidateScript( { $_ -in $Applications.WebApplications.ApplicationFullName } )]
+        [ValidateScript( { $_ -in $Applications.WebApplications.WebApplicationFullName } )]
             [string] $AppFullName
     )
 
     # Seleziona l'application name
-    $AppName = $($Applications.WebApplications | Where-Object {$_.ApplicationFullName -eq $AppFullName }).ApplicationName
+    $AppName = $($Applications.WebApplications | Where-Object {$_.WebApplicationFullName -eq $AppFullName }).WebApplicationName
 
     # Inizializza IISAdministration
     $manager = Get-IISServerManager

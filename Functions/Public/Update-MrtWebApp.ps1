@@ -72,7 +72,7 @@ function Update-MrtWebApp {
     $InstallFile = $(Get-item "$ZipPath\$AppFullName*.zip")
 
     # Copio cartella Micronpass in Micronpass_OLDVER ricavando vecchia versione
-    $RootFolder = Get-MPWRootFolder
+    $RootFolder = Get-AppSuiteRootFolder
     $OldVersionString = $(Get-Item "$RootFolder\$AppFullName\bin\$AppName.dll").versioninfo.fileversion.substring(0,7)
     $OldVersion = [version]$OldVersionString
     $OldFolder = "$AppFullName"+"_"+"$OldVersionString"

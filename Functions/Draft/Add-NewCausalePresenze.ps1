@@ -22,10 +22,10 @@ function Add-NewCausalePresenze {
     DECLARE @UpdateTime NVARCHAR(14) = CAST(FORMAT(GETDATE(),'yyyyMMddhhmmss') AS NVARCHAR(14))
     INSERT INTO T72ACCCAUSALIPRES VALUES ('0001',@CodiceCausale,@DescrizioneCausale,'INSTALLATORE',@UpdateTime)
     "
-    Invoke-MpwDatabaseQuery -Query $AddCausaleQuery
+    Invoke-DatabaseQuery -Query $AddCausaleQuery
 
     # Setup Causale
-    $Varchi = $( Invoke-MpwDatabaseQuery -Query "SELECT DISTINCT T73VARCO AS VARCHI FROM T73ACCSETUPPRES" ).VARCHI
+    $Varchi = $( Invoke-DatabaseQuery -Query "SELECT DISTINCT T73VARCO AS VARCHI FROM T73ACCSETUPPRES" ).VARCHI
 
     ForEach ( $CodiceVarco in $Varchi ) {
 
@@ -37,7 +37,7 @@ function Add-NewCausalePresenze {
         DECLARE @UpdateTime NVARCHAR(14) = CAST(FORMAT(GETDATE(),'yyyyMMddhhmmss') AS NVARCHAR(14))
         INSERT INTO T73ACCSETUPPRES VALUES ('0001',@Varco,@TastoFunzione,@CodiceCausale,'INSTALLATORE',@UpdateTime)
         "
-        Invoke-MpwDatabaseQuery -Query $SetupCausale
+        Invoke-DatabaseQuery -Query $SetupCausale
 
     }
 } 

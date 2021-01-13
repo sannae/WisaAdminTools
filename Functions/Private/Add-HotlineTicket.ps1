@@ -77,10 +77,10 @@ function Add-HotlineTicket {
   Write-Verbose "Riassunto - Cliente: $Customer"
   Write-Verbose "Riassunto - Durata: $DurataTicket"
   Write-Verbose "Riassunto - Descrizione corta: $DescrizioneCorta"
-  Invoke-MpwDatabaseQuery -ConnectionString $ConnString -Query $Query
+  Invoke-DatabaseQuery -ConnectionString $ConnString -Query $Query
 
   # Test: verifica solo che l'ultima chiamata corrisponda al cliente e alla durata inseriti
-  $UltimoTicket = Invoke-MpwDatabaseQuery -ConnectionString $ConnString -Query "SELECT TOP(1) * FROM T_INTERVENTI ORDER BY N_CHIAMATA DESC"
+  $UltimoTicket = Invoke-DatabaseQuery -ConnectionString $ConnString -Query "SELECT TOP(1) * FROM T_INTERVENTI ORDER BY N_CHIAMATA DESC"
   if ( ( $($UltimoTicket.Cliente) -eq $Customer) -and ( $($UltimoTicket.Durata_TH) -eq $DurataTicket) ) {
     Write-Host "Ticket inserito con successo per il cliente $Customer" -ForegroundColor Green
   }

@@ -13,7 +13,7 @@ function Update-MrtWinApp {
     )
 
     # Root folder
-    $RootFolder = Get-MpwRootFolder
+    $RootFolder = Get-AppSuiteRootFolder
 
     # Trova l'applicazione specificata e chiudila se aperta
     Get-Process | Where-Object { $_.Path -match "$RootFolder\$AppFullName" } | Stop-Process

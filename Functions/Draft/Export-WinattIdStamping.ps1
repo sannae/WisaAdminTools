@@ -7,7 +7,7 @@ function Export-WinattIDStamping {
     
     $WinattIdQuery = ""
 
-    Invoke-MpwDatabaseQuery -Query $WinattIdQuery 
+    Invoke-DatabaseQuery -Query $WinattIdQuery 
 
 
 }

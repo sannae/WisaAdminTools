@@ -11,7 +11,7 @@ function Send-MrtMailMessage {
     
     # Dati del Database: query che NON dovrebbe restituire risultati
     $Query = "SELECT * FROM T05COMFLAGS WHERE T05VALORE='3'"
-    $Results = Invoke-MpwDatabaseQuery -Query $Query | Format-List | Out-String
+    $Results = Invoke-DatabaseQuery -Query $Query | Format-List | Out-String
 
     # Se ESISTONO risultati
     if ( $Results -ne '' ) {
