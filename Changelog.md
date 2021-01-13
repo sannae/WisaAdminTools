@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [0.0.1] - 2021-01-13
+Productive day :sun:
 ### Added
 - Added Changelog! :sparkles: (Finally)
 - Section `WinApplications` in JSON source file, with `ReferenceConfigApp` attribute for connection string
