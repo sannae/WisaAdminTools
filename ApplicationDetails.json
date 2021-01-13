@@ -1,0 +1,24 @@
+{
+    "RootFolderName": "MPW",
+    "SetupFolderName":"MPW_INSTALL",
+    "WebApplications": [
+      {
+        "ApplicationFullName":"Micronpass",
+        "ApplicationName":"mpassw"
+      },
+      {
+        "ApplicationFullName":"Micronsin",
+        "ApplicationName":"msinw"
+      },
+      {
+        "ApplicationFullName":"MicronpassMVC",
+        "ApplicationName":"micronpassmvc"
+      }
+    ],
+  "WinServices": [
+    {
+      "ServiceName":"Micronservice",
+      "ServiceDescription":"MicronService communication service"
+    }
+  ]
+}

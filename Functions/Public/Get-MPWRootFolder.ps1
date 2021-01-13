@@ -23,7 +23,7 @@ function Get-MPWRootFolder {
 
         Write-Verbose "Sto cercando la cartella MPW nel disco $Disk"
 
-        $Root = Get-ChildItem $Disk | Where-Object {$_.PSIsContainer -eq $true -and $_.Name -eq "MPW"}
+        $Root = Get-ChildItem $Disk | Where-Object {$_.PSIsContainer -eq $true -and $_.Name -eq $Applications.RootFolderName}
         if ( $null -eq $Root) { 
             Write-Error "Non ho trovato la cartella MPW nel disco $Disk, provo con il prossimo"
             continue 

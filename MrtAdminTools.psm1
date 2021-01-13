@@ -28,3 +28,6 @@ Get-ChildItem -Path $PrivateFunctionsFiles -Exclude *.tests.ps1, *profile.ps1 | 
         Write-Warning "$($_.Exception.Message)"
     }
 }
+
+# Load application suite details from JSON file located in module root folder
+$global:Applications = Get-Applications -JsonFullPath "$PSScriptRoot\ApplicationDetails.json"
