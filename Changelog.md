@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Added Changelog! :sparkles: (Finally)
 - Section `WinApplications` in JSON source file, with `ReferenceConfigApp` attribute for connection string
+- Added `ApplicationDetails.json` in `.gitignore` 
 ### Changed
 - Refactoring on `Get-WebAppCurrentVersion` to read from JSON source file (still to be tested!) :x:
 - Refactoring on `Get-AppSuiteRootFolder` to read from JSON source file (still to be tested!) :x:

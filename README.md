@@ -40,6 +40,38 @@ Per avere informazioni e aiuto riguardo ad una specifica funzione:
 Get-Help FUNCTIONNAME
 ```
 
+## Dependencies
+File `ApplicationDetails.json` da mettere nella cartella root del modulo.
+Va rispettato il seguente formato:
+```json
+{
+  "RootFolderName": "RootFolderNameValue",
+  "SetupFolderName": "SetupFolderNameValue",
+  "WebApplications": [
+    {
+      "WebApplicationFullName": "WebApplicationFullName",
+      "WebApplicationName": "WebApplicationName"
+    },
+    ...
+  ],
+  "WinServices": [
+    {
+      "WinServiceName": "WinServiceName",
+      "WinServiceDescription": "WinServiceDescription"
+    },
+    ...
+  ],
+  "WinApplications": [
+    {
+      "WinApplicationFullName": "WinApplicationFullName",
+      "WinApplicationName": "WinApplicationName",
+      "ReferenceConfigFile": true
+    }
+
+  ]
+}
+```
+
 ### Funzioni testate:
 Le funzioni testate sono disponibili nella sottocartella `Functions\Public`:
 * `Get-MpwApplicationPool`: restituisce l'application pool di una specifica applicazione web

@@ -7,4 +7,4 @@ Functions/Private/Get-MSAccessDatabase.ps1
 Functions/Private/Get-SqlAssistenzaConnString.ps1
 Functions/Private/Open-FtpConnection.ps1
 Functions/Private/Get-MsAccessTechnician.ps1
-ApplicationDetails.json
+/ApplicationDetails.json
