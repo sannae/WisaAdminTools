@@ -5,12 +5,15 @@
     Richiama la funzione Get-AppSuiteRootFolder per trovare la cartella root della suite nel file system.
     Legge la proprietà fileversion dal file WebApplicationFullName/bin/.dll che la contiene.
     L'oggetto restituito è di tipo Version (Major, Minor, Build, Revision).
+.PARAMETER APPFULLNAME
+    Nome completo dell'applicazione.
+    Viene controllato che rientri entro il range descritto nel file JSON alla sezione WebApplications.WebApplicationFullName.
 .EXAMPLE
     PS> $Version = Get-WebAppCurrentVersion
 .EXAMPLE
     PS> Get-WebAppCurrentVersion
 .NOTES
-    0.9 (da testare)
+    0.9 (da testare dopo refactoring)
 #>
 
 function Get-WebAppCurrentVersion {

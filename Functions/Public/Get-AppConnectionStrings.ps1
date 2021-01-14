@@ -12,6 +12,7 @@
 .EXAMPLE
     PS> $DBConnectionString = Get-AppConnectionStrings
 .NOTES
+    0.9 (testare dopo refactoring)
     TODO: Criptare la password, qui appare in plain text
 #>
 
