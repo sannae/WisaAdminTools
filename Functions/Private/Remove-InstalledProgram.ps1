@@ -1,6 +1,15 @@
-# Disinstalla un programma fornendone la descrizione
-
-# TODO: Controllare che non ci sia già un'installazione in corso...
+<#
+.SYNOPSIS
+    
+.DESCRIPTION
+    
+.PARAMETER CONNECTIONSTRING
+    
+.EXAMPLE
+    
+.NOTES
+    
+#>
 
 
 function Remove-InstalledProgram {

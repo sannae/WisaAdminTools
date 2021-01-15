@@ -14,7 +14,7 @@
 .EXAMPLE
     PS> Get-WebApplicationPool
 .NOTES
-    0.9 (testare dopo refactoring)
+    0.9 (testato dopo refactoring)
 #>
 
 

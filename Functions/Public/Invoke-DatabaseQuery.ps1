@@ -21,7 +21,8 @@
     Esegue la query contenuta in File.sql connettendosi all'istanza ricavata dalla funzione Get-AppConnectionStrings
 .NOTES
     1.0 (testato in locale)
-    TODO: Gestire l'autenticazione di Windows?
+    TODO: Gestire l'autenticazione di Windows!
+    TODO: Gestire gli errori!
 #>
 function Invoke-DatabaseQuery
 {

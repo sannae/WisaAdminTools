@@ -13,7 +13,7 @@
 .EXAMPLE
     PS> Get-WebAppCurrentVersion
 .NOTES
-    0.9 (da testare dopo refactoring)
+    0.9 (testato dopo refactoring)
 #>
 
 function Get-WebAppCurrentVersion {

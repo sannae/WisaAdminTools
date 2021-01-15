@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ## 2021-01-14
+### Added
+- Added `Remove-InstalledProgram` to uninstall programs based on description
+### Changed
+- Tested all `Functions\Public` features (except `Update-WebApp`) on Windows Powershell 5.1
+---
+
+## 2021-01-14
 ### Changed
 - Improved `Get-AppSuiteRootFolder` with two-level searching functions: partition-level and recursive
 - Refactored and renamed `Install-AppSuite`

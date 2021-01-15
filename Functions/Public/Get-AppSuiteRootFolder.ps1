@@ -13,7 +13,7 @@
 .EXAMPLE
     PS> Get-AppSuiteRootFolder
 .NOTES
-    1.0 (testato)
+    1.0 (testato dopo refactoring)
     NOTE : Attenzione alla differenza tra Windows PowerShell e PowerShell Core! ("RootFolder" o "C:\RootFolder")
 #>
 
@@ -38,6 +38,7 @@ function Get-AppSuiteRootFolder {
         else { 
             $($Root).FullName
             Write-Verbose "Ho trovato la cartella $RootFolderName nel disco $Disk! "
+            Set-Location -Path $Root
             break 
         }
     }
@@ -51,14 +52,13 @@ function Get-AppSuiteRootFolder {
             Set-Location $Disk
             $Root = Get-Childitem -Path \ -Filter "$RootFolderName" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
             if ($null -eq $Root) {
-                Write-Error "La cartella $RootFolderName non è stata trovata nel filesystem!"
-                Set-Location -Path \
-                break
+                Write-Error "La cartella $RootFolderName non è stata trovata nel disco $Disk!"
+                continue
             }
             else {
                 Write-Verbose "Ho trovato la cartella $RootFolderName al percorso $($Root.FullName)"
                 $($Root).FullName
-                Set-Location -Path \
+                Set-Location -Path $Root
                 break
             }
  

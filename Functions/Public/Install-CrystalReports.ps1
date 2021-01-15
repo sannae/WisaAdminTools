@@ -9,7 +9,7 @@
 .EXAMPLE
     PS> Install-IISFeatures -MsiPath C:\.temp
 .NOTES
-    0.9 (da finire di testare)
+    0.9 (testato post-refactoring)
     TODO: Non si potrebbe mettere una specie di Write-Progress ? 
     TODO: Controllare che non ci sia già un'installazione in corso...
     TODO: Implementare una funzione Invoke-MsiExec ? Oppure sostituire direttamente con Invoke-CimMethod 

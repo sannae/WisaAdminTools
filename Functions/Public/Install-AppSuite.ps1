@@ -20,21 +20,18 @@
     PS> Install-AppSuite -SetupPath "C:\INSTALL" -InstallPath "C:\"
     Lancia il file exe presente nello zip in C:\INSTALL nel percorso C:\
 .NOTES
-    0.9 (da testare dopo refactoring)
-    TODO: Controllare che non ci sia già un'installazione in corso...
+    0.9 (testato post-refactoring)
     TODO: Gestire il fatto che .exe esista già, se no Expand-Archive va in errore
-    TODO: Spostare test finale su Pester
+    TODO: Spostare test finali su Pester
     TODO: Eventualmente, sostituire Start-Process con una funzione ad-hoc tipo Invoke-SetupExe.
-        Eventualmente utilizzare Invoke-CimMethod, v. https://docs.microsoft.com/it-it/powershell/scripting/samples/working-with-software-installations?view=powershell-7.1#installing-applications
 #>
-
 
 function Install-AppSuite {
 
     [CmdletBinding()] 
     param(
         [Parameter(Mandatory = $true, Position = 0, HelpMessage = "Percorso del file ZIP:")]
-        [ValidateScript ( { Test-Path $_ } -and { Test-Path $($Applications.AppSuiteFileName + "*.zip") } )]
+        [ValidateScript ( { (Test-Path $_ ) -and ( Get-Item $("$_\*" + $($Applications.AppSuiteFileName + "*.zip") ))  } )]
         [string] $SetupPath,
         [Parameter(Mandatory = $false, Position = 1, HelpMessage = "Percorso di installazione (default a C:)")]
         [ValidateScript ( { Test-Path $_ } )]
@@ -42,24 +39,25 @@ function Install-AppSuite {
     )
 
     # Nome del file ZIP
-    $SetupZip = $( get-item "*$($Applications.AppSuiteFileName)*.zip" ).FullName
+    $SetupZip = $( get-item "$SetupPath\*$($Applications.AppSuiteFileName)*.zip" ).FullName
 
     # Estrai da ZIP
     Write-Verbose "Sto estraendo lo ZIP $SetupZIP nel percorso $SetupPath..."
-    Expand-Archive -Path $SetupZip -DestinationPath $SetupPath
-    $SetupFile = $( get-item "*$($Applications.AppSuiteFileName)*.exe" ).FullName
+    Expand-Archive -Path $SetupZip -DestinationPath $SetupPath -ErrorAction SilentlyContinue
+    $SetupFile = $( get-item "$SetupPath\*$($Applications.AppSuiteFileName)*.exe" ).FullName
 
     # Installa EXE
     $RootFolderName = $Applications.RootFolderName
     $SetupExeArguments = @(
-        '/s' # Hide initialization dialog
-        "/v""/qn /L*e $SetupPath\setup.log INSTALLDIR=$InstallPath\$RootFolderName""" # Msiexec parameters (log and destination folder)
+        '/s' 
+        "/v""/qn /L*e $SetupPath\setup.log INSTALLDIR=$InstallPath\$RootFolderName""" 
     )
     Write-Verbose "Sto installando $SetupFile, puoi trovare un file log al percorso $SetupPath..."
     $SetupExeProcess = Start-Process $SetupFile -PassThru -Wait -ArgumentList $SetupExeArguments -Verbose
 
+    # Verifica ExitCode
     if ( $SetupExeProcess.ExitCode -ne 0 ) {
-        Write-Error "Errore nell'installazione di $SetupFile, il processo è terminato con ExitCode $($SetupExeProcess.ExitCode). Verificare il file $SetupPath\Setup.log"+
+        Write-Error "Errore nell'installazione di $SetupFile, il processo è terminato con ExitCode $($SetupExeProcess.ExitCode). Verificare il file $SetupPath\Setup.log"
         break
     }
     else {

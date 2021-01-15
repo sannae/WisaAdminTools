@@ -14,7 +14,7 @@
     PS> Test-InstalledProgram SQL
     Verifica che esistano programmi installati la cui descrizione contiene "SQL"
 .NOTES
-    1.0 (tested)
+    1.0 (testato)
 #>
 
 function Test-InstalledProgram {
