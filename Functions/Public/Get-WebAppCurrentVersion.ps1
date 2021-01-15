@@ -33,12 +33,12 @@ function Get-WebAppCurrentVersion {
     $RootFolder = Get-AppSuiteRootFolder
 
     # Version
-    Write-Verbose "Looking for dll file in $RootFolder/$AppFullName/bin folder..."
+    Write-Verbose "Looking for dll file in $RootFolder\$AppFullName\bin folder..."
     if ( !(Test-Path "$RootFolder\$AppFullName\bin\$AppName.dll") ) {
         Write-Error -Message "File dll not found! Please check manually."
         break
     }
-    $VersionString = $(Get-Item "$RootFolder\$AppFullName\bin\.dll").versioninfo.fileversion
+    $VersionString = $(Get-Item "$RootFolder\$AppFullName\bin\$AppName.dll").versioninfo.fileversion
     $Version = [version]$VersionString
 
     # Output

@@ -21,7 +21,11 @@
     Lancia il file exe presente nello zip in C:\INSTALL nel percorso C:\
 .NOTES
     0.9 (da testare dopo refactoring)
+    TODO: Controllare che non ci sia già un'installazione in corso...
+    TODO: Gestire il fatto che .exe esista già, se no Expand-Archive va in errore
+    TODO: Spostare test finale su Pester
     TODO: Eventualmente, sostituire Start-Process con una funzione ad-hoc tipo Invoke-SetupExe.
+        Eventualmente utilizzare Invoke-CimMethod, v. https://docs.microsoft.com/it-it/powershell/scripting/samples/working-with-software-installations?view=powershell-7.1#installing-applications
 #>
 
 
@@ -46,6 +50,7 @@ function Install-AppSuite {
     $SetupFile = $( get-item "*$($Applications.AppSuiteFileName)*.exe" ).FullName
 
     # Installa EXE
+    $RootFolderName = $Applications.RootFolderName
     $SetupExeArguments = @(
         '/s' # Hide initialization dialog
         "/v""/qn /L*e $SetupPath\setup.log INSTALLDIR=$InstallPath\$RootFolderName""" # Msiexec parameters (log and destination folder)

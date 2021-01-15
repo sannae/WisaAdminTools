@@ -11,7 +11,9 @@
 .NOTES
     0.9 (da finire di testare)
     TODO: Non si potrebbe mettere una specie di Write-Progress ? 
-    TODO: Implementare una funzione Invoke-MsiExec ?
+    TODO: Controllare che non ci sia già un'installazione in corso...
+    TODO: Implementare una funzione Invoke-MsiExec ? Oppure sostituire direttamente con Invoke-CimMethod 
+        A questo proposito, v. https://docs.microsoft.com/it-it/powershell/scripting/samples/working-with-software-installations?view=powershell-7.1#installing-applications
 #>
 
 function Install-CrystalReports {

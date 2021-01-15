@@ -37,7 +37,7 @@ function Get-AppSuiteRootFolder {
         }
         else { 
             $($Root).FullName
-            Write-Verbose "Ho trovato la cartella $RootFolderName nel disco $Root! "
+            Write-Verbose "Ho trovato la cartella $RootFolderName nel disco $Disk! "
             break 
         }
     }
