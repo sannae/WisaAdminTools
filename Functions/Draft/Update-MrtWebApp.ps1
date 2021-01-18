@@ -42,25 +42,10 @@ function Update-MrtWebApp {
     $Clock = [Diagnostics.Stopwatch]::StartNew()
 
     # Seleziona l'application name
-    if ( $AppFullName -eq "Micronpass" ) {
-        $AppName = "mpassw"
-    } elseif ( $AppFullName -eq "Micronsin" ) {
-        $AppName = "msinw"
-    } elseif ( $AppFullName -eq "MicronpassMVC") {
-        $AppName = "micronpassmvc"
-    } else {
-        Write-Error "Applicazione $AppFullName non trovata! Inserire un nome valido."
-        break
-    }
+    $AppName = $($Applications.WebApplications | Where-Object {$_.WebApplicationFullName -eq $AppFullName }).WebApplicationName
 
     # Trovo application pool dell'applicazione
-    $AppPool = Get-MpwApplicationPool -AppName $AppName
-    Write-Verbose "L'application pool $($AppPool.Name) verrà stoppato"
-
-    # Stoppo suddetto app pool
-    if ( $AppPool.State -eq "Started" ) {
-        $AppPool.Stop() | Out-null
-    }
+    Stop-WebApplicationPool -AppFullName $AppFullName
 
     # Tolgo il simbolo '$' dal nome dei file da installare, se no fa casino
     $ZipFile = Get-item "$ZipPath\*.zip"

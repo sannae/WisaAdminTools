@@ -6,9 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 2021-01-18
+### Added
+- Added `Set-WebApplicationPool` and tested on Windows Powershell 5.1!
+---
+
 ## 2021-01-14
 ### Added
 - Added `Remove-InstalledProgram` to uninstall programs based on description
+- Prepared a testing environment on Win10 VM with Powershell 5.1, next one Powershell 7!
 ### Changed
 - Tested all `Functions\Public` features (except `Update-WebApp`) on Windows Powershell 5.1
 ---
