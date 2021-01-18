@@ -41,7 +41,7 @@ Get-Help FUNCTIONNAME
 ```
 
 ### Prerequisiti
-File `ApplicationDetails.json` da mettere nella cartella root del modulo.
+File `ApplicationDetails.json` da mettere nella cartella root del modulo. Un template del contenuto è disponibile in `ApplicatioNDetails.template.json`.
 Va rispettato il seguente formato:
 ```json
 {

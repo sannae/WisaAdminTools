@@ -1,14 +1,21 @@
 <#
 .SYNOPSIS
-    
+    Disinstalla un programma installato basandosi sulla descrizione.
 .DESCRIPTION
-    
-.PARAMETER CONNECTIONSTRING
-    
+    Lo script richiede in input una stringa contenente la descrizione del programma (es. una parola chiave che lo identifichi).
+    La descrizione viene usata per una comparazione con il campo Name dell'oggetto CIM_Product.
+    Se l'oggetto in questione viene trovato, ne viene eseguito il metodo CIM Uninstall.
+.PARAMETER DESCRIPTION
+    Stringa contenente la descrizione del programma che si vuole disinstallare.
+    Viene comparata con il campo Name dell'oggetto di classe CIM Product.
 .EXAMPLE
-    
+    PS> Remove-InstalledProgram -Description Chrome
+    Disinstalla il programma la cui descrizione contiene la stringa "Chrome"
+.EXAMPLE
+    PS> Get-InstalledProgram -Description SQL | Remove-InstalledProgram
+    Disinstalla tutti i programmi trovati dalla funzione Get-InstalledProgram con descrizione SQL
 .NOTES
-    
+    1.0 (testato)
 #>
 
 

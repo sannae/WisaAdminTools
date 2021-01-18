@@ -1,0 +1,25 @@
+{
+  "RootFolderName": "",
+  "AppSuiteFileName": "",
+  "AppSuiteName": "",
+  "SetupFolderName": "",
+  "WebApplications": [
+    {
+      "WebApplicationFullName": "",
+      "WebApplicationName": ""
+    }
+  ],
+  "WinServices": [
+    {
+      "WinServiceName": "",
+      "WinServiceDescription": ""
+    }
+  ],
+  "WinApplications": [
+    {
+      "WinApplicationFullName": "",
+      "WinApplicationName": "",
+      "ReferenceConfigFile": true
+    }
+  ]
+}

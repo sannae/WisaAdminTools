@@ -11,13 +11,13 @@
     Descrizione anche parziale del programma da cercare.
     Il confronto è fatto con operatore -match rispetto alla proprietà DisplayName.
 .EXAMPLE
-    PS> Test-InstalledProgram SQL
+    PS> Get-InstalledProgram SQL
     Verifica che esistano programmi installati la cui descrizione contiene "SQL"
 .NOTES
     1.0 (testato)
 #>
 
-function Test-InstalledProgram {
+function Get-InstalledProgram {
     [CmdletBinding()]
     Param(
         [Parameter(Position = 0, Mandatory = $true, ValueFromPipeline = $true)]
