@@ -20,6 +20,7 @@
 .NOTES
     1.0 (testato)
     WARNING : Si dà per SCONTATO che la prima cifra sia la Major e la seconda sia la Minor !!
+    TODO : Gestire le versioni già puntate nel filename
 #>
 
 

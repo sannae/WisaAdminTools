@@ -84,9 +84,3 @@ Le funzioni testate sono disponibili nella sottocartella `Functions\Public`:
 * `Install-IISFeatures` :star: : installa tutti i ruoli e funzionalità IIS
 * `Install-MrtSuite` :star: : installa la MRT Application Suite
 * `Invoke-MpwDatabaseQuery`: esegue una specifica query sul database MRT
-* `Update-MrtWebApp` :star: : esegue l'aggiornamento di un'applicazione web all'ultima release
-
-Sono disponibili anche alcune funzioni private di manutenzione (`Functions\Private`):
-* `Get-FtpCommesseVR`: scarica via FTPES tutti i documenti VR (Versione Rilasciata) di uno specifico cliente
-* `Get-FtpLastPackages`: scarica via FTPES il pacchetto ZIP corrispondente all'ultima release di una o più applicazioni
-* `Test-InstalledProgram` : verifica che un programma risulti tra i programmi installati di Windows
