@@ -1,6 +1,6 @@
 # :hammer: MrtAdminTools :wrench:
 Questo è un modulo PowerShell con alcuni strumenti utili (si spera!) per amministratori e installatori della MRT Application Suite!
----
+
 ## Ottenere il modulo
 
 ### Installare il modulo
@@ -29,7 +29,8 @@ Altrimenti,
 Import-Module \path\to\module\MrtAdminTools\MrtAdminTools.psm1
 ```
 Il comando `Import-module` esporterà nella sessione (tramite _dot-source_) tutte le funzioni pubbliche e private.
----
+
+
 ## Usare il modulo
 Per avere l'elenco dei _cmdlet_ inclusi nel modulo:
 ```powershell

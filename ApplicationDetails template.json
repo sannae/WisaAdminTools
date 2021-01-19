@@ -12,7 +12,8 @@
   "WinServices": [
     {
       "WinServiceName": "",
-      "WinServiceDescription": ""
+      "WinServiceDescription": "",
+      "WinServiceRestartPriority": ""
     }
   ],
   "WinApplications": [

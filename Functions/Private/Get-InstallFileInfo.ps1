@@ -18,7 +18,8 @@
     PS> $FileProperties = Get-InstallFileInfo -Path 'C:\TEMP\$InstallFile54321'
     Salva nella variabile $FileProperties l'oggetto con proprietà FileName=InstallFile e FileVersion=5.4.321
 .NOTES
-    0.9 (finire di testare)
+    1.0 (testato)
+    WARNING : Si dà per SCONTATO che la prima cifra sia la Major e la seconda sia la Minor !!
 #>
 
 
@@ -41,6 +42,6 @@ function Get-InstallFileInfo {
     $FileVersion = [System.Version]::Parse($VersionString)
 
     # Oggetto in output
-    @($FileName,$FileVersion) | Tee-Object -Variable FileProperties
+    @($FileName,$FileVersion) | Tee-Object -Variable $FileProperties
     
 }

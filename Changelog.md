@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 2021-01-19
+### Added
+- Added `Get-InstallFileInfo` and tested on Windows Powershell 5.1 and Powershell 7
+### Changed
+- Added property `WinServiceRestartPriority` in `ApplicationDetails.json`... basically, the priority in restarting the Windows Services
+---
+
 ## 2021-01-18
 ### Added
 - Added `Set-WebApplicationPool` and tested on Windows Powershell 5.1!
