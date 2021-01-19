@@ -29,16 +29,5 @@ Get-ChildItem -Path $PrivateFunctionsFiles -Exclude *.tests.ps1, *profile.ps1 | 
     }
 }
 
-# Export internal functions (critical data, not synced with Git)
-$PrivateFunctionsFiles = [System.IO.Path]::Combine($PSScriptRoot, "Functions", ".Internal", "*.ps1")
-Get-ChildItem -Path $PrivateFunctionsFiles -Exclude *.tests.ps1, *profile.ps1 | ForEach-Object {
-    try {
-        . $_.FullName
-    }
-    catch {
-        Write-Warning "$($_.Exception.Message)"
-    }
-}
-
 # Load application suite details from JSON file located in module root folder
 $global:Applications = Get-Applications -JsonFullPath "$PSScriptRoot\ApplicationDetails.json"

@@ -42,7 +42,7 @@ Get-Help FUNCTIONNAME
 ```
 
 ### Prerequisiti
-File `ApplicationDetails.json` da mettere nella cartella root del modulo. Un template del contenuto è disponibile in `ApplicatioNDetails.template.json`.
+File `ApplicationDetails.json` da mettere nella cartella root del modulo. Un template del contenuto è disponibile in `ApplicationDetails.template.json`.
 Va rispettato il seguente formato:
 ```json
 {
@@ -58,7 +58,8 @@ Va rispettato il seguente formato:
   "WinServices": [
     {
       "WinServiceName": "WinServiceName",
-      "WinServiceDescription": "WinServiceDescription"
+      "WinServiceDescription": "WinServiceDescription",
+      "WinServiceRestartPriority": 2
     },
     ...
   ],
@@ -75,12 +76,20 @@ Va rispettato il seguente formato:
 
 ### Funzioni testate:
 Le funzioni testate sono disponibili nella sottocartella `Functions\Public`:
-* `Get-MpwApplicationPool`: restituisce l'application pool di una specifica applicazione web
-* `Get-MpwCurrentVersion`: restituisce la versione corrente di Micronpass Web
-* `Get-MpwRootFolder`: trova la cartella `MPW` nel filesystem
-* `Get-MrtConnectionStrings`: restituisce la stringa di connessione SQL Server al database MRT
-* `Get-MrtEventLogs` :star: : raccoglie e visualizza il contenuto di tutti i log di una specifica applicazione
+* `Get-AppConnectionStrings`: restituisce la stringa di connessione SQL Server al database
+* `Get-AppSuiteRootFolder`: trova nel file system la cartella root dell'application suite
+* `Get-WebAppCurrentVersion`: restituisce la versione corrente dell'app web
+* `Get-WebApplicationPool`: restituisce l'application pool di una specifica applicazione web
+* `Install-AppSuite` :star: : installa l'application Suite
 * `Install-CrystalReports` :star: : installa i file MSI dei Crystal Reports
 * `Install-IISFeatures` :star: : installa tutti i ruoli e funzionalità IIS
-* `Install-MrtSuite` :star: : installa la MRT Application Suite
-* `Invoke-MpwDatabaseQuery`: esegue una specifica query sul database MRT
+* `Invoke-DatabaseQuery` : esegue una specifica query sul database
+* `Restart-WebApplicationPool` : ricicla l'application pool di una web app specifica
+* `Start-WebApplicationPool` : avvia l'application pool di una web app specifica
+* `Stop-WebApplicationPool` : arresta l'application pool di una web app specifica
+Altre funzioni _helper_ sono salvate in `Functions\Private`:
+* `Get-Applications` : carica l'oggetto array contenente i dettagli dell'application suite
+* `Get-InstalledProgram`: verifica che un programma sia installato nel sistema
+* `Get-InstallFileInfo`: ricava nome dell'applicativo e versione dal nome del file di installazione
+* `Remove-InstalledProgram`: disinstalla un programma installato dal sistema
+* `Test-SqlConnection`: testa la connettività verso un'istanza di SQL Server 

@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `Get-InstallFileInfo` and tested on Windows Powershell 5.1 and Powershell 7
 ### Changed
 - Added property `WinServiceRestartPriority` in `ApplicationDetails.json`... basically, the priority in restarting the Windows Services
+### Removed
+- Removed all the support functions (hotline, FTP, etc.) to a separated PS module - synced the other project on VS Code!
 ---
 
 ## 2021-01-18
