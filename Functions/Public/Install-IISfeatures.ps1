@@ -11,6 +11,7 @@
 .NOTES
     TODO: aggiungere dei test automatici con Pester
     TODO: Aggiungere nei parametri uno switch che permetta di leggere da file CSV
+    TODO: Aggiungere le funzionalità al file JSON ApplicationDetails
 .VERSION
     1.0 (testato)
 #>

@@ -8,6 +8,7 @@
 .PARAMETER DESCRIPTION
     Stringa contenente la descrizione del programma che si vuole disinstallare.
     Viene comparata con il campo Name dell'oggetto di classe CIM Product.
+    Accetta valori da pipeline.
 .EXAMPLE
     PS> Remove-InstalledProgram -Description Chrome
     Disinstalla il programma la cui descrizione contiene la stringa "Chrome"
@@ -16,6 +17,8 @@
     Disinstalla tutti i programmi trovati dalla funzione Get-InstalledProgram con descrizione SQL
 .NOTES
     1.0 (testato)
+    TODO : Come si mettono i parametri MSI a Invoke-CimMethod? tipo /NORESTART !!
+    TODO : Gestire AcceptPipelineInput... Get-InstalledProgram restituisce un oggetto di cui si può considerare il campo DisplayName
 #>
 
 

@@ -34,7 +34,7 @@
     Restituisce tutti i log dell'applicativo MYAPPFOLDER contenenti la stringa "Disconnessione" 
 .NOTES
     0.9 (refactoring)
-    TODO : Error handling!!
+    TODO : Error handling su IF contenente il parseDate, per gestire righe che non contengono una data-ora
     TODO : Cambiare il parametro $SearchString da stringa singola ad array di stringhe
     TODO : Gestire il parametro $SearchString con -Include ed -Exclude, così da poter omettere le righe inutili
 #>
@@ -77,7 +77,7 @@ function Get-AppLogs {
         Write-Verbose "Mi sto leggendo tutto il log $LogName..."
 
         # Contenuto del log, splittato per riga
-        $logContent = Get-Content "$Path\$Log" | Select-Object -skip 1 # Rimuove la prima riga
+        $logContent = Get-Content $($Log).FullName | Select-Object -skip 1 # Rimuove la prima riga
         $logContent -split "`n" | Where-Object { $_.trim() } | Out-null
 
         # Ciclo su ogni riga
@@ -91,7 +91,7 @@ function Get-AppLogs {
             }
             else {
 
-                $RowDate = $RowDate.Substring(0, 19) + '.' + $RowDate.Substring(21, 2) # Per il confronto di seguito
+                $RowDate = $RowDate.Substring(0, 19) + '.' + $RowDate.Substring(20, 3) # Per il confronto di seguito
                 $RowContent = ($_ -split '\s', 3)[2]
 
                 # Confronto di date
@@ -104,7 +104,7 @@ function Get-AppLogs {
                         Content  = $RowContent
                     }
 
-                    if ($LogRow.Content -match $SearchString) {
+                    if ($LogRow.Content -like $SearchString) {
 
                         # Aggiungi l'oggetto all'arraylist LogResults
                         $LogResults.Add($LogRow) | Out-Null
@@ -115,7 +115,7 @@ function Get-AppLogs {
     }
 
     # Stampa i risultati
-    $LogResults = $LogResults | Sort-Object -Property DateTime
+    $LogResults = $LogResults | Sort-Object -Property DateTime | Format-Table -AutoSize
     $LogResults
 
 }
