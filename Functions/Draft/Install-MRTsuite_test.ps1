@@ -236,44 +236,6 @@ Get-DbaDatabase -SqlInstance $DBDataSource -Database $DBInitialCatalog
 
 # Configure IIS 
 
-function Set-IISApplication {
-
-    [CmdletBinding()] 
-    param ([string]$ApplicationName)
-
-    # Global variables
-    $ApplicationPoolName = "MICRONTEL_Accessi"
-    $WebSiteName = "Default Web Site"
-    Write-Host "Starting configuration of $WebSiteName'/'$ApplicationName in application pool $ApplicationPoolName"
-
-    # Import IIS admin modules
-    $manager = Get-IISServerManager
-
-    # Create application pool, integrated pipeline, Runtime v4.0, Enable32bitApps, idleTimeout 8hrs
-    # Using IISAdministration (IIS 10.0)
-    if ($null -eq $manager.ApplicationPools["$ApplicationPoolName"]) {
-    $pool = $manager.ApplicationPools.Add("$ApplicationPoolName")
-    $pool.ManagedPipelineMode = "Integrated"
-    $pool.ManagedRuntimeVersion = "v4.0"
-    $pool.Enable32BitAppOnWin64 = $true
-    $pool.AutoStart = $true
-    $pool.ProcessModel.IdentityType = "ApplicationPoolIdentity"
-    $pool.ProcessModel.idleTimeout = "08:00:00"
-    $manager.CommitChanges()
-    Write-Host "Application pool $ApplicationPoolName successfully created" -ForegroundColor Green
-    } else {Write-Host "Application pool $ApplicationPoolName already exists, please choose a different name" -ForegroundColor Red
-}
-
-    # Assign the web application mpassw to the application pool
-    # Using IISAdministration (IIS 10.0)
-    $website = $manager.Sites["$WebSiteName"]
-    $website.Applications["$ApplicationName"].ApplicationPoolName = "$ApplicationPoolName"
-    $manager.CommitChanges() | Out-Null
-    Write-Host "Application $WebSiteName'/'$ApplicationName successfully assigned to Application pool $ApplicationPoolName" -ForegroundColor Green
-
-}
-
-Set-IISApplication -ApplicationName "mpassw"
 
 # GDPR configuration query
 
@@ -299,8 +261,6 @@ $SQLUtilities =
 "
 
 Invoke-DbaQuery -sqlinstance $DBDataSource -Database $DBInitialCatalog -File $SQLUtilities -MessagesToOutput
-
-### TODO: test all queries
 
 # 7.5 ONLY # Database correction scripts
 
