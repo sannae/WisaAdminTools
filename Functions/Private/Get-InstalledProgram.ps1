@@ -15,6 +15,7 @@
     Verifica che esistano programmi installati la cui descrizione contiene "SQL"
 .NOTES
     1.0 (testato)
+    TODO: Magari migliora usando (Get-CimInstance -Class CIM_Product)...
 #>
 
 function Get-InstalledProgram {
