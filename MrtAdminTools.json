@@ -1,0 +1,52 @@
+{
+  "SystemRequirements" : [
+    {
+      "MinimumFreeSpaceGB" : 100,
+      "MinimumRamGB" : 100,
+      "MinimumLogicalProcessors" : 2,
+      "MinimumFramework": "4.5.2",
+      "MinimumWindowsClient": 8.1,
+      "MinimumWindowsServer": 6.3,
+      "NecessaryTcpPorts" : [22,23,80,443,3001,1433,1521],
+      "MinimumSqlServerVersion" : 11.0
+    }
+  ],
+  "RootFolderName": "MPW",
+  "AppSuiteFileName": "MRT",
+  "AppSuiteName": "Micronpass Application Suite",
+  "SetupFolderName": "MPW_INSTALL",
+  "WebApplications": [
+    {
+      "WebApplicationFullName": "Micronpass",
+      "WebApplicationName": "mpassw"
+    },
+    {
+      "WebApplicationFullName": "Micronsin",
+      "WebApplicationName": "msinw"
+    },
+    {
+      "WebApplicationFullName": "MicronpassMVC",
+      "WebApplicationName": "micronpassmvc"
+    }
+  ],
+  "WinServices": [
+    {
+      "WinServiceName": "Micronservice",
+      "WinServiceDescription": "MicronService communication service",
+      "WinServiceRestartPriority": 1
+    }
+  ],
+  "WinApplications": [
+    {
+      "WinApplicationFullName": "MicronConfig",
+      "WinApplicationName": "config",
+      "ReferenceConfigFile": true
+    },
+    {
+      "WinApplicationFullName": "NoService",
+      "WinApplicationName": "btNoService",
+      "ReferenceConfigFile": false
+    }
+
+  ]
+}
