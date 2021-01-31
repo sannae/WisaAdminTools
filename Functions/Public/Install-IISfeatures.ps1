@@ -24,46 +24,6 @@ function Install-IISFeatures {
     $OSType = $(Get-ComputerInfo).WindowsInstallationType
     Write-Verbose "Current OS type: $OSType"
 
-    <#
-    # Crea lista da file CSV ( in fase di dismissione )
-
-        <# File CSV da salvare nella stessa cartella col nome di IIS_features.csv
-
-        ".NET Framework Features";"NetFx4-AdvSrvs";"NET-Framework-45-features"
-        ".NET Framework 4.6";"NetFx4-AdvSrvs";"NET-Framework-45-Core"
-        "Extended ASP.NET 4.7";"NetFx4Extended-ASPNET45";"NET-Framework-45-ASPNET";
-        "Web Server server role";"IIS-WebServerRole";"Web-Server";
-        "Web Server role service";"IIS-WebServer";"Web-WebServer";
-        "Application Development";"IIS-ApplicationDevelopment";"Web-App-Dev";
-        ".NET Extensibility 4.6";"IIS-NetFxExtensibility45";"Web-Net-Ext45";
-        "Application Initialization";"IIS-ApplicationInit";"Web-AppInit";
-        "ISAPI Extensions";"IIS-ISAPIExtensions";"Web-ISAPI-Ext";
-        "ISAPI Filters";"IIS-ISAPIFilter";"Web-ISAPI-Filter";
-        "ASP.NET 4.7";"IIS-ASPNET45";"Web-Asp-Net45";
-        "Web Sockets protocol";"IIS-WebSockets";"Web-WebSockets";
-        "Basic Authentication";"IIS-BasicAuthentication";"Web-Basic-Auth";
-        "Windows Authentication";"IIS-WindowsAuthentication";"Web-Windows-Auth";
-        "Static Content";"IIS-StaticContent";"Web-Static-Content"
-        "Management Tools";"IIS-WebServerManagementTools";"Web-Mgmt-Tools"
-        "IIS Management Console";"IIS-ManagementConsole";"Web-Mgmt-Console";
-        "IIS 6 Management Compatibility";"IIS-IIS6ManagementCompatibility";"Web-Mgmt-Compat";
-        "IIS 6 Management Console";"IIS-LegacySnapIn";"Web-Lgcy-Mgmt-Console"
-        "IIS 6 WMI Compatibility";"IIS-WMICompatibility";"Web-WMI"
-        "IIS 6 Scripting Tools";"IIS-LegacyScripts";"Web-Lgcy-Scripting"
-        "Telnet Client";"TelnetClient";"Telnet-Client"
-
-        #>
-
-        # $IISFeaturesList = @(Import-CSV "IIS_features.csv" -Delimiter ';' -header 'FeatureName','Client','Server').$OSType
-
-    <#    
-    # Verifica l'esistenza del file CSV
-
-    if( !(Test-Path "./IIS_features.csv") ) { 
-        Write-Host "IIS feature list not found! Please copy it to root folder." -ForegroundColor Red ; break
-    } 
-        #>
-
     # Crea array list da hash table: ogni chiave della hash table è una funzionalità con due sottochiavi client e server
     $IISFeaturesTable = @{
         ".NET Framework Features" = @{

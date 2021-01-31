@@ -24,6 +24,7 @@
     TODO: Gestire il fatto che .exe esista già, se no Expand-Archive va in errore
     TODO: Spostare test finali su Pester
     TODO: Eventualmente, sostituire Start-Process con una funzione ad-hoc tipo Invoke-SetupExe.
+    TODO: Aggiungere la proprietà ADDLOCAL in Setup.exe per gestire l'installazione custom
 #>
 
 function Install-AppSuite {
@@ -50,7 +51,7 @@ function Install-AppSuite {
     $RootFolderName = $Applications.RootFolderName
     $SetupExeArguments = @(
         '/s' 
-        "/v""/qn /L*e $SetupPath\setup.log INSTALLDIR=$InstallPath\$RootFolderName""" 
+        "/v""/qn /L*v $SetupPath\setup.log INSTALLDIR=$InstallPath\$RootFolderName""" 
     )
     Write-Verbose "Sto installando $SetupFile, puoi trovare un file log al percorso $SetupPath..."
     $SetupExeProcess = Start-Process $SetupFile -PassThru -Wait -ArgumentList $SetupExeArguments -Verbose
@@ -65,6 +66,6 @@ function Install-AppSuite {
     }
 
     # Controlla che sia stato installato
-    Test-InstalledProgram -Name $Applications.AppSuiteName -Verbose
+    Get-InstalledProgram -Name $Applications.AppSuiteName -Verbose
 
 }
