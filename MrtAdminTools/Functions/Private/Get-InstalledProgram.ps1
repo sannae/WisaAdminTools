@@ -25,19 +25,45 @@ function Get-InstalledProgram {
         $Name
     )
 
+    $Programs = [System.Collections.ArrayList]@()
+
     # Programmi a 64 bit
     $app64 = Get-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*" |
     Where-Object { $_.DisplayName -match $Name } | 
-    Select-Object DisplayName, DisplayVersion, InstallDate, Version
+    Select-Object DisplayName, DisplayVersion, InstallDate
+
+    if ($app64) {
+        foreach ($app in $app64) {
+            $Program = [PSCustomObject]@{
+                DisplayName    = $app.DisplayName
+                DisplayVersion = $app.DisplayVersion
+                InstallDate    = $app.InstallDate
+            }
+            $Programs.Add($Program) | Out-Null
+        }
+    }
 
     # Programmi a 32 bit
     $app32 = Get-ItemProperty -Path "HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*" | 
     Where-Object { $_.DisplayName -match $Name } | 
-    Select-Object DisplayName, DisplayVersion, InstallDate, Version
-    
+    Select-Object DisplayName, DisplayVersion
+
+    if ($app32) {
+        foreach ($app in $app32) {
+            $Program = [PSCustomObject]@{
+                DisplayName    = $app.DisplayName
+                DisplayVersion = $app.DisplayVersion
+                InstallDate    = $app.InstallDate
+            }
+            $Programs.Add($Program) | Out-Null
+        }
+    }
+
+    # Output
     if ($app32 -or $app64) {
-        return $app32, $app64 | Format-Table
-    } else {
+        return $Programs
+    }
+    else {
         Write-Error "Non è stato trovato alcun programma installato con descrizione $Name"
     }
 }
