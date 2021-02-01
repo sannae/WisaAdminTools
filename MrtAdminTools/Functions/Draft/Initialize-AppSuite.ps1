@@ -1,4 +1,4 @@
-function Initialize-MrtSuite {
+function Initialize-AppSuite {
 
     # Trova cartella MPW
     $RootFolder = Get-AppSuiteRootFolder
@@ -20,7 +20,7 @@ function Initialize-MrtSuite {
 
     # Apri MicronStart e attendi che venga chiuso
     Start-sleep -Seconds 5
-    Start-process $Root/MicronStart/mStart.exe -Wait
+    Start-process $RootFolder/MicronStart/mStart.exe -Wait
 
     # Verifica connessione al database
     if ( !( Test-SqlConnection $( Get-AppConnectionStrings  ) ) ) {

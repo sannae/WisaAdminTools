@@ -32,6 +32,8 @@ Il comando `Import-module` esporterà nella sessione (tramite _dot-source_) tutt
 
 
 ## Usare il modulo
+Il modulo è stato strutturato come descritto da [Rambling Cookie Monster](http://ramblingcookiemonster.github.io/Building-A-PowerShell-Module/).
+
 Per avere l'elenco dei _cmdlet_ inclusi nel modulo:
 ```powershell
 Get-command -Module MrtAdminTools
