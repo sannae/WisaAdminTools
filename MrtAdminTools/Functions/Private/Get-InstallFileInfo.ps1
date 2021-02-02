@@ -6,7 +6,7 @@
     Dal nome di quest'ultimo, separa i caratteri alfabetici (che diventano il nome dell'applicazione) da quelli numerici.
     I caratteri numerici sono poi interpretati come versione (la prima cifra Major, la seconda Minor e il resto Build)
     I caratteri di altro tipo vengono trascurati.
-    La funzione restituisce un oggetto con due proprietà: FileName (string) e FileVersion (version).
+    La funzione restituisce un PSCustomObject chiamato FileProperties con due proprietà: FileName (string) e FileVersion (version).
 .PARAMETER PATH
     Percorso completo del file. Specificare tutto, compreso di estensione.
     Se il percorso contiene simboli non alfanumerici oppure spazi, utilizzare i single quote ('').
@@ -20,7 +20,6 @@
 .NOTES
     1.0 (testato)
     WARNING : Si dà per SCONTATO che la prima cifra sia la Major e la seconda sia la Minor !!
-    TODO : Gestire le versioni già puntate nel filename
 #>
 
 
@@ -43,6 +42,10 @@ function Get-InstallFileInfo {
     $FileVersion = [System.Version]::Parse($VersionString)
 
     # Oggetto in output
-    @($FileName,$FileVersion) | Tee-Object -Variable $FileProperties
-    
+    $FileProperties = @{
+        FileName = $FileName
+        FileVersion = $FileVersion
+    }
+    $FileProperties
+        
 }

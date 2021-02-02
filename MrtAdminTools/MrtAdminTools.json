@@ -15,10 +15,12 @@
   "AppSuiteFileName": "MRT",
   "AppSuiteName": "Micronpass Application Suite",
   "SetupFolderName": "MPW_INSTALL",
+  "LicenseFile":"MRT.LIC",
   "WebApplications": [
     {
       "WebApplicationFullName": "Micronpass",
-      "WebApplicationName": "mpassw"
+      "WebApplicationName": "mpassw",
+      "WebApplicationMsiName": "mpassInst"
     },
     {
       "WebApplicationFullName": "Micronsin",
@@ -47,6 +49,5 @@
       "WinApplicationName": "btNoService",
       "ReferenceConfigFile": false
     }
-
   ]
 }

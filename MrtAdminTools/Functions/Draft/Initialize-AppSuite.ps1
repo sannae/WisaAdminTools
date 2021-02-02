@@ -4,7 +4,9 @@ function Initialize-AppSuite {
     $RootFolder = Get-AppSuiteRootFolder
     
     # Crea cartella \_LICENZA
-    New-Item -Path "$RootFolder\_LICENZA" -ItemType Directory
+    if (!(Test-Path "$RootFolder\_LICENZA")) {
+        New-Item -Path "$RootFolder\_LICENZA" -ItemType Directory 
+    }
 
     # Apri GeneraABL e seleziona da solo SW o SWLight
     Start-process "$RootFolder/GeneraABL/GeneraAbl.exe"
@@ -19,19 +21,19 @@ function Initialize-AppSuite {
     $wshshell.sendkeys($keys)
 
     # Apri MicronStart e attendi che venga chiuso
-    Start-sleep -Seconds 5
+    Start-sleep -Seconds 2
     Start-process $RootFolder/MicronStart/mStart.exe -Wait
 
+    break
+
     # Verifica connessione al database
-    if ( !( Test-SqlConnection $( Get-AppConnectionStrings  ) ) ) {
+    if ( !( Test-SqlConnection $( Get-AppConnectionStrings ) ) ) {
             Write-Error "Database SQL non raggiungibile! Verificare di aver aggiornato le stringhe di connessione."
             break
         }
 
-    # # # ------------------------- Dividere Qui in un'altra funzione ?
-
-        # Esegui query di allineamento MrtCore
-        # Ancora non funziona...
+    # Esegui query di allineamento MrtCore
+    # Ancora non funziona...
     $SqlQueriesFolder = "$RootFolder\DBUpgrade750Scripts\SQLServer"
     ForEach ( $query in $(Get-ChildItem "$SqlQueriesFolder\20*") ) {
         Invoke-DatabaseQuery -Query "$( Get-Content $query )"

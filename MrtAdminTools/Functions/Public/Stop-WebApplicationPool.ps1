@@ -34,7 +34,7 @@ function Stop-WebApplicationPool {
         Write-Verbose "L'application pool $($AppPool.Name) è stato arrestato."
     }
     else {
-        Write-Error "Non posso stoppare l'application pool $($AppPool.Name) perché è già arrestato!"
+        Write-Warning "Non posso stoppare l'application pool $($AppPool.Name) perché è già arrestato!"
     }
      
 }
