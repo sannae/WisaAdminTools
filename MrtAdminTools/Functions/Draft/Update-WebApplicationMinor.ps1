@@ -124,15 +124,12 @@ function Update-WebApplicationMinor {
         Write-Error "Aggiornamento non riuscito. Rollback a versione precedente in corso..."
 
         # Stoppa app pool
-        Write-Verbose "Arresto l'application pool di $AppFullName..."
         Stop-WebApplicationPool -AppFullName $AppFullName
 
         # Cancella cartella Applicazione/
-        Write-Verbose "Rimuovo la cartella $AppFullName e il suo contenuto..."
         Remove-item -LiteralPath "$RootFolder\$AppFullName" -Recurse -Force # Non riesco a cancellare i file TFF !
 
         # Rinomina cartella Applicazione_OLD/ in Applicazione/
-        Write-Verbose "Ripristino la cartella $OldFolder col nome di $AppFullName..."
         if ( Test-Path "$RootFolder\$AppFullName") {
             Copy-Item -Path "$RootFolder\$OldFolder\*" -Destination "$RootFolder\$AppFullName" -Recurse -Force # Non riesco a sovrascrivere i file TFF !
         }
@@ -141,7 +138,6 @@ function Update-WebApplicationMinor {
         }
 
         # Avvia app pool
-        Write-Verbose "Riavvio application pool di $AppFullName..."
         Start-WebApplicationPool -AppFullName $AppFullName
     }
     else {
