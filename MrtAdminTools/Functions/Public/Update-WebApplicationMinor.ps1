@@ -1,23 +1,34 @@
 <#
 .SYNOPSIS
-
+    Aggiorna la minor release di un'applicazione web, di cui fornire il file MSI aggiornato.
 .DESCRIPTION
-
+    Lo script ricava il nome originale dell'applicazione in IIS corrispondente a quella inserita come parametro.
+    A quel punto, stoppa l'application pool di appartenenza per poter continuare.
+    La cartella originale corrispondente all'applicazione viene copiata come backup.
+    Il file zip indicato come parametro viene spacchettato e installato al percorso /inetpub/wwwroot.
+    Il contenuto della cartella installata viene poi sovrascritto alla cartella dell'applicazione.
+    È possibile specificare dei file da escludere in questa sovrascrittura.
+    Nel caso in cui l'aggiornamento non sia andato a buon fine, viene effettuato automaticamente un rollback con la cartella di backup.
 .PARAMETER APPFULLNAME
-
+    Stringa contenente il nome completo dell'applicazione web da aggiornare.
+    Ne viene verificata l'esistenza nel range del file JSON Applications.WebApplications.
 .PARAMETER ZIPPATH
-
+    Stringa contenente il percorso dove si trovano i file zip da utilizzare per l'aggiornamento.
+    Ne viene verificata l'esistenza.
 .PARAMETER EXCLUDEFILES
-
+    Array contenente i nomi dei file da escludere nell'aggiornamento.
+    Il valore di default è web.config e file di licenza come specificato da file JSON.
 .EXAMPLE
-
+    PS> Update-WebApplicationMinor -AppFullName MYWEBAPP -ZipPath C:\temp
+    Effettua l'aggiornamento della web app MYWEBAPP con i file contenuti in C:\temp
 .EXAMPLE
-
+    PS> Update-WebApplicationMinor -AppFullName MYWEBAPP -ZipPath C:\temp -Exclude 'web.config'
+    Come sopra, ma escludendo dall'aggiornamento il file web.config.
 .NOTES
-    0.0 (finire di testare, aggiungere test su Pester)
+    0.9 (testato, aggiungere test su Pester)
     TODO: Sostituire lo Start-Process URL al fondo con una funzione Test-WebApplication che restituisca errori HTTP
     TODO: sostituire Start-Process "msiexec" con nuova funzione Invoke-MsiExec
-    TODO: test del Copy-Item, in particolare negli errore che restituisce sui file .tff (fonts)
+    TODO: Come posso gestire meglio gli errori di sovrascrittura dei file ttf (font)?
 #>
 
 function Update-WebApplicationMinor {
@@ -32,6 +43,7 @@ function Update-WebApplicationMinor {
             HelpMessage = "Digitare il percorso completo con i file aggiornati: ")]
         [ValidateScript ( { Test-Path $_ } )]
         [string] $ZipPath,
+        [Parameter(HelpMessage = "Digitare eventuali file da escludere nell'aggiornamento: ")]
         [string[]] $ExcludeFiles = @('Web.config', $Applications.LicenseFile)
     )
 
@@ -92,8 +104,7 @@ function Update-WebApplicationMinor {
         Write-verbose "$MsiFile installato con successo sotto \inetpub\wwwroot !"
     }
 
-    # Sovrascrivo ricorsivamente i file appena unzippati in MPW\Micronpass (escludi web.config e licenza) 
-    # SilentlyContinue serve ad evitare l'errore sui font
+    # Sovrascrivo ricorsivamente i file appena unzippati (escludi web.config e licenza) 
     $SourceDir = "C:\inetpub\wwwroot\webupgrade\"
     $DestDir = "$RootFolder\$AppFullName"
     Write-Verbose "Sto copiando i file da \inetpub\wwwroot a $RootFolder\$appFullName, escludendo i file $ExcludeFiles..."
@@ -112,27 +123,29 @@ function Update-WebApplicationMinor {
     $ZipVersion = $(Get-InstallFileInfo -Path $ZipFile).FileVersion
     $Testcondition = ($DllVersion.Major -eq $ZipVersion.Major) -and ($DllVersion.Minor -eq $ZipVersion.Minor) -and ($DllVersion.Build -eq $ZipVersion.Build)
 
-    # DA FINIRE
-    if ( !$TestCondition  ) {
+    if ( !$TestCondition ) {
 
         # Rollback !
-        Write-Error "Aggiornamento non riuscito. Rollback a versione precedente in corso..."
+        Write-Warning "Aggiornamento non riuscito. Rollback a versione precedente in corso..."
 
         # Stoppa app pool
         Stop-WebApplicationPool -AppFullName $AppFullName
  
         # Cancella il contenuto della cartella AppFullName
-        Remove-item -LiteralPath "$RootFolder\$AppFullName" -Recurse -Force -ErrorAction SilentlyContinue
+        Remove-item -Path "$RootFolder\$AppFullName\*" -Recurse -Force -ErrorAction SilentlyContinue
 
         # Copia il contenuto della cartella OldFolder dentro ad AppFullName
         Copy-Item -Path "$RootFolder\$OldFolder\*" -Destination "$RootFolder\$AppFullName" -Recurse -Force -ErrorAction SilentlyContinue
+
+        # Cancella OldFolder
+        Remove-Item -Path "$RootFolder\$OldFolder" -Recurse -Force
 
         # Avvia app pool
         Start-WebApplicationPool -AppFullName $AppFullName
 
     }
     else {
-        Write-Host "Ho finito di aggiornare l'applicazione $AppFullName da $OldVersion a $DllVersion" -ForegroundColor Green
+        Write-Host "Ho finito di aggiornare l'applicazione $AppFullName dalla versione $OldVersion alla versione $DllVersion" -ForegroundColor Green
     }
 
 }

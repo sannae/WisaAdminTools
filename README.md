@@ -89,6 +89,8 @@ Le funzioni testate sono disponibili nella sottocartella `Functions\Public`:
 * `Restart-WebApplicationPool` : ricicla l'application pool di una web app specifica
 * `Start-WebApplicationPool` : avvia l'application pool di una web app specifica
 * `Stop-WebApplicationPool` : arresta l'application pool di una web app specifica
+* `Update-WebApplicationMinor` :star: : aggiorna la minor release di una web app specifica
+* `Update-WinApplicationMinor` :star: : aggiorna la minor release di una Windows app specifica
 
 Altre funzioni _helper_ sono salvate in `Functions\Private`:
 * `Get-Applications` : carica l'oggetto array contenente i dettagli dell'application suite
