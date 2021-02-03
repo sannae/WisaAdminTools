@@ -2,7 +2,7 @@
   "SystemRequirements" : [
     {
       "MinimumFreeSpaceGB" : 100,
-      "MinimumRamGB" : 100,
+      "MinimumRamGB" : 8,
       "MinimumLogicalProcessors" : 2,
       "MinimumFramework": "4.5.2",
       "MinimumWindowsClient": 8.1,
