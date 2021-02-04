@@ -45,7 +45,7 @@ function Get-NetstatProcess {
 
 	# Raggruppamento ( \\Da rivedere )
 	$Connections | 
-	Group-Object -Property PID,State 
+	Group-Object -Property PID,State |
     Select-Object -Property Count,@{Name="State";Expression={($_.Name.Split(',')[1])}}, 
         @{Name="ProcessID";Expression={($_.Name.Split(',')[0])}}, 
         @{Name="ProcessName";Expression={(Get-Process -PID ($_.Name.Split(',')[0].Trim(' '))).Name}} |
