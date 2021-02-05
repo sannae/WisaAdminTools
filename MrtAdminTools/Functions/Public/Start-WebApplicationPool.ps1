@@ -5,7 +5,7 @@
     Lo script richiama la funzione Get-WebApplicationPool per restituire un oggetto Microsoft.WebAdministration.ConfigurationElement.
     L'oggetto contiene i dettagli dell'application pool a cui appartiene l'applicazione web definita come input.
     Se lo stato dell'application pool è "Stopped", allora viene avviato; in caso contrario, viene restituito un errore.
-.PARAMETER APPNAME
+.PARAMETER APPFULLNAME
     Nome completo dell'applicazione.
     I valori ammessi vengono letti da Json con dettagli della suite di applicazioni alla sezione WebApplications.WebApplicationFullName.
     Non ha valore di default.

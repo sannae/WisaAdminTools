@@ -7,6 +7,14 @@
     I valori di ApplicationName e ApplicationFullName sono confrontati con quelli inseriti nel file ApplicationDetails.json.
     Lo script associa l'applicazione selezionata all'application pool selezionato, verificandone l'esistenza ed eventualmente creandolo.
     Vengono infine settate le impostazioni dell'application pool di destinazione.
+.PARAMETER APPFULLNAME
+    Nome completo dell'applicazione.
+    I valori ammessi vengono letti da Json con dettagli della suite di applicazioni alla sezione WebApplications.WebApplicationFullName.
+    Non ha valore di default.
+.PARAMETER DESTINATIONAPPPOOLNAME
+    Stringa col nome dell'Application Pool di destinazione.
+    Se l'application pool in questione non esiste, ne viene creato uno omonimo.
+    In ogni caso ne vengono settate le impostazioni principali (pipeline, framework, idle timeout, ecc.)
 .EXAMPLE
     PS> Set-WebApplicationPool -AppFullName MYWEBAPP -DestinationAppPoolName MYWEBAPPPOOL
     Associa (ed eventualmente crea) l'application pool MYWEBAPPPOOL all'applicazione corrispondente alla descrizione MYWEBAPP

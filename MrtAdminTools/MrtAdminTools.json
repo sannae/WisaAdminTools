@@ -33,7 +33,8 @@
   ],
   "WinServices": [
     {
-      "WinServiceName": "Micronservice",
+      "WinServiceFullName": "Micronservice",
+      "WinServiceName": "btService",
       "WinServiceDescription": "MicronService communication service",
       "WinServiceRestartPriority": 1
     }

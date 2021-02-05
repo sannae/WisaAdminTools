@@ -21,9 +21,7 @@ function New-MrtService {
     }
 
     # Calcola Service Number sulla base dell'ultimo installato
-    $LastService = Get-Service -Name $ServiceName,$ServiceName"??" |
-        Sort-Object -Property Name | 
-        Select-Object -Last 1
+    $LastService = Get-Service -Name $ServiceName,$ServiceName"??" | Sort-Object -Property Name | Select-Object -Last 1
     if ( $($LastService).Name -eq 'btService' ) {
         $NewServiceLabel = '01'
         $NewServiceCode = '0002'

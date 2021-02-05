@@ -6,6 +6,7 @@
 # basti eseguire (netstat -qno -p TCP).Count versus (Get-NetTcpConnection).Count e si vede che la differenza è minima.
 
 <#
+	Bound 		- 
 	Closed	 	- The TCP connection is closed. 
 	CloseWait 	- The local endpoint of the TCP connection is waiting for a connection termination request from the local user. 
 	Closing 	- The local endpoint of the TCP connection is waiting for an acknowledgement of the connection termination request sent previously. 
