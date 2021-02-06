@@ -14,9 +14,9 @@ function Test-SystemRequirement {
     # Logical CPUs
     $Computer.CsNumberOfLogicalProcessors -le $Requirements.MinimumLogicalProcessors
     # RAM
-    $($Computer.CsTotalPhysicalMemory) / 1Gb -le $Requirements.MinimumRamGB
+    $($Computer.CsTotalPhysicalMemory) / 1Gb -as [int] -le $Requirements.MinimumRamGB
     # Space on disk
-    $(Get-CimInstance -Class CIM_LogicalDisk).FreeSpace / 1Gb -le $Requirements.MinimumFreeSpaceGB
+    $(Get-CimInstance -Class CIM_LogicalDisk).FreeSpace / 1Gb -as [int] -le $Requirements.MinimumFreeSpaceGB
 
 
     # Verifica versione di OS (BLOCCANTE)

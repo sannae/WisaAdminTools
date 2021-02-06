@@ -19,10 +19,7 @@ function Update-WinServiceMinor {
         # Service Name
         $ServiceName = $($Applications.WinServices | Where-Object { $_.WinServiceFullName -eq $WinServiceFullName }).WinServiceName
 
-        # Chiudere le altre connessioni
-
         # Arresto il servizio, se avviato
-        # \\TODO: Togliere il ForEach-Object! Piuttosto, passare a questa funzione più valori tramite pipeline
         $Serv = Get-Service *$ServiceName* -ErrorAction SilentlyContinue 
         $Serv.Stop() | Out-Null # Ci provo gentilmente
         Start-Sleep -Seconds 3
