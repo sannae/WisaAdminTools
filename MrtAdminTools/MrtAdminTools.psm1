@@ -29,6 +29,6 @@ Get-ChildItem -Path $PrivateFunctionsFiles -Exclude *.tests.ps1, *profile.ps1 | 
     }
 }
 
-# Load application suite details from JSON file located in module root folder
+# Load application suite details from JSONC file located in module root folder
 $ModuleName = Split-Path $PSScriptRoot -Leaf
 $global:Applications = Get-Content -Raw -Path "$PSScriptRoot\$ModuleName.json" | ConvertFrom-Json

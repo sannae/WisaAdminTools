@@ -18,6 +18,7 @@
 .EXAMPLE
     PS> Set-WebApplicationPool -AppFullName MYWEBAPP -DestinationAppPoolName MYWEBAPPPOOL
     Associa (ed eventualmente crea) l'application pool MYWEBAPPPOOL all'applicazione corrispondente alla descrizione MYWEBAPP
+    Se MYWEBAPPPOOL è già l'application pool di appartenenza di MYWEBAPP, questo viene comunque configurato con le impostazioni di default.
 .NOTES
     0.9 (da finire di testare)
     Big thanks to https://octopus.com/blog/iis-powershell#assigning-application-pools !
@@ -74,7 +75,7 @@ function Set-WebApplicationPool {
 
     # Impostazioni avanzate application pool
     $NewAppPool.ManagedPipelineMode = "Integrated"
-    $NewAppPool.ManagedRuntimeVersion = "4.0"
+    $NewAppPool.ManagedRuntimeVersion = "v4.0"
     $NewAppPool.Enable32BitAppOnWin64 = $true
     $NewAppPool.AutoStart = $true
     $NewAppPool.StartMode = "OnDemand"
@@ -88,6 +89,6 @@ function Set-WebApplicationPool {
 
     # Ricicla tutto!
     Write-Verbose "Sto avviando l'application pool $DestinationAppPoolName..."
-    $IIS.ApplicationPools[$DestinationAppPoolName].Recycle() | Out-null
+    Restart-WebApplicationPool -AppFullName $AppFullName
 
 } 

@@ -6,4 +6,4 @@
 - Aggiungere proprietà ADDLOCAL a Setup.exe per installazione custom
 - Funzione per switchare autenticazione Forms con autenticazione Windows
 - Test-EmailServerConnection, Send-EmailNotification, Send-NetstatReport!
-- Provare Pester
+- Esportare JSON in un template ARM che contiene anche le specifiche della VM (o del container) di destinazione

@@ -32,10 +32,10 @@ function Restart-WebApplicationPool {
     # Casistica
     if ( $AppPool.State -eq 'Started' ) {
         $AppPool.Recycle() | Out-Null
-        Write-Verbose "L'application pool $($AppPool.Name) è stato riciclato."
+        Write-Verbose "Ho riciclato l'application pool $($AppPool.Name)."
     } elseif ( $AppPool.State -eq 'Stopped' )  {
         $AppPool.Start() | Out-Null
-        Write-Verbose "L'application pool $($AppPool.Name) è stato avviato."
+        Write-Verbose "Ho avviato l'application pool $($AppPool.Name)."
     }
      
 }

@@ -44,37 +44,12 @@ Get-Help FUNCTIONNAME
 ```
 
 ### Prerequisiti
-File `ApplicationDetails.json` da mettere nella cartella root del modulo. Un template del contenuto è disponibile in `ApplicationDetails.template.json`.
-Va rispettato il seguente formato:
-```json
-{
-  "RootFolderName": "RootFolderNameValue",
-  "SetupFolderName": "SetupFolderNameValue",
-  "WebApplications": [
-    {
-      "WebApplicationFullName": "WebApplicationFullName",
-      "WebApplicationName": "WebApplicationName"
-    },
-    ...
-  ],
-  "WinServices": [
-    {
-      "WinServiceName": "WinServiceName",
-      "WinServiceDescription": "WinServiceDescription",
-      "WinServiceRestartPriority": 2
-    },
-    ...
-  ],
-  "WinApplications": [
-    {
-      "WinApplicationFullName": "WinApplicationFullName",
-      "WinApplicationName": "WinApplicationName",
-      "ReferenceConfigFile": true
-    }
+File `ApplicationDetails.json` da mettere nella cartella root del modulo. 
 
-  ]
-}
-```
+Non essendo supportato in [Windows Powershell 5.1](https://github.com/PowerShell/PowerShell/issues/7436), il file deve essere di formato `json` e non può essere `jsonc` (dove ".jsonc" è [JSON with Comments](https://code.visualstudio.com/docs/languages/json#_json-with-comments) ). Stiamo esplorando la possibilità di passare a `yaml`.
+
+Un template del contenuto è comunque disponibile in `ApplicationDetails.template.jsonc`, così che i commenti possano aiutare a compilarne il contenuto.
+
 
 ### Funzioni testate:
 Le funzioni testate sono disponibili nella sottocartella `Functions\Public`:

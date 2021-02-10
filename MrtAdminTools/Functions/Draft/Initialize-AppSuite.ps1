@@ -1,3 +1,7 @@
+# Crea database : MPW\MicronStart\Data\SQLSERVER_NEWDB.sql
+# Crea tabelle : MPW\MicronStart\Data\SQLSERVER_CREATE_DB.sql
+# Crea parametri default : MPW\MicronStart\Data\SCRIPT_FILL_DATA.sql
+
 function Initialize-AppSuite {
 
     # Trova cartella MPW

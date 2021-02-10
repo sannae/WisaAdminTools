@@ -1,0 +1,58 @@
+{
+  // Requisiti di sistema
+  "SystemRequirements": [
+    {
+      "MinimumFreeSpaceGB": "",
+      "MinimumRamGB": "",
+      "MinimumLogicalProcessors": "",
+      "MinimumFramework": "",
+      "MinimumSqlServerVersion": "",
+      "MinimumWindowsClient": "",
+      "MinimumWindowsServer": "", 
+      "NecessaryTcpPorts": [
+        {
+          // Coppie protocollo-porta
+          "SSH":"22"
+        }
+      ],
+      // Funzionalità del ruolo IIS
+      "IISFeatures": {
+        "FeatureName": {  // Nome della feature
+          "Client": "",   // Dicitura della feature in Windows Client (DISM module)
+          "Server": ""    // Dicitura della feature in Windows Server (ServerManager module)
+        }
+      }
+    }
+  ],
+  // Caratteristiche della Application Suite
+  "RootFolderName": "",
+  "AppSuiteFileName": "",
+  "AppSuiteName": "",
+  "SetupFolderName": "",
+  "LicenseFile": "",
+  // Applicazioni Web
+  "WebApplications": [
+    {
+      "WebApplicationFullName": "",
+      "WebApplicationName": "",
+      "WebApplicationMsiName": ""
+    }
+  ],
+  // Servizi di Windows
+  "WinServices": [
+    {
+      "WinServiceFullName": "",
+      "WinServiceName": "",
+      "WinServiceDescription": "",
+      "WinServiceRestartPriority": ""
+    }
+  ],
+  // Applicazioni Windows
+  "WinApplications": [
+    {
+      "WinApplicationFullName": "",
+      "WinApplicationName": "",
+      "ReferenceConfigFile": ""
+    }
+  ]
+}

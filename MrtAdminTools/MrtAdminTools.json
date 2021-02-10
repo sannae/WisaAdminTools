@@ -1,21 +1,121 @@
 {
-  "SystemRequirements" : [
+  "SystemRequirements": [
     {
-      "MinimumFreeSpaceGB" : 100,
-      "MinimumRamGB" : 8,
-      "MinimumLogicalProcessors" : 2,
+      "MinimumFreeSpaceGB": 100,
+      "MinimumRamGB": 8,
+      "MinimumLogicalProcessors": 2,
       "MinimumFramework": "4.5.2",
-      "MinimumWindowsClient": 8.1,
-      "MinimumWindowsServer": 6.3,
-      "NecessaryTcpPorts" : [22,23,80,443,3001,1433,1521],
-      "MinimumSqlServerVersion" : 11.0
+      "MinimumSqlServerVersion": "11.0",
+      "MinimumWindowsClient": "8.1",
+      "MinimumWindowsServer": "6.3",
+      "NecessaryTcpPorts": [
+        {
+          "SSH": 22,
+          "SFTP": 23,
+          "HTTP": 80,
+          "HTTPS": 443,
+          "btService": 3001,
+          "SQL": 1433,
+          "Oracle": 1521
+        }
+      ],
+      "IISFeatures": {
+        "IIS 6 Management Compatibility": {
+          "Client": "IIS-IIS6ManagementCompatibility",
+          "Server": "Web-Mgmt-Compat"
+        },
+        ".NET Framework Features": {
+          "Client": "NetFx4-AdvSrvs",
+          "Server": "NET-Framework-45-features"
+        },
+        "IIS 6 Management Console": {
+          "Client": "IIS-LegacySnapIn",
+          "Server": "Web-Lgcy-Mgmt-Console"
+        },
+        ".NET Framework 4.6": {
+          "Client": "NetFx4-AdvSrvs",
+          "Server": "NET-Framework-45-Core"
+        },
+        "Application Development": {
+          "Client": "IIS-ApplicationDevelopment",
+          "Server": "Web-App-Dev"
+        },
+        "IIS 6 WMI Compatibility": {
+          "Client": "IIS-WMICompatibility",
+          "Server": "Web-WMI"
+        },
+        "Telnet Client": {
+          "Client": "TelnetClient",
+          "Server": "Telnet-Client"
+        },
+        "Windows Authentication": {
+          "Client": "IIS-WindowsAuthentication",
+          "Server": "Web-Windows-Auth"
+        },
+        "ISAPI Extensions": {
+          "Client": "IIS-ISAPIExtensions",
+          "Server": "Web-ISAPI-Ext"
+        },
+        "Extended ASP.NET 4.7": {
+          "Client": "NetFx4Extended-ASPNET45",
+          "Server": "NET-Framework-45-ASPNET"
+        },
+        "Application Initialization": {
+          "Client": "IIS-ApplicationInit",
+          "Server": "Web-AppInit"
+        },
+        "Web Server server role": {
+          "Client": "IIS-WebServerRole",
+          "Server": "Web-Server"
+        },
+        "Static Content": {
+          "Client": "IIS-StaticContent",
+          "Server": "Web-Static-Content"
+        },
+        "Web Server role service": {
+          "Client": "IIS-WebServer",
+          "Server": "Web-WebServer"
+        },
+        "Web Sockets protocol": {
+          "Client": "IIS-WebSockets",
+          "Server": "Web-WebSockets"
+        },
+        "Basic Authentication": {
+          "Client": "IIS-BasicAuthentication",
+          "Server": "Web-Basic-Auth"
+        },
+        "ASP.NET 4.7": {
+          "Client": "IIS-ASPNET45",
+          "Server": "Web-Asp-Net45"
+        },
+        "Management Tools": {
+          "Client": "IIS-WebServerManagementTools",
+          "Server": "Web-Mgmt-Tools"
+        },
+        ".NET Extensibility 4.6": {
+          "Client": "IIS-NetFxExtensibility45",
+          "Server": "Web-Net-Ext45"
+        },
+        "ISAPI Filters": {
+          "Client": "IIS-ISAPIFilter",
+          "Server": "Web-ISAPI-Filter"
+        },
+        "IIS 6 Scripting Tools": {
+          "Client": "IIS-LegacyScripts",
+          "Server": "Web-Lgcy-Scripting"
+        },
+        "IIS Management Console": {
+          "Client": "IIS-ManagementConsole",
+          "Server": "Web-Mgmt-Console"
+        }
+      }
     }
   ],
   "RootFolderName": "MPW",
   "AppSuiteFileName": "MRT",
   "AppSuiteName": "Micronpass Application Suite",
   "SetupFolderName": "MPW_INSTALL",
-  "LicenseFile":"MRT.LIC",
+  "LicenseFile": "MRT.LIC",
   "WebApplications": [
     {
       "WebApplicationFullName": "Micronpass",
@@ -37,7 +137,19 @@
       "WinServiceName": "btService",
       "WinServiceDescription": "MicronService communication service",
       "WinServiceRestartPriority": 1
-    }
+    },
+    {
+      "WinServiceFullName": "MicronImport",
+      "WinServiceName": "DBIService",
+      "WinServiceDescription": "Database import service",
+      "WinServiceRestartPriority": 2
+    },
+    {
+      "WinServiceFullName": "MicronClear",
+      "WinServiceName": "mClearSrv",
+      "WinServiceDescription": "Database maintenance service",
+      "WinServiceRestartPriority": 2
+    }   
   ],
   "WinApplications": [
     {
