@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Restituisce una lista di array contenenti DataOra, LogName e contenuto della riga del log per un'applicazione specificata.
+    Aggregatore di log: restituisce una lista di array contenenti DataOra, LogName e contenuto della riga del log per un'applicazione specificata.
 .DESCRIPTION
     Lo script legge riga per riga tutti i file di log all'interno della cartella di una specifica applicazione.
     L'applicazione può essere un servizio di Windows o un'app web e viene indicata nella variabile $Path.
@@ -23,14 +23,17 @@
 .PARAMETER SEARCHSTRING
     È la stringa che si vuole cercare nei log, da usare come filtro.
     Se non specificata, è uguale a "*", ovvero non viene fatto alcun filtro.
+.PARAMETER EXTENSION
+    Array di stringhe che specifica le estensioni dei file da aggregare.
+    Il valore di default è "log" ovvero vengono presi in considerazione solo i file .log.
 .EXAMPLE
-    PS> Get-MrtServiceEventLog -Path MYAPPFOLDER
+    PS> Get-AllFolderLogs -Path MYAPPFOLDER
     Restituisce tutti i log dell'applicativo MYAPPFOLDER della giornata odierna
 .EXAMPLE
-    PS> Get-MrtServiceEventLog -Path MYAPPFOLDER -StartDate '01-01-2020 00:00:00' -StopDate '02-01-2020 00:00:00'
+    PS> Get-AllFolderLogs -Path MYAPPFOLDER -StartDate '01-01-2020 00:00:00' -StopDate '02-01-2020 00:00:00'
     Restituisce tutti i log dell'applicativo MYAPPFOLDER nella giornata del 01-01-2020
 .EXAMPLE
-    PS> Get-MrtServiceEventLog -PAth MYAPPFOLDER -SearchString "Disconnessione"
+    PS> Get-AllFolderLogs -PAth MYAPPFOLDER -SearchString "Disconnessione"
     Restituisce tutti i log dell'applicativo MYAPPFOLDER contenenti la stringa "Disconnessione" 
 .NOTES
     0.9 (refactoring)
@@ -39,7 +42,7 @@
     TODO : Gestire il parametro $SearchString con -Include ed -Exclude, così da poter omettere le righe inutili
 #>
 
-function Get-AppLogs {
+function Get-AllFolderLogs {
 
     [CmdletBinding()]
     param (
@@ -55,16 +58,17 @@ function Get-AppLogs {
         [Parameter(
             HelpMessage = "Digitare data ora di fine (dd-MM-yyyy hh:mm:ss)")]        
         [String]$StopDate = (Get-Date -Format 'dd-MM-yyyy 23:59:59').ToString(),
-        [string]$SearchString = "*"
+        [string]$SearchString = "*",
+        [string[]]$Extension = "log"
     )
 
     # Salva i log in una variabile
-    $Logs = Get-ChildItem -Path $Path -Recurse | Where-Object { $_.Name -like "*.log" }
+    $Logs = Get-ChildItem -Path $Path -Recurse | Where-Object { $_.Name -like "*.$Extension" }
     if ( $null -eq $Logs ) {
-        Write-Error "Non ci sono file log nella cartella indicata!"
+        Write-Error "Non ci sono file con estensione .$Extension nella cartella indicata!"
     }
     else {
-        Write-Verbose "Ho trovato i seguenti log: $Logs"
+        $Logs | ForEach-Object { Write-Verbose "Ho trovato il log: $_ " }
     }
 
     # Crea array per salvare i risultati
