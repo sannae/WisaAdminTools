@@ -5,7 +5,8 @@ Questo è un modulo PowerShell con alcuni strumenti utili (si spera!) per ammini
 
 ### Installare il modulo
 Il modulo _non_ è pubblicato sulla [Powershell Gallery](https://www.powershellgallery.com/). Per averlo disponibile in ogni sessione PowerShell, copiare l'intera cartella `MrtAdminTools` nei propri percorsi di default dei moduli.
-Prossimamente verrà creato un [PSRepository ad uso interno](https://powershellexplained.com/2017-05-30-Powershell-your-first-PSScript-repository/), magari integrato con una [CI/CD pipeline](http://ramblingcookiemonster.github.io/PSDeploy-Inception/).
+
+Prossimamente verrà creato un [PSRepository ad uso interno](https://powershellexplained.com/2017-05-30-Powershell-your-first-PSScript-repository/), magari integrato con una [CI/CD pipeline](http://ramblingcookiemonster.github.io/PSDeploy-Inception/) automatica con [AppVeyor](https://powershellexplained.com/2017-01-21-powershell-module-continious-delivery-pipeline/) o [Azure DevOps](https://powershellexplained.com/2018-09-20-Powershell-Building-Modules-with-the-Azure-DevOps-Pipeline/), da approfondire.
 
 La lista dei percorsi di default dei moduli è visibile col comando:
 ```powershell
