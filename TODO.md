@@ -1,4 +1,5 @@
 ### MrtAdminTools: To do
+- Funzione per monitoraggio porte TCP tramite Get-NetTcpConnection (con funzioni di grouping e visualizzazione di porte libere)
 - Modificare ReferenceConfigFile da MicronConfig al web.config di Micronpass (oppure, generalizzare)
 - Automatizzare l'aggiornamento di $ModuleName.json
 - Utilities di installazione: Invoke-MsiExec, Invoke-InstallUtil, Invoke-SetupExe
