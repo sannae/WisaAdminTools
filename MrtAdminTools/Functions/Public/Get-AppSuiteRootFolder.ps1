@@ -32,8 +32,7 @@ function Get-AppSuiteRootFolder {
 
         $Root = Get-ChildItem $Disk | Where-Object { $_.PSIsContainer -eq $true -and $_.Name -eq $RootFolderName }
         if ( $null -eq $Root) { 
-            Write-Error "Non ho trovato la cartella $RootFolderName nel disco $Disk"
-            continue 
+            Write-Warning "Non ho trovato la cartella $RootFolderName nel disco $Disk" 
         }
         else { 
             $($Root).FullName
@@ -51,8 +50,7 @@ function Get-AppSuiteRootFolder {
             Set-Location $Disk
             $Root = Get-Childitem -Path \ -Filter "$RootFolderName" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
             if ($null -eq $Root) {
-                Write-Error "La cartella $RootFolderName non è stata trovata nel disco $Disk!"
-                continue
+                Write-Warning "La cartella $RootFolderName non è stata trovata nel disco $Disk!"
             }
             else {
                 Write-Verbose "Ho trovato la cartella $RootFolderName al percorso $($Root.FullName)"

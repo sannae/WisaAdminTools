@@ -9,10 +9,11 @@ function Test-SystemRequirement {
     $Requirements = $Applications.SystemRequirements
     $Computer = Get-ComputerInfo
 
-
-    # Verifica requisiti hardware (BLOCCANTE)
+    # Verifica requisiti hardware (NON BLOCCANTE)
     # Logical CPUs
-    $Computer.CsNumberOfLogicalProcessors -le $Requirements.MinimumLogicalProcessors
+    if ($Computer.CsNumberOfLogicalProcessors -le $Requirements.MinimumLogicalProcessors) {
+        Write-Error "Il numero di processori presenti ($($Computer.CsNumberOfLogicalProcessors)) è inferiore al minimo consentito ($($Requirements.MinimumLogicalProcessors))"
+    }
     # RAM
     $($Computer.CsTotalPhysicalMemory) / 1Gb -as [int] -le $Requirements.MinimumRamGB
     # Space on disk

@@ -92,4 +92,23 @@ function Get-MpwPlantStatus {
         Out-File $StatusFile -Append  
 
 
+<#
+
+    $Root = "MPW"
+
+    # Servizi
+    Get-WmiObject Win32_Service | Where-Object { ($_.PathName -like "*$Root*") -and ($_.State -eq 'Running') } | Select-Object Name, Description, StartMode, State, Status | Sort-Object Name | Format-Table
+
+    # Applicazioni web
+    $(Get-IISServerManager).Sites.Applications | Where-Object { $_.VirtualDirectories.PhysicalPath -like "*$Root*" } | Select-Object Path, ApplicationPoolName, EnabledProtocols | Format-Table
+
+    # Database
+    # Check connection strings
+
+    # Terminali
+    Invoke-DbQuery -ConnectionString $Query
+
+#>
+
+
 }
