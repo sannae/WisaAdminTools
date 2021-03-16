@@ -26,6 +26,9 @@
 .PARAMETER EXTENSION
     Array di stringhe che specifica le estensioni dei file da aggregare.
     Il valore di default è "log" ovvero vengono presi in considerazione solo i file .log.
+.PARAMETER SILENT
+    Switch per sovrascrivere la variabile $ErrorActionPreference da Continue a SilentlyContinue.
+    Attenzione: questo zittisce gli errori su host, serve solo per accelerare.
 .EXAMPLE
     PS> Get-AllFolderLogs -Path MYAPPFOLDER
     Restituisce tutti i log dell'applicativo MYAPPFOLDER della giornata odierna
@@ -59,8 +62,14 @@ function Get-AllFolderLogs {
             HelpMessage = "Digitare data ora di fine (dd-MM-yyyy hh:mm:ss)")]        
         [String]$StopDate = (Get-Date -Format 'dd-MM-yyyy 23:59:59').ToString(),
         [string]$SearchString = "*",
-        [string[]]$Extension = "log"
+        [string[]]$Extension = "log",
+        [switch]$Silent
     )
+
+    # Ignora errori
+    if ($Silent) {
+        $ErrorActionPreference = "SilentlyContinue"
+    }
 
     # Salva i log in una variabile
     $Logs = Get-ChildItem -Path $Path -Recurse | Where-Object { $_.Name -like "*.$Extension" }
