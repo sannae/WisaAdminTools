@@ -45,7 +45,11 @@ Get-Help FUNCTIONNAME
 ```
 
 ### Prerequisiti
-File `ApplicationDetails.json` da mettere nella cartella root del modulo. 
+File `MrtAdminTools.json` da mettere nella cartella root del modulo, facendo attenzione che nel file del modulo (`.psm1`) l'opzione `-Path` coerente:
+```powershell
+$global:Applications = Get-Content -Raw -Path "$PSScriptRoot\$ModuleName.json" | ConvertFrom-Json
+```
+Il contenuto del file viene reso disponibile in shell a tutte le funzioni nella variabile globale `$Applications`. 
 
 Non essendo supportato in [Windows Powershell 5.1](https://github.com/PowerShell/PowerShell/issues/7436), il file deve essere di formato `json` e non può essere `jsonc` (dove ".jsonc" è [JSON with Comments](https://code.visualstudio.com/docs/languages/json#_json-with-comments) ). Stiamo esplorando la possibilità di passare a `yaml`.
 
