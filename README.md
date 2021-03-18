@@ -45,7 +45,7 @@ Get-Help FUNCTIONNAME
 ```
 
 ### Prerequisiti
-File `MrtAdminTools.json` da mettere nella cartella root del modulo, facendo attenzione che nel file del modulo (`.psm1`) l'opzione `-Path` coerente:
+File `MrtAdminTools.json` da mettere nella cartella root del modulo, facendo attenzione che nel file del modulo (`.psm1`) l'opzione `-Path` sia coerente:
 ```powershell
 $global:Applications = Get-Content -Raw -Path "$PSScriptRoot\$ModuleName.json" | ConvertFrom-Json
 ```
