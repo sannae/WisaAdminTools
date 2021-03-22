@@ -19,7 +19,7 @@ Param (
     $SourceLocation
 )
 
-Set-StrictMode -Version Latest
+# 
 
 # Synopsis: Default task
 task . Clean, Build

@@ -1,11 +1,11 @@
 # PSScriptAnalyzer test
 # TODO : Cambiare $here in modo che possa essere avviato da \Tests
 
-#$here = Split-Path -Parent $MyInvocation.MyCommand.Path
-$here = $($(Get-Variable -Name PSScriptRoot).Value)
-
+$here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = $here
 $moduleName = Split-Path -Path $modulePath -Leaf
+
+Set-StrictMode -Version Latest
 
 Describe "'$moduleName' Module Analysis with PSScriptAnalyzer" {
     Context 'Standard Rules' {
