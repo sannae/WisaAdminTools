@@ -34,7 +34,7 @@ Enter-Build {
     # (https://github.com/nightroman/Invoke-Build/wiki/Special-Variables)
     $script:moduleName = Split-Path $PSScriptRoot -Leaf
     $script:moduleSourcePath = Join-Path -Path $BuildRoot -ChildPath $moduleName
-    $script:moduleManifestPath = Join-Path -Path $moduleSourcePath -ChildPath "$moduleName.psd1"
+    $script:moduleManifestPath = Join-Path -Path $moduleSourcePath -ChildPath "$moduleName\$moduleName.psd1"
     $script:buildOutputPath = Join-Path -Path $BuildRoot -ChildPath 'build'
 
     # Setting base module version and using it if building locally
