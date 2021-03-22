@@ -1,10 +1,12 @@
-# Azure Pipelines build
+# Azure Pipelines YAML for CI
+# Viene importato automaticamente da Azure DevOps Pipelines
+# Fare attenzione che la propria Organization possa eseguire MS-hosted o self-hosted jobs
 
 trigger:
   - master
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'default'
 
 stages:
 
