@@ -10,10 +10,8 @@ Set-StrictMode -Version Latest
 Describe "'$moduleName' Module Analysis with PSScriptAnalyzer" {
     Context 'Standard Rules' {
         
-        # Define PSScriptAnalyzer rules
-        # $scriptAnalyzerRules = Get-ScriptAnalyzerRule # Just getting all default rules
-
         # Perform analysis against each rule
+        # PSScriptAnalyzer uses by default all the rules
         forEach ($rule in $scriptAnalyzerRules) {
             It "should pass '$rule' rule" {
                 Invoke-ScriptAnalyzer -Path "$here\$moduleName.psm1" | Should -BeNullOrEmpty

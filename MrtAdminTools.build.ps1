@@ -270,7 +270,7 @@ task CodeCoverage {
     $acceptableCodeCoveragePercent = 60
 
     $path = $moduleSourcePath
-    $files = Get-ChildItem $path -Recurse -Include '*.ps1', '*.psm1' -Exclude '*.Tests.ps1', '*.PSSATests.ps1'
+    $files = Get-ChildItem $path -Recurse -Include '*.ps1', '*.psm1' -Exclude '*.Tests.ps1', '*.PSScriptAnalyzer.tests.ps1'
 
     $Params = @{
         Path         = $path
