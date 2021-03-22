@@ -32,9 +32,9 @@ Enter-Build {
     # Setting build script variables
     # $BuildRoot è una variabile interna del modulo InvokeBuild 
     # (https://github.com/nightroman/Invoke-Build/wiki/Special-Variables)
-    $script:moduleName = Split-Path $PSScriptRoot -Leaf
+    $script:moduleName = 'MrtAdminTools'
     $script:moduleSourcePath = Join-Path -Path $BuildRoot -ChildPath $moduleName
-    $script:moduleManifestPath = Join-Path -Path $moduleSourcePath -ChildPath "$moduleName\$moduleName.psd1"
+    $script:moduleManifestPath = Join-Path -Path $moduleSourcePath -ChildPath "$moduleName.psd1"
     $script:buildOutputPath = Join-Path -Path $BuildRoot -ChildPath 'build'
 
     # Setting base module version and using it if building locally
