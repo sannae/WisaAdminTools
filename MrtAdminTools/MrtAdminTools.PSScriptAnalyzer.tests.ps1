@@ -1,8 +1,7 @@
 # PSScriptAnalyzer test
 # TODO : Cambiare $here in modo che possa essere avviato da \Tests
 
-$global:here = Split-Path -Parent $MyInvocation.MyCommand.Path
-
+$here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = $here
 $moduleName = Split-Path -Path $modulePath -Leaf
 
@@ -14,7 +13,7 @@ Describe "'$moduleName' Module Analysis with PSScriptAnalyzer" {
         # Perform analysis against each rule
         forEach ($rule in $scriptAnalyzerRules) {
             It "should pass '$rule' rule" {
-                Invoke-ScriptAnalyzer -Path "$modulePath\$moduleName.psm1" -IncludeRule $rule | Should -BeNullOrEmpty
+                Invoke-ScriptAnalyzer -Path "$here\$moduleName.psm1" -IncludeRule $rule | Should -BeNullOrEmpty
             }
         }
     }
