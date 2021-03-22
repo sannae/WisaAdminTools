@@ -1,24 +1,22 @@
-# Build script
+#requires -modules InvokeBuild
+
 <#
 .SYNOPSIS
     Build script (https://github.com/nightroman/Invoke-Build)
+
 .DESCRIPTION
     This script contains the tasks for building the 'SampleModule' PowerShell module
-    From : https://andrewmatveychuk.com/a-sample-ci-cd-pipeline-for-powershell-module/
-    Also look at : https://xainey.github.io/2017/powershell-module-pipeline/#invoke-build-101
-.NOTES
-
 #>
-
-#requires -modules InvokeBuild
 
 Param (
     [Parameter(ValueFromPipelineByPropertyName = $true)]
     [ValidateSet('Debug', 'Release')]
-    [String] $Configuration = 'Debug',
+    [String]
+    $Configuration = 'Debug',
     [Parameter(ValueFromPipelineByPropertyName = $true)]
     [ValidateNotNullOrEmpty()]
-    [String] $SourceLocation
+    [String]
+    $SourceLocation
 )
 
 Set-StrictMode -Version Latest
@@ -26,15 +24,24 @@ Set-StrictMode -Version Latest
 # Synopsis: Default task
 task . Clean, Build
 
+
 # Install build dependencies
 Enter-Build {
 
+    # Installing PSDepend for dependency management
+    if (-not (Get-Module -Name PSDepend -ListAvailable)) {
+        Install-Module PSDepend -Force
+    }
+    Import-Module PSDepend
+
+    # Installing dependencies
+    Invoke-PSDepend -Force
+
     # Setting build script variables
-    # $BuildRoot è una variabile interna del modulo InvokeBuild 
-    # (https://github.com/nightroman/Invoke-Build/wiki/Special-Variables)
-    $script:moduleName = 'MrtAdminTools'
+    $script:moduleName = 'SampleModule'
     $script:moduleSourcePath = Join-Path -Path $BuildRoot -ChildPath $moduleName
     $script:moduleManifestPath = Join-Path -Path $moduleSourcePath -ChildPath "$moduleName.psd1"
+    $script:nuspecPath = Join-Path -Path $moduleSourcePath -ChildPath "$moduleName.nuspec"
     $script:buildOutputPath = Join-Path -Path $BuildRoot -ChildPath 'build'
 
     # Setting base module version and using it if building locally
@@ -46,13 +53,13 @@ Enter-Build {
 
 # Synopsis: Analyze the project with PSScriptAnalyzer
 task Analyze {
-
     # Get-ChildItem parameters
     $Params = @{
         Path    = $moduleSourcePath
         Recurse = $true
-        Include = "*$moduleName.PSScriptAnalyzer.tests.*"
+        Include = "*.PSSATests.*"
     }
+
     $TestFiles = Get-ChildItem @Params
 
     # Pester parameters
