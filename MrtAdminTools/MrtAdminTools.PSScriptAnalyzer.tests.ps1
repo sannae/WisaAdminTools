@@ -1,7 +1,7 @@
 # PSScriptAnalyzer test
 # TODO : Cambiare $here in modo che possa essere avviato da \Tests
 
-$here = Split-Path -Parent $MyInvocation.MyCommand.Path
+$global:here = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 $modulePath = $here
 $moduleName = Split-Path -Path $modulePath -Leaf
