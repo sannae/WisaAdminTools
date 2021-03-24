@@ -281,7 +281,7 @@ task CodeCoverage {
 
     # Additional parameters on Azure Pipelines agents to generate code coverage report
     if ($env:TF_BUILD) {
-        if (-not (Test-Path -Path $buildOutputPath -ErrorAction SilentlyContinue)) {
+        if (-not (Test-Path -Path $buildOutputPath -ErrorAction Continue)) {
             New-Item -Path $buildOutputPath -ItemType Directory
         }
         $Timestamp = Get-date -UFormat "%Y%m%d-%H%M%S"
