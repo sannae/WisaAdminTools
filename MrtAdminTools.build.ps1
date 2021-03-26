@@ -30,7 +30,7 @@ Enter-Build {
 
     # Installing PSDepend for dependency management
     if (-not (Get-Module -Name PSDepend -ListAvailable)) {
-        Install-Module PSDepend -Force
+        Install-Module PSDepend -Force -Scope CurrentUser
     }
     Import-Module PSDepend
 
