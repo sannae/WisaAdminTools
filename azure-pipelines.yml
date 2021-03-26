@@ -23,7 +23,7 @@ stages:
             powershell: true
             script: |
               if (-not (Get-Module -Name InvokeBuild -ListAvailable)) {
-                Install-Module InvokeBuild -Force -Scope CurrentUser
+                Install-Module InvokeBuild -Scope CurrentUser
               }
               Import-Module InvokeBuild
 
