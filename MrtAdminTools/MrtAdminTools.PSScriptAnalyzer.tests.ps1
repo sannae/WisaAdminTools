@@ -14,7 +14,7 @@ Describe "'$moduleName' Module Analysis with PSScriptAnalyzer" {
         $scriptAnalyzerRules = Get-ScriptAnalyzerRule
         forEach ($rule in $scriptAnalyzerRules) {
             It "should pass '$rule' rule" {
-                Invoke-ScriptAnalyzer -Path "$here\$moduleName.psm1" | Should -BeNullOrEmpty
+                Invoke-ScriptAnalyzer -Path "$here\$moduleName.psm1" | Should BeNullOrEmpty
             }
         }
     }
@@ -41,7 +41,7 @@ foreach ($functionPath in $functionPaths) {
             # Perform analysis against each rule
             forEach ($rule in $scriptAnalyzerRules) {
                 It "should pass '$rule' rule" {
-                    Invoke-ScriptAnalyzer -Path $functionPath -IncludeRule $rule | Should -BeNullOrEmpty
+                    Invoke-ScriptAnalyzer -Path $functionPath -IncludeRule $rule | Should BeNullOrEmpty
                 }
             }
         }
