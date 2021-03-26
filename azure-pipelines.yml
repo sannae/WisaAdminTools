@@ -5,8 +5,7 @@
 trigger:
   - master
 
-pool:
-  vmImage: 'windows-latest'
+pool: Default
 
 stages:
 
@@ -123,24 +122,24 @@ stages:
               ArtifactName: '$(module.Name)'
               publishLocation: Container
 
-  - stage: Publish
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master')) # Publish the module only from the master branch
-    jobs:
-    - job: PublishJob
-      steps:
+  # - stage: Publish
+  #   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master')) # Publish the module only from the master branch
+  #   jobs:
+  #   - job: PublishJob
+  #     steps:
 
-        - task: DownloadPipelineArtifact@2
-          displayName: Download pipeline artifact
-          inputs:
-            buildType: 'current'
-            artifactName: '$(module.Name)'
-            itemPattern: '**/*.nupkg'
-            targetPath: '$(Pipeline.Workspace)'
+  #       - task: DownloadPipelineArtifact@2
+  #         displayName: Download pipeline artifact
+  #         inputs:
+  #           buildType: 'current'
+  #           artifactName: '$(module.Name)'
+  #           itemPattern: '**/*.nupkg'
+  #           targetPath: '$(Pipeline.Workspace)'
 
-        - task: NuGetCommand@2
-          displayName: Publish module to NuGet feed
-          inputs:
-            command: 'push'
-            packagesToPush: '$(Pipeline.Workspace)/**/*.nupkg'
-            nuGetFeedType: 'internal'
-            publishVstsFeed: '$(System.TeamProject)/$(module.FeedName)'
+  #       - task: NuGetCommand@2
+  #         displayName: Publish module to NuGet feed
+  #         inputs:
+  #           command: 'push'
+  #           packagesToPush: '$(Pipeline.Workspace)/**/*.nupkg'
+  #           nuGetFeedType: 'internal'
+  #           publishVstsFeed: '$(System.TeamProject)/$(module.FeedName)'
