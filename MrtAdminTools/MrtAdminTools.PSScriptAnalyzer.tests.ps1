@@ -11,7 +11,7 @@ Describe "'$moduleName' Module Analysis with PSScriptAnalyzer" {
     Context 'Standard Rules' {
         
         # Perform analysis against each rule
-        # PSScriptAnalyzer uses by default all the rules
+        $scriptAnalyzerRules = Get-ScriptAnalyzerRule
         forEach ($rule in $scriptAnalyzerRules) {
             It "should pass '$rule' rule" {
                 Invoke-ScriptAnalyzer -Path "$here\$moduleName.psm1" | Should -BeNullOrEmpty
