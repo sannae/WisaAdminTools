@@ -59,7 +59,7 @@ function Set-WebApplicationPool {
     } else {
 
         # Assegna variable application pool
-        $NewAppPool = $IIS.ApplicationPools | Where-Object { $_.Name -eq $DestinationAppPoolName }
+        $NewAppPool = $IIS.ApplicationPools | Where-Object { $_.Name -eq "/mpassw" }
     }
 
     # Salva applicazione
