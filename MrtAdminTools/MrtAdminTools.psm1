@@ -4,7 +4,6 @@
 
 # Requirements
 #Requires -Version 5.1
-#Requires -Modules IISAdministration
 #Requires -RunAsAdministrator
 
 # Export public functions (tested ones)
