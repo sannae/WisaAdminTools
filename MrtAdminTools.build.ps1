@@ -3,9 +3,16 @@
 <#
 .SYNOPSIS
     Build script (https://github.com/nightroman/Invoke-Build)
-
 .DESCRIPTION
-    This script contains the tasks for building the 'SampleModule' PowerShell module
+    This script contains the tasks for building the 'SampleModule' PowerShell module.
+.DETAILS
+    Default task : Clean and build
+    Enter-Build : installs and invokes PSDepend, defines script variables
+    Analyze : Analyze the project with PSScriptAnalyzer
+    Test : Test the project with Pester tests
+    GenerateNewModuleVersion : Generate a new module version if creating a release build
+    GenerateListOfFunctionsToExport : Generate list of functions to be exported by module
+  
 #>
 
 Param (
