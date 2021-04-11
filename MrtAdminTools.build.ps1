@@ -8,6 +8,7 @@
 .DETAILS
     Default task: Clean and build
     Enter-Build: installs and invokes PSDepend, defines script variables
+    Analyze: Analyze the project with PSScriptAnalyzer
 #>
 
 Param (
