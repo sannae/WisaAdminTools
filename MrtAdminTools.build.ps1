@@ -26,8 +26,6 @@ Param (
     $SourceLocation
 )
 
-# 
-
 # Synopsis: Default task
 task . Clean, Build
 

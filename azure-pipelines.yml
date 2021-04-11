@@ -28,6 +28,7 @@ stages:
               Import-Module InvokeBuild
 
         # Analyze code
+        # The Analyze task automatically stops the build script if any PSScriptAnalyzer rule was violated
         - task: PowerShell@2
           displayName: Analyze code with PSScriptAnalyzer
           inputs:
