@@ -1,6 +1,4 @@
-# MrtAdminTools.psm1
-#-----------------------------------------------------------------------------------------------------
-# Write PowerShell to automate your business processes in order to reduce human input, errors and cost!
+# Module file template
 
 # Requirements
 #Requires -Version 5.1

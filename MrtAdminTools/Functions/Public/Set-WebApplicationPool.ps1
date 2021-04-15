@@ -1,7 +1,10 @@
 <#
 .SYNOPSIS
-    Sposta un'applicazione su un application pool, verificandone l'esistenza.
+    It configures a web application's app pool in IIS, creating it if non-existent.
 .DESCRIPTION
+    First of all, the script verifies that the searched application is actually installed.
+    The application name is derived by the value ApplicationName in the ApplicationFullName  
+
     Lo script innanzitutto verifica che sia installata l'applicazione corrispondente a quella cercata.
     Il nome dell'applicazione viene ricavato dal valore ApplicationName corrispondente all'ApplicationFullName specificato dall'utente.
     I valori di ApplicationName e ApplicationFullName sono confrontati con quelli inseriti nel file ApplicationDetails.json.
@@ -20,7 +23,6 @@
     Associa (ed eventualmente crea) l'application pool MYWEBAPPPOOL all'applicazione corrispondente alla descrizione MYWEBAPP
     Se MYWEBAPPPOOL è già l'application pool di appartenenza di MYWEBAPP, questo viene comunque configurato con le impostazioni di default.
 .NOTES
-    0.9 (da finire di testare)
     Big thanks to https://octopus.com/blog/iis-powershell#assigning-application-pools !
     Per cancellare un application pool,
         $IIS = Get-IISServerManager
