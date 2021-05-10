@@ -15,5 +15,6 @@ jobs:
       # Analyze code with PSScriptAnalyzer
       - name: Analyze code with PSScriptAnalyzer
         run: |
+          Set-Location ..
           Write-host "Current directory is $pwd"
           Invoke-Build -Task Analyze
