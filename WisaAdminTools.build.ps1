@@ -64,10 +64,8 @@ task Analyze {
         Include = "*.PSScriptAnalyzer.tests.*"
     }
 
-    Write-Host "$Params"
 
     $TestFiles = Get-ChildItem @Params
-    Write-host $TestFiles
 
     # Pester parameters
     $Params = @{
