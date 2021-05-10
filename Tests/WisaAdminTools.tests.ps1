@@ -7,7 +7,7 @@
 # Should remove without errors
 # etc.
 
-﻿$here = Split-Path -Parent $MyInvocation.MyCommand.Path
+$here = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 #region Reloading SUT
 # Ensuring that we are testing this version of module and not any other version that could be in memory

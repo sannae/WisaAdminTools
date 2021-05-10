@@ -1,9 +1,9 @@
-# MrtAdminTools
+# WisaAdminTools
 
 ## Get the module
 
 ### Install the module
-The module _is not_ published on the [Powershell Gallery](https://www.powershellgallery.com/). To have it available in every PowerShell session, copy the whole folder `MrtAdminTools/MrtAdminTools` in your default module paths.
+The module _is not_ published on the [Powershell Gallery](https://www.powershellgallery.com/). To have it available in every PowerShell session, copy the whole folder `WisaAdminTools/WisaAdminTools` in your default module paths.
 
 The list of default module paths is displayed by the following command: 
 ```powershell
@@ -13,11 +13,11 @@ Copy the whole folder and its content using:
 ```powershell
 foreach ($path in $ModulePaths) { Copy-Item -Path "\Path\to\module" -Destination $path -Recurse }
 ```
-Another way is by adding the path to folder `MrtAdminTools` in the profile file saved in the environment variable `$profile`.
+Another way is by adding the path to folder `WisaAdminTools` in the profile file saved in the environment variable `$profile`.
 In case the file doesn't exist, you may run:
 ```powershell
 New-Item $profile
-Add-content -Value 'Import-Module -Value \PATH\TO\MrtAdminTools -Path $profile'
+Add-content -Value 'Import-Module -Value \PATH\TO\WisaAdminTools -Path $profile'
 ```
 In order to make each new PowerShell session import the module from the specified path.
 
@@ -26,11 +26,11 @@ Maybe an [internal PSRepository](https://powershellexplained.com/2017-05-30-Powe
 ### Import the module in your PowerShell session
 If already copied in the modules default path:
 ```powershell
-Import-Module MrtAdminTools
+Import-Module WisaAdminTools
 ```
 Otherwise,
 ```powershell
-Import-Module \path\to\module\MrtAdminTools\MrtAdminTools.psm1
+Import-Module \path\to\module\WisaAdminTools\WisaAdminTools.psm1
 ```
 The command `Import-module` will export in your session (via _dot-source_) all the public and private functions in the module.
 
@@ -40,7 +40,7 @@ The module's structure follows the guidelines written by [Rambling Cookie Monste
 
 To get a list of the _cmdlet_ included in the module:
 ```powershell
-Get-command -Module MrtAdminTools
+Get-command -Module WisaAdminTools
 ```
 To have information and help about a specific function (all functions have integrated help): 
 ```powershell
@@ -48,7 +48,7 @@ Get-Help FUNCTIONNAME
 ```
 
 ### Requirements
-The main requirement is the file `MrtAdminTools.json` to be added in the root folder of the module. The option `-Path` must be consistent in the module file (`.psm1`):
+The main requirement is the file `WisaAdminTools.json` to be added in the root folder of the module. The option `-Path` must be consistent in the module file (`.psm1`):
 ```powershell
 $global:Applications = Get-Content -Raw -Path "$PSScriptRoot\$ModuleName.json" | ConvertFrom-Json
 ```
