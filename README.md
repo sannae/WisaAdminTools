@@ -1,5 +1,10 @@
 # :hammer: MrtAdminTools :wrench:
-A PowerShell module with some useful CLI tools (hopefully!) meant for administrators and operators of the MRT Application Suite
+A PowerShell module with some useful CLI tools (hopefully!) meant for administrators and operators of an N-tier software application suite made of the following layers:
+
+1) Web layer : ASP.NET 4 hosted on IIS
+2) Service layer : .NET Framework 4
+3) Database layer : SQL Server
+4) OS layer : Windows Server or Windows Client
 
 Main components:
 * The module root folder is `\MrtAdminTools`
@@ -32,3 +37,5 @@ Let's say you want to add a new public functions to your module.
         Invoke-PSDepend -Force
         ```
     Then, the `Analyze` task will find and invoke all the tests whose name include `*PSScriptAnalyzer.tests.ps1`. 
+
+(To be continued)
