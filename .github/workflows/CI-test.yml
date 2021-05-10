@@ -1,5 +1,7 @@
-# Reference documentation: https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#defaultsrun
-# Jobs are run in parallel unless a 'needs' condition is specified
+# Reference documentation about workflow syntax: https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#defaultsrun
+# Building and testing Powershell guide: https://docs.github.com/en/actions/guides/building-and-testing-powershell
+
+# Jobs are run in parallel, unless a 'needs' condition is specified
 # Steps are always run sequentially
 
 name: CI/CD-test
@@ -7,7 +9,7 @@ on: [push]
 jobs:
   # Test: perform some code quality test before building
   Test:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       # Make your repo available to workflow: https://github.com/actions/checkout
       - name: Check out repository code
@@ -22,4 +24,4 @@ jobs:
       # Analyze code with PSScriptAnalyzer
       - name: Analyze code with PSScriptAnalyzer
         run: |
-          Invoke-Build .
+          Invoke-Build -Task Analyze
