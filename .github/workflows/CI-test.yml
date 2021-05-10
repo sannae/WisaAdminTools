@@ -8,6 +8,9 @@ jobs:
   Test:
     runs-on: windows-latest
     steps:
+      # Initialize
+      - name: Check out repository code
+        uses: actions/checkout@v2
       # Install InvokeBuild if not present
       - name: Install InvokeBuild module on the runner
         run: |
