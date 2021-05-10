@@ -1,4 +1,4 @@
-name: GitHub Actions Demo
+name: Continuous Integration pipeline with GitHub Actions
 on: [push]
 jobs:
   # Test: perform some code quality test before building
@@ -9,7 +9,7 @@ jobs:
       - name: Install InvokeBuild module on the runner
         run: |
           if (-not (Get-Module -Name InvokeBuild -ListAvailable)) {
-            Install-Module InvokeBuild -Scope CurrentUser
+            Install-Module InvokeBuild -Scope CurrentUser -Force
           }
           Import-Module InvokeBuild
       # Analyze code with PSScriptAnalyzer
