@@ -1,3 +1,6 @@
+# Jobs are run in parallel unless a 'needs' condition is specified
+# Steps are always run sequentially
+
 name: CI/CD-test
 on: [push]
 jobs:
@@ -15,4 +18,4 @@ jobs:
       # Analyze code with PSScriptAnalyzer
       - name: Analyze code with PSScriptAnalyzer
         run: |
-          Get-ChildItem ${{ github.workspace }}
+          ls ${{ github.workspace }}
