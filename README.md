@@ -1,4 +1,6 @@
 # :hammer: WisaAdminTools :wrench:
+![GitHub Actions](https://github.com/sannae/WisaAdminTools/actions/workflows/CI-test.yml/badge.svg)
+
 A PowerShell module with some useful CLI tools meant for administrators and operators of an N-tier software application suite based on the WISA web stack, i.e. made of the following layers:
 
 1) Web layer : [ASP.NET 4](https://docs.microsoft.com/en-us/biztalk/core/how-to-enable-asp-net-4-0-for-published-web-services) hosted on IIS
