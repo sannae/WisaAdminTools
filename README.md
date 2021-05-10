@@ -6,7 +6,7 @@ A PowerShell module with some useful CLI tools meant for administrators and oper
 3) Database layer : SQL Server
 4) OS layer : Windows Server or Windows Client
 
-Main components:
+The main components are:
 * The module root folder is `\WisaAdminTools`
 * Dependencies are handled by `PSDepend`
 * Build tasks are handled by `InvokeBuild`
