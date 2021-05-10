@@ -1,4 +1,4 @@
-name: Continuous Integration pipeline with GitHub Actions
+name: CI/CD-test
 on: [push]
 jobs:
   # Test: perform some code quality test before building
@@ -16,5 +16,5 @@ jobs:
       - name: Analyze code with PSScriptAnalyzer
         run: |
           Set-Location ..
-          Get-ChildItem -Path ".\*.build.ps1" -Recurse | Out-Host
+          Write-Host $(Get-ChildItem -Path ".\*.build.ps1" -Recurse)
           Invoke-Build .
