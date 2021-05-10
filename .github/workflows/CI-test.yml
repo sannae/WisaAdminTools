@@ -8,7 +8,7 @@ jobs:
   Test:
     runs-on: windows-latest
     steps:
-      # Initialize
+      # Initialize: https://github.com/actions/checkout
       - name: Check out repository code
         uses: actions/checkout@v2
       # Install InvokeBuild if not present
@@ -21,4 +21,4 @@ jobs:
       # Analyze code with PSScriptAnalyzer
       - name: Analyze code with PSScriptAnalyzer
         run: |
-          ls ${{ github.workspace }}
+          Invoke-Build .
