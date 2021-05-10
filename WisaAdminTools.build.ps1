@@ -29,13 +29,12 @@ Param (
 # Synopsis: Default task
 task . Clean, Build
 
-
 # Install build dependencies
 Enter-Build {
 
     # Installing PSDepend for dependency management
     if (-not (Get-Module -Name PSDepend -ListAvailable)) {
-        Install-Module PSDepend -Scope CurrentUser
+        Install-Module PSDepend -Scope CurrentUser -Force
     }
     Import-Module PSDepend
 
@@ -64,6 +63,8 @@ task Analyze {
         Recurse = $true
         Include = "*.PSScriptAnalyzer.tests.*"
     }
+
+    Write-Host "$Params"
 
     $TestFiles = Get-ChildItem @Params
     Write-host $TestFiles

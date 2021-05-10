@@ -12,6 +12,7 @@ jobs:
             Install-Module InvokeBuild -Scope CurrentUser -Force
           }
           Import-Module InvokeBuild
+          Invoke-Build . 
       # Analyze code with PSScriptAnalyzer
       - name: Analyze code with PSScriptAnalyzer
         run: |
