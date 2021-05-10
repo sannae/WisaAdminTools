@@ -13,7 +13,7 @@ jobs:
           }
           Import-Module InvokeBuild
       # Analyze code with PSScriptAnalyzer
-      - name: The Analyze task automatically stops the build script if any PSScriptAnalyzer rule was violated
+      - name: Analyze code with PSScriptAnalyzer
         run: |
           Write-host "$pwd"
           Invoke-Build -Task Analyze

@@ -66,6 +66,7 @@ task Analyze {
     }
 
     $TestFiles = Get-ChildItem @Params
+    Write-host $TestFiles
 
     # Pester parameters
     $Params = @{
