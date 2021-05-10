@@ -27,9 +27,7 @@ Param (
 )
 
 # Synopsis: Default task
-task . {
-    Write-Output "Welcome to the default task!"
-}
+task . Clean, Build
 
 # Install build dependencies
 Enter-Build {
