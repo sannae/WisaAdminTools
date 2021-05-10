@@ -1,3 +1,4 @@
+# Reference documentation: https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#defaultsrun
 # Jobs are run in parallel unless a 'needs' condition is specified
 # Steps are always run sequentially
 
@@ -8,7 +9,7 @@ jobs:
   Test:
     runs-on: windows-latest
     steps:
-      # Initialize: https://github.com/actions/checkout
+      # Make your repo available to workflow: https://github.com/actions/checkout
       - name: Check out repository code
         uses: actions/checkout@v2
       # Install InvokeBuild if not present

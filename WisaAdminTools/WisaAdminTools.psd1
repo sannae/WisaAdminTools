@@ -9,7 +9,7 @@
 @{
 
 # Script module or binary module file associated with this manifest.
-RootModule = 'MrtAdminTools.psm1'
+RootModule = 'WisaAdminTools.psm1'
 
 # Version number of this module.
 ModuleVersion = '0.0.1'
@@ -24,13 +24,13 @@ GUID = '7b0b42c9-0fa4-42c3-9f61-e94e957421a9'
 Author = 'Edoardo Sanna'
 
 # Company or vendor of this module
-CompanyName = 'Microntel S.p.A.'
+CompanyName = ''
 
 # Copyright statement for this module
-Copyright = '(c) Microntel S.p.A. All rights reserved.'
+Copyright = ''
 
 # Description of the functionality provided by this module
-Description = 'Functions for MRT Application Suite administrators.'
+Description = 'Functions for WISA application suite administrators.'
 
 # Minimum version of the PowerShell engine required by this module
 PowerShellVersion = '5.1'
