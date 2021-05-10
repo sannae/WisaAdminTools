@@ -16,5 +16,6 @@ jobs:
       - name: Analyze code with PSScriptAnalyzer
         run: |
           Set-Location ..
+          Get-ChildItem -Path ".\*.build.ps1" -Recurse
           Write-host "Current directory is $pwd"
           Invoke-Build .
