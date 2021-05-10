@@ -1,0 +1,17 @@
+name: GitHub Actions Demo
+on: [push]
+jobs:
+  # Test: perform some code quality test before building
+  Test:
+    runs-on: windows-latest
+    steps:
+      # Install InvokeBuild if not present
+      - name: Install InvokeBuild module on the runner
+        run: |
+          if (-not (Get-Module -Name InvokeBuild -ListAvailable)) {
+            Install-Module InvokeBuild -Scope CurrentUser
+          }
+          Import-Module InvokeBuild
+      # Analyze code with PSScriptAnalyzer
+      - name: The Analyze task automatically stops the build script if any PSScriptAnalyzer rule was violated
+        run: Invoke-Build -Task Analyze
