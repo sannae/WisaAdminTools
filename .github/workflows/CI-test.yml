@@ -15,6 +15,4 @@ jobs:
       # Analyze code with PSScriptAnalyzer
       - name: Analyze code with PSScriptAnalyzer
         run: |
-          Set-Location ..
-          Write-Host $(Get-ChildItem -Path ".\*.build.ps1" -Recurse)
-          Invoke-Build .
+          Get-ChildItem ${{ github.workspace }}
