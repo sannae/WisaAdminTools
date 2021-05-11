@@ -17,6 +17,8 @@ Describe "'$moduleName' Module Analysis with PSScriptAnalyzer" {
     }
 }
 
+break
+
 # Dynamically defining the functions to analyze
 $functionPaths = @()
 if (Test-Path -Path "$modulePath\Functions\Private\*.ps1") {
