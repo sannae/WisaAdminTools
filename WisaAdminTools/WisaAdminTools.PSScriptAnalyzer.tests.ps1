@@ -17,7 +17,7 @@ Describe "'$moduleName' Module Analysis with PSScriptAnalyzer" {
     }
 }
 
-break
+# break
 
 # Dynamically defining the functions to analyze
 $functionPaths = @()
@@ -40,7 +40,9 @@ foreach ($functionPath in $functionPaths) {
             # Perform analysis against each rule
             forEach ($rule in $scriptAnalyzerRules) {
                 It "should pass '$rule' rule" {
-                    Invoke-ScriptAnalyzer -Path $functionPath -IncludeRule $rule | Should -BeNullOrEmpty
+                    Invoke-ScriptAnalyzer -Path $functionPath -IncludeRule $rule -Outvariable issues
+                    $errors   = $issues.Where({$_.Severity -eq 'Error'})
+                    $errors | Should -BeNullOrEmpty
                 }
             }
         }
