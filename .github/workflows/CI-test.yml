@@ -25,9 +25,3 @@ jobs:
       - name: Analyze code with PSScriptAnalyzer
         run: |
           Invoke-Build -Task Analyze
-      # Upload analysis results in build folder
-      - name: Upload analysis results
-        uses: actions/upload-artifact@v2
-        with:
-          name: windows-script-analyzer
-          path: build/tests.xml    

@@ -12,14 +12,10 @@ Describe "'$moduleName' Module Analysis with PSScriptAnalyzer" {
     Context 'Standard Rules' {
         foreach ($rule in $(Get-ScriptAnalyzerRule)) {
             # Perform analysis on default rules
-            It "should pass '$rule' rule" {
                 Invoke-ScriptAnalyzer -Path $modulefile -IncludeRule $rule | Should -BeNullOrEmpty
-            }
         }
     }
 }
-
-break
 
 # Dynamically defining the functions to analyze
 $functionPaths = @()
