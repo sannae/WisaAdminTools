@@ -93,7 +93,7 @@ task Analyze {
     # Invoke all tests and save results in CliXML file
     Write-Verbose "Running Pester tests..."
     $TestResults = Invoke-Pester @Params -Verbose
-    $TestResults | Export-CliXml -Path "$buildOutputPath\$TestResultFile"
+    # $TestResults | Export-CliXml -Path "$buildOutputPath\$TestResultFile"
     if ($TestResults.FailedCount -gt 0) {
         $TestResults | Format-List
         throw "One or more PSScriptAnalyzer rules have been violated. Build cannot continue!"
