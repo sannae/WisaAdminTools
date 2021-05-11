@@ -30,5 +30,5 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: windows-script-analyzer
-          path: ${{ github.workspace }}/build/tests.xml
+          path: build/tests.xml
       if: ${{ always() }} # Publish even if the tests fail       
