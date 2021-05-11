@@ -73,7 +73,6 @@ task Analyze {
         Include = "*.PSScriptAnalyzer.tests.*"
     }
     $TestFiles = Get-ChildItem @Params
-    Write-Host "_____Test files are $TestFiles"
 
     # Pester parameters
     $Params = @{
@@ -82,21 +81,19 @@ task Analyze {
     }
 
     # Additional parameters on Azure Pipelines agents to generate test results
-    Write-Verbose "EnvTFBUILD variable is $env:TF_BUILD"
-    if ($env:TF_BUILD) {
+    # Not used in GitHub Actions
+    $Timestamp = Get-date -UFormat "%Y%m%d-%H%M%S"
+    $PSVersion = $PSVersionTable.PSVersion.Major
+    $TestResultFile = "AnalysisResults_PS$PSVersion`_$TimeStamp.xml"
         if (-not (Test-Path -Path $buildOutputPath -ErrorAction SilentlyContinue)) {
             New-Item -Path $buildOutputPath -ItemType Directory
         }
-        $Timestamp = Get-date -UFormat "%Y%m%d-%H%M%S"
-        $PSVersion = $PSVersionTable.PSVersion.Major
-        $TestResultFile = "AnalysisResults_PS$PSVersion`_$TimeStamp.xml"
-        $Params.Add("OutputFile", "$buildOutputPath\$TestResultFile")
-        $Params.Add("OutputFormat", "NUnitXml")
-    }
 
-    # Invoke all tests
+
+    # Invoke all tests and save results in CliXML file
     Write-Verbose "Running Pester tests..."
     $TestResults = Invoke-Pester @Params -Verbose
+    $TestResults | Export-CliXml -Path "$buildOutputPath\$TestResultFile"
     if ($TestResults.FailedCount -gt 0) {
         $TestResults | Format-List
         throw "One or more PSScriptAnalyzer rules have been violated. Build cannot continue!"

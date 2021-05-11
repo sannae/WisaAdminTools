@@ -5,16 +5,16 @@ $here = Split-Path -Parent $PSScriptRoot       # Build root folder
 $moduleName = Split-Path -Path $here -Leaf     # Module name
 $modulePath = Join-Path $here $moduleName       # Module root folder
 $modulefile = "$modulepath\$modulename.psm1"
-Write-host "Module file is : $modulefile"
 
 Set-StrictMode -Version Latest
 
 Describe "'$moduleName' Module Analysis with PSScriptAnalyzer" {
     Context 'Standard Rules' {
-        foreach ($rule in $(Get-ScriptAnalyzerRule)){
+        foreach ($rule in $(Get-ScriptAnalyzerRule)) {
             # Perform analysis on default rules
-            Write-Host "Working on rule $rule..."
-            Invoke-ScriptAnalyzer -Path $modulefile -IncludeRule $rule | Should -BeNullOrEmpty
+            It "should pass '$rule' rule" {
+                Invoke-ScriptAnalyzer -Path $modulefile -IncludeRule $rule | Should -BeNullOrEmpty
+            }
         }
     }
 }
