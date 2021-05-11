@@ -1,23 +1,19 @@
 # :hammer: WisaAdminTools :wrench:
 ![GitHub Actions](https://github.com/sannae/WisaAdminTools/actions/workflows/CI-test.yml/badge.svg)
 
-A PowerShell module with some useful CLI tools meant for administrators and operators of an N-tier software application suite based on the WISA web stack, i.e. made of the following layers:
-
-1) Web layer : [ASP.NET 4](https://docs.microsoft.com/en-us/biztalk/core/how-to-enable-asp-net-4-0-for-published-web-services) hosted on IIS
-2) Application layer : .NET Framework 4
-3) Database layer : SQL Server
-4) OS layer : Windows Server or Windows Client
+A PowerShell module with some useful CLI tools meant for administrators and operators of an N-tier software application suite based on the WISA web stack (Windows - IIS - SQL Server - ASP.NET).
 
 The main components are:
 * The module root folder is `\WisaAdminTools`
 * Dependencies are handled by `PSDepend`
 * Build tasks are handled by `InvokeBuild`
 * Unit tests are handled by `Pester`
-* The whole test-build-release pipeline is summarized in `azure-pipelines.yaml`
+
+The build-test-publish pipeline is handled by [GitHub Actions](https://docs.github.com/en/actions/guides/building-and-testing-powershell) and is fully described in the [reference YAML file](https://github.com/sannae/WisaAdminTools/blob/master/.github/workflows/CI-test.yml)
 
 ### Sample pipeline:
 
-Let's say you want to add a new public functions to your module.
+The pipeline is triggered at each `push` event on the repo's main branch.
 
 1) Stage test
 

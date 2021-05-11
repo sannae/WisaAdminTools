@@ -32,18 +32,23 @@ task . Clean, Build
 # Install build dependencies
 Enter-Build {
 
+    Write-Verbose "Entering the enter-build task..."
+
     # Installing PSDepend for dependency management
+    Write-Verbose "Installing and importing PSDepend..."
     if (-not (Get-Module -Name PSDepend -ListAvailable)) {
         Install-Module PSDepend -Scope CurrentUser -Force
     }
     Import-Module PSDepend
 
     # Installing dependencies
+    Write-Verbose "Invoking PSDepend to install the dependencies listed in .depend.ps1..."
     Invoke-PSDepend -Force
 
     # Setting build script variables
     $script:moduleName = 'WisaAdminTools' #$(Split-Path $PSCommandPath -Leaf).Split('.')[0]
     $script:moduleSourcePath = Join-Path -Path $BuildRoot -ChildPath $moduleName
+    Write-Verbose "Module source path is $script:moduleSourcePath"
     $script:moduleManifestPath = Join-Path -Path $moduleSourcePath -ChildPath "$moduleName.psd1"
     $script:nuspecPath = Join-Path -Path $moduleSourcePath -ChildPath "$moduleName.nuspec"
     $script:buildOutputPath = Join-Path -Path $BuildRoot -ChildPath 'build'
@@ -57,15 +62,18 @@ Enter-Build {
 
 # Synopsis: Analyze the project with PSScriptAnalyzer
 task Analyze {
+
+    Write-Verbose "Entering the Analyze invokebuild task..."
+
     # Get-ChildItem parameters
+    Write-Verbose "Looking for PSScriptAnalyzer Pester tests..."
     $Params = @{
         Path    = $moduleSourcePath
         Recurse = $true
         Include = "*.PSScriptAnalyzer.tests.*"
     }
-
-
     $TestFiles = Get-ChildItem @Params
+    Write-Host "_____Test files are $TestFiles"
 
     # Pester parameters
     $Params = @{
@@ -74,6 +82,7 @@ task Analyze {
     }
 
     # Additional parameters on Azure Pipelines agents to generate test results
+    Write-Verbose "EnvTFBUILD variable is $env:TF_BUILD"
     if ($env:TF_BUILD) {
         if (-not (Test-Path -Path $buildOutputPath -ErrorAction SilentlyContinue)) {
             New-Item -Path $buildOutputPath -ItemType Directory
@@ -86,7 +95,8 @@ task Analyze {
     }
 
     # Invoke all tests
-    $TestResults = Invoke-Pester @Params
+    Write-Verbose "Running Pester tests..."
+    $TestResults = Invoke-Pester @Params -Verbose
     if ($TestResults.FailedCount -gt 0) {
         $TestResults | Format-List
         throw "One or more PSScriptAnalyzer rules have been violated. Build cannot continue!"

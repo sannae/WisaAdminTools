@@ -1,32 +1,33 @@
 # PSScriptAnalyzer test
 # TODO : Cambiare $here in modo che possa essere avviato da \Tests
 
-$here = Split-Path -Parent $MyInvocation.MyCommand.Path
-$modulePath = $here
-$moduleName = Split-Path -Path $modulePath -Leaf
+$here = Split-Path -Parent $PSScriptRoot       # Build root folder
+$moduleName = Split-Path -Path $here -Leaf     # Module name
+$modulePath = Join-Path $here $moduleName       # Module root folder
+$modulefile = "$modulepath\$modulename.psm1"
+Write-host "Module file is : $modulefile"
 
 Set-StrictMode -Version Latest
 
 Describe "'$moduleName' Module Analysis with PSScriptAnalyzer" {
     Context 'Standard Rules' {
-        
-        # Perform analysis against each rule
-        $scriptAnalyzerRules = Get-ScriptAnalyzerRule
-        forEach ($rule in $scriptAnalyzerRules) {
-            It "should pass '$rule' rule" {
-                Invoke-ScriptAnalyzer -Path "$here\$moduleName.psm1" | Should -BeNullOrEmpty
-            }
+        foreach ($rule in $(Get-ScriptAnalyzerRule)){
+            # Perform analysis on default rules
+            Write-Host "Working on rule $rule..."
+            Invoke-ScriptAnalyzer -Path $modulefile -IncludeRule $rule | Should -BeNullOrEmpty
         }
     }
 }
 
+break
+
 # Dynamically defining the functions to analyze
 $functionPaths = @()
-if (Test-Path -Path "$modulePath\Private\*.ps1") {
-    $functionPaths += Get-ChildItem -Path "$modulePath\Private\*.ps1" -Exclude "*.Tests.*"
+if (Test-Path -Path "$modulePath\Functions\Private\*.ps1") {
+    $functionPaths += Get-ChildItem -Path "$modulePath\Functions\Private\*.ps1" -Exclude "*.Tests.*"
 }
-if (Test-Path -Path "$modulePath\Public\*.ps1") {
-    $functionPaths += Get-ChildItem -Path "$modulePath\Public\*.ps1" -Exclude "*.Tests.*"
+if (Test-Path -Path "$modulePath\Functions\Public\*.ps1") {
+    $functionPaths += Get-ChildItem -Path "$modulePath\Functions\Public\*.ps1" -Exclude "*.Tests.*"
 }
 
 # Running the analysis for each function
