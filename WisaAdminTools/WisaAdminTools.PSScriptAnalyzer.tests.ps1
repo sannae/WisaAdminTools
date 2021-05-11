@@ -17,8 +17,6 @@ Describe "'$moduleName' Module Analysis with PSScriptAnalyzer" {
     }
 }
 
-# break
-
 # Dynamically defining the functions to analyze
 $functionPaths = @()
 if (Test-Path -Path "$modulePath\Functions\Private\*.ps1") {
@@ -28,9 +26,12 @@ if (Test-Path -Path "$modulePath\Functions\Public\*.ps1") {
     $functionPaths += Get-ChildItem -Path "$modulePath\Functions\Public\*.ps1" -Exclude "*.Tests.*"
 }
 
+
+
 # Running the analysis for each function
 foreach ($functionPath in $functionPaths) {
     $functionName = $functionPath.BaseName
+    Write-Host "The function is $functionName"
 
     Describe "'$functionName' Function Analysis with PSScriptAnalyzer" {
         Context 'Standard Rules' {
