@@ -1,6 +1,12 @@
-# PSScriptAnalyzer test
-# TODO : Cambiare $here in modo che possa essere avviato da \Tests
-# Look at this : https://github.com/pester/Pester/issues/1702
+<#
+.SYNOPSIS
+    Pester tests with PSScriptAnalyzer
+.DESCRIPTION
+
+.NOTES
+    # Look at this : https://github.com/pester/Pester/issues/1702
+#>
+
 
 Describe "<ModuleName> Module Tests" {
 
