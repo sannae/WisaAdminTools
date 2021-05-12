@@ -10,30 +10,41 @@ BeforeAll {
     Set-StrictMode -Version Latest
 }
 
-Describe "'$moduleName' Module Analysis with PSScriptAnalyzer" {
-    Context 'Standard Rules' {
-            foreach ($rule in $(Get-ScriptAnalyzerRule)) {
-                It "Should pass rule $rule" {
-                # Perform analysis on default rules
-                Should $(Invoke-ScriptAnalyzer -Path $modulefile -IncludeRule $rule) -BeNullOrEmpty
-                }
-            }
-    }
+Describe "<ModuleName> Module Tests" {
+    Context 'Module Setup' {
+      
+        It "has the root module <ModuleName>.psm1" {
+        "$ModulePath\$ModuleName.psm1" | Should -Exist
+      }
+
+      It "Should pass all ScriptAnalyzer rules" {
+          $PSSAResults = Invoke-ScriptAnalyzer -Path $ModuleFile -IncludeDefaultRules -Verbose
+          $PSSAerrors = $PSSAResults.Where({$_.Severity -eq 'Error'})
+          Should $PSSAerrors -BeNullOrEmpty
+      }
+
+    } # Context 'Module Setup'
 }
+
+break
+
+# Describe "<moduleName> Module Analysis with PSScriptAnalyzer" {
+#     Context 'Standard Rules' {
+#             foreach ($rule in $(Get-ScriptAnalyzerRule)) {
+#                 It "Should pass rule $rule" {
+#                 # Perform analysis on default rules
+#                 Should $(Invoke-ScriptAnalyzer -Path $modulefile -IncludeRule $rule) -BeNullOrEmpty
+#                 }
+#             }
+#     }
+# }
+
 
 # Dynamically defining the functions to analyze
-$functionPaths = @()
-if (Test-Path -Path "$modulePath\Functions\Private\*.ps1") {
-    $functionPaths += Get-ChildItem -Path "$modulePath\Functions\Private\*.ps1" -Exclude "*.Tests.*"
-}
-if (Test-Path -Path "$modulePath\Functions\Public\*.ps1") {
-    $functionPaths += Get-ChildItem -Path "$modulePath\Functions\Public\*.ps1" -Exclude "*.Tests.*"
-}
-
-
+$functions = Get-ChildItem "$modulePath\Public", "$modulePath\Private" -Include "*.ps1" -Exclude "*.Tests.ps1" -Recurse
 
 # Running the analysis for each function
-foreach ($functionPath in $functionPaths) {
+foreach ($functionPath in $functions) {
     $functionName = $functionPath.BaseName
 
     Describe "'$functionName' Function Analysis with PSScriptAnalyzer" {
