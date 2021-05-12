@@ -82,18 +82,17 @@ task Analyze {
 
     # Additional parameters on Azure Pipelines agents to generate test results
     # Not used in GitHub Actions
-    # $Timestamp = Get-date -UFormat "%Y%m%d-%H%M%S"
-    # $PSVersion = $PSVersionTable.PSVersion.Major
-    # $TestResultFile = "AnalysisResults_PS$PSVersion`_$TimeStamp.xml"
-    #     if (-not (Test-Path -Path $buildOutputPath -ErrorAction SilentlyContinue)) {
-    #         New-Item -Path $buildOutputPath -ItemType Directory
-    #     }
-
+    $Timestamp = Get-date -UFormat "%Y%m%d-%H%M%S"
+    $PSVersion = $PSVersionTable.PSVersion.Major
+    $TestResultFile = "AnalysisResults_PS$PSVersion`_$TimeStamp.xml"
+        if (-not (Test-Path -Path $buildOutputPath -ErrorAction SilentlyContinue)) {
+            New-Item -Path $buildOutputPath -ItemType Directory
+        }
 
     # Invoke all tests and save results in CliXML file
     Write-Verbose "Running Pester tests..."
     $TestResults = Invoke-Pester @Params -Verbose
-    # $TestResults | Export-CliXml -Path "$buildOutputPath\$TestResultFile"
+    $TestResults | Export-CliXml -Path "$buildOutputPath\$TestResultFile"
     if ($TestResults.FailedCount -gt 0) {
         $TestResults | Format-List
         throw "One or more PSScriptAnalyzer rules have been violated. Build cannot continue!"
@@ -327,6 +326,6 @@ task CodeCoverage {
 # Synopsis: Clean up the target build directory
 task Clean {
     if (Test-Path $buildOutputPath) {
-        Remove-Item –Path $buildOutputPath –Recurse
+        Remove-Item -Path $buildOutputPath -Recurse -Force
     }
 }
