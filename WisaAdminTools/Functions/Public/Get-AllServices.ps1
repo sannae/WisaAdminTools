@@ -1,3 +1,15 @@
+<#
+.SYNOPSIS
+
+.DESCRIPTION
+
+.EXAMPLE
+ 
+.NOTES
+
+#>
+
+
 # Tutti i servizi il cui eseguibile si trova in MPW
 # Get-WmiObject permette la compatibilità con Powershell 5.1 (ma *NON* con Powershell Core)
 Get-CimInstance win32_service | 
