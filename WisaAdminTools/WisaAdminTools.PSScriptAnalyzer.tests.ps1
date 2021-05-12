@@ -41,9 +41,7 @@ Describe "<ModuleName> Module Tests" {
     Set-StrictMode -Version Latest
 
     # Dynamically define functions
-    Write-host "Module path is $modulepath"
     $functions = Get-ChildItem "$modulePath\Functions\Public", "$modulePath\Functions\Private" -Include "*.ps1" -Exclude "*.Tests.ps1" -Recurse
-    Write-host "Functions are $functions"
 
     # Testing functions
     Context "<function.BaseName> - Function" -ForEach $functions {
