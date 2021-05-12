@@ -1,19 +1,22 @@
 # PSScriptAnalyzer test
 # TODO : Cambiare $here in modo che possa essere avviato da \Tests
 # Look at this : https://github.com/pester/Pester/issues/1702
+BeforeAll {
+    $here = Split-Path -Parent $PSScriptRoot       # Build root folder
+    $moduleName = Split-Path -Path $here -Leaf     # Module name
+    $modulePath = Join-Path $here $moduleName       # Module root folder
+    $modulefile = "$modulepath\$modulename.psm1"
 
-$here = Split-Path -Parent $PSScriptRoot       # Build root folder
-$moduleName = Split-Path -Path $here -Leaf     # Module name
-$modulePath = Join-Path $here $moduleName       # Module root folder
-$modulefile = "$modulepath\$modulename.psm1"
-
-Set-StrictMode -Version Latest
+    Set-StrictMode -Version Latest
+}
 
 Describe "'$moduleName' Module Analysis with PSScriptAnalyzer" {
     Context 'Standard Rules' {
             foreach ($rule in $(Get-ScriptAnalyzerRule)) {
+                It "Should pass rule $rule" {
                 # Perform analysis on default rules
-                Invoke-ScriptAnalyzer -Path $modulefile -IncludeRule $rule | Should -BeNullOrEmpty
+                Should $(Invoke-ScriptAnalyzer -Path $modulefile -IncludeRule $rule) -BeNullOrEmpty
+                }
             }
     }
 }
