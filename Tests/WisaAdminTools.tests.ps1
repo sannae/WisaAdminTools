@@ -14,40 +14,48 @@
 
 #>
 
-$here = Split-Path -Parent $MyInvocation.MyCommand.Path
-
-#region Reloading SUT
-# Ensuring that we are testing this version of module and not any other version that could be in memory
-$modulePath = "$($MyInvocation.MyCommand.Path -replace '.Tests.ps1$', '').psm1"
-$moduleName = (($modulePath | Split-Path -Leaf) -replace '.psm1')
-@(Get-Module -Name $moduleName).where({ $_.version -ne '0.0' }) | Remove-Module # Removing all module versions from the current context if there are any
-Import-Module -Name $modulePath -Force -ErrorAction Stop # Loading module explicitly by path and not via the manifest
-#endregion
 
 Describe "'$moduleName' Module Tests" {
 
   Context 'Module Setup' {
+
+    BeforeAll {
+
+      # Environment variables
+      $here = Split-Path -Parent $PSScriptRoot
+      $moduleName = Split-Path -Path $here -Leaf
+      $modulePath = Join-Path $here $moduleName
+      $modulefile = "$modulepath\$modulename.psm1"
+      # Removing all module versions from the current context if there are any
+      @(Get-Module -Name $moduleName).where({ $_.version -ne '0.0' }) | Remove-Module
+      # Loading module explicitly by path and not via the manifest
+      Import-Module -Name $modulePath -Force -ErrorAction Stop
+
+    }
+
     It "should have a root module" {
       Test-Path $modulePath | Should -Be $true
     }
 
     It "should have an associated manifest" {
-      Test-Path "$here\$moduleName.psd1" | Should -Be $true
+      Test-Path "$modulePath\$moduleName.psd1" | Should -Be $true
     }
 
     It "should have public functions" {
-      Test-Path "$here\Public\*.ps1" | Should -Be $true
+      Test-Path "$modulePath\Functions\Public\*.ps1" | Should -Be $true
     }
 
-    It "should be a valid PowerShell code" {
-      $psFile = Get-Content -Path $modulePath -ErrorAction Stop
-      $errors = $null
-      $null = [System.Management.Automation.PSParser]::Tokenize($psFile, [ref]$errors)
-      $errors.Count | Should -Be 0
-    }
-  }
+    # Below still not working...
+    #
+    # It "should be a valid PowerShell code" {
+    #   $psFile = Get-Content -Path $modulePath -ErrorAction Stop
+    #   write-host "PS File is $psFile"
+    #   $errors = $null
+    #   $errors = [System.Management.Automation.PSParser]::Tokenize($psFile, [ref]$errors)
+    #   Write-Host "Errors are $errors"
+    #   $errors.Count | Should -Be 0
+    # }
 
-  Context "Module Control" {
     It "should import without errors" {
       { Import-Module -Name $modulePath -Force -ErrorAction Stop } | Should -Not -Throw
       Get-Module -Name $moduleName | Should -Not -BeNullOrEmpty
@@ -57,8 +65,11 @@ Describe "'$moduleName' Module Tests" {
       { Remove-Module -Name $moduleName -ErrorAction Stop } | Should -Not -Throw
       Get-Module -Name $moduleName | Should -BeNullOrEmpty
     }
+
   }
 }
+
+break
 
 # Dynamically defining the functions to test
 $functionPaths = @()

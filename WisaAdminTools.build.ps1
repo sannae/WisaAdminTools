@@ -12,7 +12,9 @@
     Test : Test the project with Pester tests
     GenerateNewModuleVersion : Generate a new module version if creating a release build
     GenerateListOfFunctionsToExport : Generate list of functions to be exported by module
-  
+.NOTES
+    Environment variables used by Invoke-Build are:
+        $BuildRoot: build root folder
 #>
 
 Param (
@@ -106,12 +108,13 @@ task Test {
     # Get-ChildItem parameters
     Write-Verbose "Looking for Pester tests..."
     $Params = @{
-        Path    = $moduleSourcePath
+        Path    = "$buildRoot\Tests"
         Recurse = $true
         Include = "*.Tests.*"
     }
 
     $TestFiles = Get-ChildItem @Params
+    Write-Host "Files are: $TestFiles"
 
     # Pester parameters
     $Params = @{
