@@ -80,8 +80,7 @@ task Analyze {
         PassThru = $true
     }
 
-    # Additional parameters on Azure Pipelines agents to generate test results
-    # Not used in GitHub Actions
+    # Generate test results
     $Timestamp = Get-date -UFormat "%Y%m%d-%H%M%S"
     $PSVersion = $PSVersionTable.PSVersion.Major
     $TestResultFile = "AnalysisResults_PS$PSVersion`_$TimeStamp.xml"
@@ -101,7 +100,11 @@ task Analyze {
 
 # Synopsis: Test the project with Pester tests
 task Test {
+
+    Write-Verbose "Entering the Test invokebuild task..."
+
     # Get-ChildItem parameters
+    Write-Verbose "Looking for Pester tests..."
     $Params = @{
         Path    = $moduleSourcePath
         Recurse = $true
@@ -116,20 +119,20 @@ task Test {
         PassThru = $true
     }
 
-    # Additional parameters on Azure Pipelines agents to generate test results
-    if ($env:TF_BUILD) {
-        if (-not (Test-Path -Path $buildOutputPath -ErrorAction SilentlyContinue)) {
-            New-Item -Path $buildOutputPath -ItemType Directory
-        }
-        $Timestamp = Get-date -UFormat "%Y%m%d-%H%M%S"
-        $PSVersion = $PSVersionTable.PSVersion.Major
-        $TestResultFile = "TestResults_PS$PSVersion`_$TimeStamp.xml"
-        $Params.Add("OutputFile", "$buildOutputPath\$TestResultFile")
-        $Params.Add("OutputFormat", "NUnitXml")
-    }
+    # # Additional parameters on Azure Pipelines agents to generate test results
+    # if ($env:TF_BUILD) {
+    #     if (-not (Test-Path -Path $buildOutputPath -ErrorAction SilentlyContinue)) {
+    #         New-Item -Path $buildOutputPath -ItemType Directory
+    #     }
+    #     $Timestamp = Get-date -UFormat "%Y%m%d-%H%M%S"
+    #     $PSVersion = $PSVersionTable.PSVersion.Major
+    #     $TestResultFile = "TestResults_PS$PSVersion`_$TimeStamp.xml"
+    #     $Params.Add("OutputFile", "$buildOutputPath\$TestResultFile")
+    #     $Params.Add("OutputFormat", "NUnitXml")
+    # }
 
     # Invoke all tests
-    $TestResults = Invoke-Pester @Params
+    $TestResults = Invoke-Pester @Params -Verbose
     if ($TestResults.FailedCount -gt 0) {
         $TestResults | Format-List
         throw "One or more Pester tests have failed. Build cannot continue!"

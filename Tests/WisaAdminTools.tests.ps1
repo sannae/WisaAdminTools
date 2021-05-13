@@ -1,11 +1,18 @@
-# Project-level tests
-# Should have a root module
-# Should have an associated manifest
-# Should have public functions
-# Should be a valid PowerShell code
-# Should import without errors
-# Should remove without errors
-# etc.
+<#
+.SYNOPSIS
+  Pester tests for Powershell module
+.DESCRIPTION
+  Project-level tests:
+    Should have a root module
+    Should have an associated manifest
+    Should have public functions
+    Should be a valid PowerShell code
+    Should import without errors
+    Should remove without errors
+    etc.
+.NOTES
+
+#>
 
 $here = Split-Path -Parent $MyInvocation.MyCommand.Path
 
@@ -29,7 +36,7 @@ Describe "'$moduleName' Module Tests" {
     }
 
     It "should have public functions" {
-      Test-Path "$here\public\*.ps1" | Should -Be $true
+      Test-Path "$here\Public\*.ps1" | Should -Be $true
     }
 
     It "should be a valid PowerShell code" {

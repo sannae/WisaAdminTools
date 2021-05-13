@@ -2,7 +2,7 @@
 .SYNOPSIS
     Pester tests with PSScriptAnalyzer
 .DESCRIPTION
-
+    This Pester script performs quality tests on the module code and functions.
 .NOTES
     # Look at this : https://github.com/pester/Pester/issues/1702
 #>
@@ -21,10 +21,6 @@ Describe "<ModuleName> Module Tests" {
             $modulefile = "$modulepath\$modulename.psm1"
             Set-StrictMode -Version Latest
     
-        }
-
-        It "has the root module <ModuleName>.psm1" {
-            "$ModulePath\$ModuleName.psm1" | Should -Exist
         }
 
         It "Should pass all ScriptAnalyzer rules" {
