@@ -29,6 +29,7 @@ function Get-AppConnectionStrings {
     $ReferenceConfigAppName = $($Applications.WinApplications | Where-Object {$_.ReferenceConfigFile -eq $true }).WinApplicationName
 
     # Converti file config in XML
+    Write-Verbose "Getting config file from $ReferenceConfigAppFullName..."
     $ConfigFile = "$Root\$ReferenceConfigAppFullName\$ReferenceConfigAppName.exe.config"
     if ( !(Test-Path -Path $ConfigFile) ) {
         Write-Error "File di configurazione $ConfigFile non trovato!"

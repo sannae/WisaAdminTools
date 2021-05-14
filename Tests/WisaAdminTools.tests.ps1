@@ -69,6 +69,12 @@ Describe "'$moduleName' Module Tests" {
   }
 }
 
+# Environment variables
+$here = Split-Path -Parent $PSScriptRoot
+$moduleName = Split-Path -Path $here -Leaf
+$modulePath = Join-Path $here $moduleName
+Write-Host "Module path is $modulePath"
+
 # Dynamically define functions
 $functions = Get-ChildItem "$modulePath\Functions\Public", "$modulePath\Functions\Private" -Include "*.ps1" -Exclude "*.Tests.ps1" -Recurse
 
@@ -80,12 +86,11 @@ Context "<function.BaseName> - Function" -ForEach $functions {
     # $Function name: $_ is the current item coming from the -ForEach
     $function = $_ 
 
-    # Function help
-    $AbstractSyntaxTree = [System.Management.Automation.Language.Parser]::
-    ParseInput((Get-Content -raw $function.FullName), [ref]$null, [ref]$null)
-    $AstSearchDelegate = { $args[0] -is [System.Management.Automation.Language.FunctionDefinitionAst] }
-    $ParsedFunction = $AbstractSyntaxTree.FindAll( $AstSearchDelegate, $true ) | Where-Object Name -eq $function
-    $functionHelp = $ParsedFunction.GetHelpContent()
+    # # Function help
+    # $AbstractSyntaxTree = [System.Management.Automation.Language.Parser]::ParseInput((Get-Content -raw $function.FullName), [ref]$null, [ref]$null)
+    # $AstSearchDelegate = { $args[0] -is [System.Management.Automation.Language.FunctionDefinitionAst] }
+    # $ParsedFunction = $AbstractSyntaxTree.FindAll( $AstSearchDelegate, $true ) | Where-Object Name -eq $function.FullName
+    # $functionHelp = $ParsedFunction.GetHelpContent()
 
   }
 
@@ -107,27 +112,27 @@ Context "<function.BaseName> - Function" -ForEach $functions {
   #   ($functionPath -replace ".ps1", ".Tests.ps1") | Should -FileContentMatch "Describe `"'$functionName'"
   # }
 
-  It "should have a SYNOPSIS" {
-    $functionHelp.Synopsis | Should -Not -BeNullOrEmpty
-  }
+  # It "should have a SYNOPSIS" {
+  #   $functionHelp.Synopsis | Should -Not -BeNullOrEmpty
+  # }
 
-  It "should have a DESCRIPTION with length > 40 symbols" {
-    $functionHelp.Description.Length | Should -BeGreaterThan 40
-  }
+  # It "should have a DESCRIPTION with length > 40 symbols" {
+  #   $functionHelp.Description.Length | Should -BeGreaterThan 40
+  # }
 
-  It "should have at least one EXAMPLE" {
-    $functionHelp.Examples.Count | Should -BeGreaterThan 0
-    $functionHelp.Examples[0] | Should -Match ([regex]::Escape($functionName))
-    $functionHelp.Examples[0].Length | Should -BeGreaterThan ($functionName.Length + 10)
-  }
+  # It "should have at least one EXAMPLE" {
+  #   $functionHelp.Examples.Count | Should -BeGreaterThan 0
+  #   $functionHelp.Examples[0] | Should -Match ([regex]::Escape($functionName))
+  #   $functionHelp.Examples[0].Length | Should -BeGreaterThan ($functionName.Length + 10)
+  # }
 
-  # Getting the list of function parameters
-  $parameters = $ParsedFunction.Body.ParamBlock.Parameters.name.VariablePath.Foreach{ $_.ToString() }
-  foreach ($parameter in $parameters) {
-    It "should have descriptive help for '$parameter' parameter" {
-      $functionHelp.Parameters.($parameter.ToUpper()) | Should -Not -BeNullOrEmpty
-      $functionHelp.Parameters.($parameter.ToUpper()).Length | Should -BeGreaterThan 25
-    }
-  }
+  # # Getting the list of function parameters
+  # $parameters = $ParsedFunction.Body.ParamBlock.Parameters.name.VariablePath.Foreach{ $_.ToString() }
+  # foreach ($parameter in $parameters) {
+  #   It "should have descriptive help for '$parameter' parameter" {
+  #     $functionHelp.Parameters.($parameter.ToUpper()) | Should -Not -BeNullOrEmpty
+  #     $functionHelp.Parameters.($parameter.ToUpper()).Length | Should -BeGreaterThan 25
+  #   }
+  # }
 
 }

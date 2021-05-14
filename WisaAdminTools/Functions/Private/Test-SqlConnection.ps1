@@ -18,6 +18,7 @@
 
 
 function Test-SqlConnection {    
+    [Cmdletbinding()]
     [OutputType([bool])]
     Param
     (
@@ -27,13 +28,16 @@ function Test-SqlConnection {
         $ConnectionString
     )
     try {
+        Write-Verbose "Trying to open connection..."
         $sqlConnection = New-Object System.Data.SqlClient.SqlConnection $ConnectionString;
         $sqlConnection.Open();
         $sqlConnection.Close();
 
         return $true;
+        Write-Verbose "Connection established"
     }
     catch {
         return $false;
+        Write-Verbose "Connection could not be established!"
     }
 }

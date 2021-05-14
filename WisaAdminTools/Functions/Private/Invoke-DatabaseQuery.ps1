@@ -41,6 +41,7 @@ function Invoke-DatabaseQuery
     )
 
     # Crea ed apri connessione
+    Write-Verbose "Opening SQL connection..."
     $SqlConnection = New-Object -TypeName Data.SqlClient.SqlConnection
     $SqlConnection.ConnectionString = $ConnectionString
     $SqlConnection.Open()
@@ -58,5 +59,6 @@ function Invoke-DatabaseQuery
     $dataset.Tables[0]
 
     # Chiudi connessione
+    Write-Verbose "Closing SQL connection..."
     $SqlConnection.Close()
 }

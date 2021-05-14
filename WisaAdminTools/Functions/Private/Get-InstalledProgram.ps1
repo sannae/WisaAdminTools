@@ -28,6 +28,7 @@ function Get-InstalledProgram {
     $Programs = [System.Collections.ArrayList]@()
 
     # Programmi a 64 bit
+    Write-Verbose "Getting all 64-bit installed programs matching $Name..."
     $app64 = Get-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*" |
     Where-Object { $_.DisplayName -match $Name } | 
     Select-Object DisplayName, DisplayVersion, InstallDate
@@ -44,6 +45,7 @@ function Get-InstalledProgram {
     }
 
     # Programmi a 32 bit
+    Write-Verbose "Getting all 32-bit installed programs matching $Name..."
     $app32 = Get-ItemProperty -Path "HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*" | 
     Where-Object { $_.DisplayName -match $Name } | 
     Select-Object DisplayName, DisplayVersion
