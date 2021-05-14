@@ -77,23 +77,23 @@ function Get-AllFolderLogs {
         $Logs | ForEach-Object { Write-Verbose "I found the log: $_ " }
     }
 
-    # Crea array per salvare i risultati
+    # Creates array to save the results
     $LogResults = [System.Collections.ArrayList]@()
 
     ForEach ( $Log in $Logs ) {
 
-        # Nome del log
+        # Log name
         $LogName = $Log.Name
         Write-Verbose "I'm reading the whole log $LogName..."
 
-        # Contenuto del log, splittato per riga
+        # Log content, each row
         $logContent = Get-Content $($Log).FullName | Select-Object -skip 1 # Rimuove la prima riga
         $logContent -split "`n" | Where-Object { $_.trim() } | Out-null
 
-        # Ciclo su ogni riga
+        # Loops on each row
         $logContent | ForEach-Object {
 
-            # Data (come stringa) e contenuto di ogni riga
+            # DateTime (as string) and content of each row
             $RowDate = ($_ -split '\s', 3)[0] + ' ' + ($_ -split '\s', 3)[1]
 
             if ( ($RowDate -eq '') -or ($RowDate -eq ' ') ) {
@@ -101,13 +101,13 @@ function Get-AllFolderLogs {
             }
             else {
 
-                $RowDate = $RowDate.Substring(0, 19) + '.' + $RowDate.Substring(20, 3) # Per il confronto di seguito
+                $RowDate = $RowDate.Substring(0, 19) + '.' + $RowDate.Substring(20, 3) # Helpful for the next comparison
                 $RowContent = ($_ -split '\s', 3)[2]
 
-                # Confronto di date
+                # DateTime comparison
                 if (([DateTime]::Parse("$Rowdate") -gt [DateTime]::Parse("$StartDate")) -and ([DateTime]::PArse("$Rowdate") -lt [DateTime]::Parse("$StopDate"))) {
 
-                    # Crea l'oggetto riga
+                    # Creates the row PS object
                     $LogRow = [PSCustomObject]@{
                         DateTime = [DateTime]::Parse("$RowDate")
                         LogName  = $LogName
@@ -116,7 +116,7 @@ function Get-AllFolderLogs {
 
                     if ($LogRow.Content -like $SearchString) {
 
-                        # Aggiungi l'oggetto all'arraylist LogResults
+                        # Add the object to the LogResults arraylist
                         $LogResults.Add($LogRow) | Out-Null
                     }
                 }
@@ -124,7 +124,7 @@ function Get-AllFolderLogs {
         }
     }
 
-    # Stampa i risultati
+    # Returns the results
     $LogResults = $LogResults | Sort-Object -Property DateTime | Format-Table -AutoSize
     $LogResults
 

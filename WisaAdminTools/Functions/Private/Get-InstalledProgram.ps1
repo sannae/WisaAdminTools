@@ -1,21 +1,20 @@
 <#
 .SYNOPSIS
-    Verifica che un programma sia installato nel sistema operativo.
+    It verifies that a program is installed on the current OS.
 .DESCRIPTION
-    Lo script va a leggere le chiavi di registro contenenti l'elenco dei programmi installati.
-    Si tratta solo dei programmi "disinstallabili" listabili dal menu Programs And Features del Pannello di Controllo.
-    Vengono lette sia la chiave di registro con i programmi a 32bit sia quella con i programmi a 64bit.
-    Per ogni record, viene confrontata la proprietà DisplayName con la stringa inserita come input.
-    Per ogni risultato, scrive le proprietà DisplayName, DisplayVersion, InstallDate e Version.
+    The scripts reads the registry keys containing the list of installed programs.
+    It's just the list of "uninstallable" program, available on the Programs and Features menu in the Control Panel.
+    Both the 32- and the 64-bit related keys are read.
+    For each record, the DisplayName property is matched with the input parameter.
+    For each result, the properties DisplayName, DisplayVersion, InstalledDate and Version are printed.
 .PARAMETER NAME
-    Descrizione anche parziale del programma da cercare.
-    Il confronto è fatto con operatore -match rispetto alla proprietà DisplayName.
+    Description, even a partial one, of the searched program.
+    The match is performed with the -match operator on the propriety DisplayName.
 .EXAMPLE
     PS> Get-InstalledProgram SQL
-    Verifica che esistano programmi installati la cui descrizione contiene "SQL"
+    It checks the existence of any installed program whose description contains "SQL"
 .NOTES
-    1.0 (testato)
-    TODO: Magari migliora usando (Get-CimInstance -Class CIM_Product)...
+    TODO: Maybe improving it using Get-CimInstance -Class CIM_Product...
 #>
 
 function Get-InstalledProgram {
@@ -27,7 +26,7 @@ function Get-InstalledProgram {
 
     $Programs = [System.Collections.ArrayList]@()
 
-    # Programmi a 64 bit
+    # 64-bit programs
     Write-Verbose "Getting all 64-bit installed programs matching $Name..."
     $app64 = Get-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*" |
     Where-Object { $_.DisplayName -match $Name } | 
@@ -44,7 +43,7 @@ function Get-InstalledProgram {
         }
     }
 
-    # Programmi a 32 bit
+    # 32-bit programs
     Write-Verbose "Getting all 32-bit installed programs matching $Name..."
     $app32 = Get-ItemProperty -Path "HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*" | 
     Where-Object { $_.DisplayName -match $Name } | 
@@ -66,6 +65,6 @@ function Get-InstalledProgram {
         return $Programs
     }
     else {
-        Write-Error "Non è stato trovato alcun programma installato con descrizione $Name"
+        Write-Error "I couldn't find any installed program with description like $Name"
     }
 }
