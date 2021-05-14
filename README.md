@@ -9,4 +9,6 @@ The main components are:
 * Build tasks are handled by `InvokeBuild`
 * Unit tests are handled by `Pester`
 
-The build-test-publish pipeline is handled by [GitHub Actions](https://docs.github.com/en/actions/guides/building-and-testing-powershell) and is fully described in the [reference YAML file](https://github.com/sannae/WisaAdminTools/blob/master/.github/workflows/CI-test.yml)
+The build-test-publish pipeline is handled by [GitHub Actions](https://docs.github.com/en/actions/guides/building-and-testing-powershell) and is fully described in the [reference YAML file](https://github.com/sannae/WisaAdminTools/blob/master/.github/workflows/CI-test.yml).
+
+Many thanks to [Andrew Matveichuk's post](https://andrewmatveychuk.com/a-sample-ci-cd-pipeline-for-powershell-module/) on setting up a CI/CD pipeline for a PowerShell module.

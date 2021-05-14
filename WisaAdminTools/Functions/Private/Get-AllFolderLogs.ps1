@@ -1,48 +1,45 @@
 <#
 .SYNOPSIS
-    Aggregatore di log: restituisce una lista di array contenenti DataOra, LogName e contenuto della riga del log per un'applicazione specificata.
+    Log gatherer: it returns an array list containing DateTime, LogName and the content of the log row for a specific application.
 .DESCRIPTION
-    Lo script legge riga per riga tutti i file di log all'interno della cartella di una specifica applicazione.
-    L'applicazione può essere un servizio di Windows o un'app web e viene indicata nella variabile $Path.
-    Lo script cerca ricorsivamente tutti i file .log contenuti nella cartella dell'applicazione, ne effettua il parsing della data e del contenuto.
-    Data e contenuto di ogni riga sono poi usati per costruire un PSCustomObject.
-    La data è filtrata con i parametri $StartDate e $StopDate.
-    Eventualmente è possibile fare in modo che vengano filtrate solo le righe contenenti una cerca stringa, indicata nella variabile $SearchString.
-    L'oggetto ritornato è un ArrayList che viene outputato su host ordinato per DateTime crescente.
+    The script reads row-by-row each log file within the folder of a specific application.
+    The application may be a Windows service or a web application: its path must be specified in the $Path variable.
+    The script recursively searches all the files .log in the application root folder, then it parses the date and the content.
+    The date and content of each row are then used to build a PSCustomObject.
+    The date is filtered with the parameters $StartDate and $StopDate.
+    Optionally, you may filter only rows containing a specific string stated in variable $SearchString.
+    The scripts returns on host an ArrayList object, sorted by ascending DateTime.  
 .PARAMETER PATH
-    Percorso della cartella contenente i file di log: vengono cercati tutti i file *.log contenuti all'interno.
-    Il parametro viene validato verificando l'esistenza del percorso.
+    Log folder path: all the *.log files are searched.
+    The existence of the path is checked.
 .PARAMETER STARTDATE
-    È la data di inizio del periodo indicato.
-    Va inserita in formato 'dd-MM-yyyy hh:mm:ss'.
-    Se non inserita, il valore di default è oggi alle 00:00:00.
+    Starting date in format 'dd-MM-yyyy hh:mm:ss'.
+    Default value is today at 00:00:00.
 .PARAMETER STOPDATE
-    È la data di fine del periodo indicato.
-    Va inserita in formato 'dd-MM-yyyy hh:mm:ss'.
-    Se non inserita, il valore di default è oggi alle 23:59:59. 
+    Stopping date in format 'dd-MM-yyyy hh:mm:ss'.
+    Default value is today at 23:59:59.
 .PARAMETER SEARCHSTRING
-    È la stringa che si vuole cercare nei log, da usare come filtro.
-    Se non specificata, è uguale a "*", ovvero non viene fatto alcun filtro.
+    String to be searched in the log files as a filter.
+    Default value is "*", i.e. no filter is applied.
 .PARAMETER EXTENSION
-    Array di stringhe che specifica le estensioni dei file da aggregare.
-    Il valore di default è "log" ovvero vengono presi in considerazione solo i file .log.
+    String array specifying the file extensions to be searched.
+    Default value is "log", i.e. only *.log files are searched for.
 .PARAMETER SILENT
-    Switch per sovrascrivere la variabile $ErrorActionPreference da Continue a SilentlyContinue.
-    Attenzione: questo zittisce gli errori su host, serve solo per accelerare.
+    Switch to overwrite the variable $ErrorActionPreference from Continue to SilentlyContinue.
+    Warning: this switch only shuts errors on hosts, just to accelerate the process.
 .EXAMPLE
     PS> Get-AllFolderLogs -Path MYAPPFOLDER
-    Restituisce tutti i log dell'applicativo MYAPPFOLDER della giornata odierna
+    It returns all today's logs from the application residing in MYAPPFOLDER.  
 .EXAMPLE
     PS> Get-AllFolderLogs -Path MYAPPFOLDER -StartDate '01-01-2020 00:00:00' -StopDate '02-01-2020 00:00:00'
-    Restituisce tutti i log dell'applicativo MYAPPFOLDER nella giornata del 01-01-2020
+    It returns all the logs during 01-01-2020 from the application residing in MYAPPFOLDER.  
 .EXAMPLE
     PS> Get-AllFolderLogs -PAth MYAPPFOLDER -SearchString "Disconnessione"
     Restituisce tutti i log dell'applicativo MYAPPFOLDER contenenti la stringa "Disconnessione" 
 .NOTES
-    0.9 (refactoring)
-    TODO : Error handling su IF contenente il parseDate, per gestire righe che non contengono una data-ora
-    TODO : Cambiare il parametro $SearchString da stringa singola ad array di stringhe
-    TODO : Gestire il parametro $SearchString con -Include ed -Exclude, così da poter omettere le righe inutili
+    TODO : Error handling on IF containing parseDate, to handle rows not including a date-time
+    TODO : Edit parameter $SearchString from [string] to [string[]]
+    TODO : Handle -Include and -Exclude in $SearchString, to exclude useless results
 #>
 
 function Get-AllFolderLogs {
@@ -51,33 +48,33 @@ function Get-AllFolderLogs {
     param (
         [Parameter(
             Mandatory = $True,
-            HelpMessage = "Digitare il percorso completo della cartella",
+            HelpMessage = "Insert folder full path",
             ValueFromPipeline = $true)]
         [ValidateScript( { Test-Path $_ } )]
         [string]$Path,
         [Parameter(
-            HelpMessage = "Digitare data ora di inizio (dd-MM-yyyy hh:mm:ss)")]
+            HelpMessage = "Insert starting date-time (dd-MM-yyyy hh:mm:ss)")]
         [String]$StartDate = (Get-Date -Format 'dd-MM-yyyy 00:00:00').ToString(),
         [Parameter(
-            HelpMessage = "Digitare data ora di fine (dd-MM-yyyy hh:mm:ss)")]        
+            HelpMessage = "Insert ending date-time (dd-MM-yyyy hh:mm:ss)")]        
         [String]$StopDate = (Get-Date -Format 'dd-MM-yyyy 23:59:59').ToString(),
         [string]$SearchString = "*",
         [string[]]$Extension = "log",
         [switch]$Silent
     )
 
-    # Ignora errori
+    # Ignore errors
     if ($Silent) {
         $ErrorActionPreference = "SilentlyContinue"
     }
 
-    # Salva i log in una variabile
+    # Save logs in a variable
     $Logs = Get-ChildItem -Path $Path -Recurse | Where-Object { $_.Name -like "*.$Extension" }
     if ( $null -eq $Logs ) {
-        Write-Error "Non ci sono file con estensione .$Extension nella cartella indicata!"
+        Write-Error "No file with extension .$Extension were found in the specified path!"
     }
     else {
-        $Logs | ForEach-Object { Write-Verbose "Ho trovato il log: $_ " }
+        $Logs | ForEach-Object { Write-Verbose "I found the log: $_ " }
     }
 
     # Crea array per salvare i risultati
@@ -87,7 +84,7 @@ function Get-AllFolderLogs {
 
         # Nome del log
         $LogName = $Log.Name
-        Write-Verbose "Mi sto leggendo tutto il log $LogName..."
+        Write-Verbose "I'm reading the whole log $LogName..."
 
         # Contenuto del log, splittato per riga
         $logContent = Get-Content $($Log).FullName | Select-Object -skip 1 # Rimuove la prima riga

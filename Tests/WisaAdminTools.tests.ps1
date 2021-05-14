@@ -2,14 +2,7 @@
 .SYNOPSIS
   Pester tests for Powershell module
 .DESCRIPTION
-  Project-level tests:
-    Should have a root module
-    Should have an associated manifest
-    Should have public functions
-    Should be a valid PowerShell code
-    Should import without errors
-    Should remove without errors
-    etc.
+
 .NOTES
 
 #>

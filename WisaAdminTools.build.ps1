@@ -1,11 +1,9 @@
-#requires -modules InvokeBuild
-
 <#
 .SYNOPSIS
     Build script (https://github.com/nightroman/Invoke-Build)
 .DESCRIPTION
     This script contains the tasks for building the 'SampleModule' PowerShell module.
-.DETAILS
+.NOTES
     Default task : Clean and build
     Enter-Build : installs and invokes PSDepend, defines script variables
     Analyze : Analyze the project with PSScriptAnalyzer
@@ -16,6 +14,8 @@
     Environment variables used by Invoke-Build are:
         $BuildRoot: build root folder
 #>
+
+#requires -modules InvokeBuild
 
 Param (
     [Parameter(ValueFromPipelineByPropertyName = $true)]

@@ -25,3 +25,7 @@ jobs:
       - name: Analyze code with PSScriptAnalyzer
         run: |
           Invoke-Build -Task Analyze
+      # Perform Pester tests
+      - name: Test with Pester
+        run: |
+          Invoke-Build -Task Test
