@@ -1,64 +1,76 @@
 <#
 .SYNOPSIS
-    Esegue una query SQL specifica su un database di cui va fornita la stringa di connessione.
+    It runs a specific SQL query on a database whose connection string is provided.
 .DESCRIPTION
-    Lo script utilizza l'oggetto SqlClient.SqlConnection per aprire una connessione su un'istanza SQL Server.
-    Utilizzando il framework .NET, non dipende da alcun tool esterno e quindi è portabile su qualsiasi OS con .NET > 4.0.
-    La connessione è aperta usando la stringa di connessione come parametro di input in uno specifico formato.
-    Questo formato è usato per esempio nei file config della App Suite, ad eccezione dei web.config.
-    Nel caso di SELECT, i dati vengono scritti in output come array.
-    È possibile richiamare i valori di una particolare colonna dell'array usando $_.NOMECOLONNA.
-    Nel caso di UPDATE/DELETE, i dati non vengono scritti in output.
+    The scripts uses the SqlClient.SqlConnection object to open a connection towards a SQL Server instance.
+    Using the .NET Framework, no external tool is used as dependency and is thus portable on any OS with .NET > 4.0.
+    The connection is opened using the connection string as input parameter in a specific format.
+    This format is similar to the one used in the config files of the App Suite (web.config excluded).
+    In case of SELECT, data is written in output as an array.
+    In case of UPDATE, the amount of updated rows is written in output as a number.
+    The user may get the values of a specific column in the dataset using $_.COLUMNNAME.
 .PARAMETER CONNECTIONSTRING
-    Stringa di connessione al database; deve essere nel formato "User ID =;Password=;Initial Catalog=;Data Source="
-    Se non fornita dall'utente sottoforma di parametro, viene data per scontata la stringa di connessione ricavata dalla funzione Get-AppConnectionStrings (v. help relativo).
+    Connection string to the database; it must follow the format "User ID=;Password=;Initial Catalog=;Data Source="
+    The default value is provided by the public function Get-AppConnectionString.
 .PARAMETER QUERY
-    Query da eseguire, in formato stringa (es. "SELECT * FROM TABLE").
-    Eventualmente si può acquisire da un file esterno usando $Query = $(Get-Content FILE.sql)
+    Query to be run, provided as a string (e.g. "SELECT * FROM TABLE").
+    Optionally, it can be read by an external file using $Query = $(Get-Content FILE.sql)
 .EXAMPLE
     PS> Invoke-DatabaseQuery -ConnectionString $ConnectionString -Query "SELECT * FROM TABLE"
-    Esegue la query indicata connettendosi con la stringa di connessione specificata.
+    It runs the specified query by connecting to the input connection string.
 .EXAMPLE
     PS> $Table = Invoke-DatabaseQuery -Query $(Get-Content File.sql)
-    Esegue la query contenuta in File.sql connettendosi all'istanza ricavata dalla funzione Get-AppConnectionStrings.
-    I risultati vengono salvati nella variabile $Table.
+    It runs the query in file File.sql by connecting to be database acquired by function Get-AppConnectionStrings.
+    The results are saved into the $Table variable.
 .NOTES
-    1.0 (testato in locale)
     https://www.sqlshack.com/connecting-powershell-to-sql-server/
-    TODO: Gestire l'autenticazione di Windows!
-    TODO: Gestire gli errori!
+    TODO: Add Windows Authentication
 #>
-function Invoke-DatabaseQuery
-{
+function Invoke-DatabaseQuery {
 
-    [CmdletBinding()]    
-    param (
-        [Parameter(
-            HelpMessage="Digita la stringa di connessione rispettando il pattern 'User ID =;Password=;Initial Catalog=;Data Source='",
-            ValueFromPipeline=$true)]
-                [string]$ConnectionString = (Get-AppConnectionStrings),
-        [Parameter(Mandatory=$True)][string]$Query
-    )
+	[CmdletBinding()]
+	param(
+		[string]$ConnectionString = Get-AppConnectionStrings,
+		[string]$Query
+	)
 
     # Crea ed apri connessione
-    Write-Verbose "Opening SQL connection..."
     $SqlConnection = New-Object -TypeName Data.SqlClient.SqlConnection
     $SqlConnection.ConnectionString = $ConnectionString
     $SqlConnection.Open()
 
     # Crea comando
     $SqlCommand = $SqlConnection.CreateCommand()
-    $SqlCommand.CommandText = $Query
+    $SqlCommand.CommandText = "$Query"
 
-    # Crea Data Adapter (“represents a set of data commands and a database connection that are used to fill the DataSet”)
-    $adapter = New-Object -TypeName Data.SqlClient.SqlDataAdapter $SqlCommand
+    if ( $Query -like "SELECT*" ) {
 
-    # Crea Data Set (“an in-memory cache of data”)
-    $dataset = New-Object -TypeName System.Data.DataSet
-    $adapter.Fill($dataset) | Out-Null
-    $dataset.Tables[0]
+        Write-Verbose "A SELECT query was found: results will be displayed on host"
+
+        # Crea Data Adapter (“represents a set of data commands and a database connection that are used to fill the DataSet”)
+        $adapter = New-Object -TypeName Data.SqlClient.SqlDataAdapter $SqlCommand
+
+        # Crea Data Set (“an in-memory cache of data”)
+        $dataset = New-Object -TypeName System.Data.DataSet
+        $adapter.Fill($dataset) | Out-Null
+        $dataset.Tables[0] | Format-table -AutoSize
+
+    } elseif ( ($Query -like "UPDATE*") -or ($Query -like "DELETE*") ) {
+
+        Write-Verbose "An UPDATE/DELETE query was found: the amount of updated rows will be displayed on host"
+
+        # Returns the amount of affected rows
+        $RowsAffected = $SqlCommand.ExecuteNonQuery()
+        Return "Affected rows: $RowsAffected"
+
+    } else {
+
+        # Not a correct query
+        Write-Error "Query not in the right format!"
+
+    }
 
     # Chiudi connessione
-    Write-Verbose "Closing SQL connection..."
     $SqlConnection.Close()
+
 }
