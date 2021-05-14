@@ -37,6 +37,7 @@ function Get-WebApplicationPool {
     $AppName = "/" + $AppName
 
     # Trovo app pool in cui si trova l'app web
+    Write-Verbose "Fetching the application pool $AppName belongs to..."
     $AppPoolName = $manager.Sites.Applications | Where-Object { $_.Path -eq "$AppName" } | Select-Object ApplicationPoolName
     if ($null -eq $AppPoolName ) {
         Write-Error "Application Pool associato all'applicazione $AppName non trovato!"

@@ -31,12 +31,15 @@ function Get-InstallFileInfo {
     )
 
     # Get file
+    Write-Verbose "Getting file $File..."
     $File = Get-Item $Path
 
     # Usa Regex per ottenere parte alfabetica
+    Write-Verbose "Getting numeric part in filename..."
     $FileName = ( [regex]::matches($File.BaseName, "[a-zA-Z]").value ) -join ''
 
     # Ottieni parte numerica e converti in versione
+    Write-Verbose "Getting alphabetic part in filename..."
     $NumericPart = ( [regex]::matches($File.BaseName, "\d").value ) -join ''
     $VersionString = $NumericPart[0] + '.' + $NumericPart[1] + '.' + $($NumericPart[2..$NumericPart.length] -join '')
     $FileVersion = [System.Version]::Parse($VersionString)
