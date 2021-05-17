@@ -149,7 +149,7 @@ task Test {
 task CodeCoverage {
 
     # Inferior limit of code coverage tolerance
-    $acceptableCodeCoveragePercent = 60
+    $acceptableCodeCoveragePercent = 1
 
     Write-Verbose "Retrieving all files from root folder..."
     $path = $buildRoot
