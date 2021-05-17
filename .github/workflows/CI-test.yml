@@ -9,7 +9,7 @@ on: [push]
 jobs:
   # Test: perform some code quality test before building
   Test:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       # Make your repo available to workflow: https://github.com/actions/checkout
       - name: Check out repository code
@@ -26,10 +26,10 @@ jobs:
         run: |
           Invoke-Build -Task Analyze
       - name: Publish PSScriptAnalyzer Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v1
+        uses: EnricoMi/publish-unit-test-result-action/composite@v1
         if: always()
         with:
-          files: ./**/AnalysisResults_*.xml
+          files: ./**/AnalysisResults*.xml
       # Perform Pester tests
       - name: Test with Pester
         run: |
