@@ -8,6 +8,7 @@ name: CI/CD-test
 on: [push]
 jobs:
   # Test: perform some code quality test before building
+  # Publishing uses this Github Action: https://github.com/EnricoMi/publish-unit-test-result-action
   Test:
   # Requires windows
     runs-on: windows-latest
@@ -30,6 +31,7 @@ jobs:
         uses: EnricoMi/publish-unit-test-result-action/composite@v1
         if: always()
         with:
+          check_name: "PSScriptAnalyzer Test Results" 
           files: ./**/AnalysisResults*.xml
       # Perform Pester tests and publish the results
       - name: Test with Pester
@@ -39,13 +41,15 @@ jobs:
         uses: EnricoMi/publish-unit-test-result-action/composite@v1
         if: always()
         with:
+          check_name: "Pester Test Results" 
           files: ./**/TestResults*.xml
       # Verify code coverage using Pester and publish the results
       - name: Verify code coverage
         run: |
           Invoke-Build -Task CodeCoverage    
-      - name: Publish Code Coverage Test Results
+      - name: Publish Pester Test Results
         uses: EnricoMi/publish-unit-test-result-action/composite@v1
         if: always()
         with:
+          check_name: "Pester Code Coverage Test Results" 
           files: ./**/CodeCoverageResults*.xml
