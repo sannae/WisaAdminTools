@@ -31,7 +31,7 @@ jobs:
         uses: EnricoMi/publish-unit-test-result-action/composite@v1
         if: always()
         with:
-          check_name: "PSScriptAnalyzer Test Results" 
+          check_name: "Test/PSScriptAnalyzer-results" 
           files: ./**/AnalysisResults*.xml
       # Perform Pester tests and publish the results
       - name: Test with Pester
@@ -41,7 +41,7 @@ jobs:
         uses: EnricoMi/publish-unit-test-result-action/composite@v1
         if: always()
         with:
-          check_name: "Pester Test Results" 
+          check_name: "Test/Pester-results" 
           files: ./**/TestResults*.xml
       # Verify code coverage using Pester and publish the results
       - name: Verify code coverage
@@ -51,5 +51,5 @@ jobs:
         uses: EnricoMi/publish-unit-test-result-action/composite@v1
         if: always()
         with:
-          check_name: "Pester Code Coverage Test Results" 
+          check_name: "Test/CodeCoverage-results" 
           files: ./**/CodeCoverageResults*.xml
