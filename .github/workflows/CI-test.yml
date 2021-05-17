@@ -31,11 +31,21 @@ jobs:
         if: always()
         with:
           files: ./**/AnalysisResults*.xml
-      # Perform Pester tests
+      # Perform Pester tests and publish the results
       - name: Test with Pester
         run: |
           Invoke-Build -Task Test
-      # Verify code coverage using Pester
+      - name: Publish Pester Test Results
+        uses: EnricoMi/publish-unit-test-result-action/composite@v1
+        if: always()
+        with:
+          files: ./**/TestResults*.xml
+      # Verify code coverage using Pester and publish the results
       - name: Verify code coverage
         run: |
           Invoke-Build -Task CodeCoverage    
+      - name: Publish Code Coverage Test Results
+        uses: EnricoMi/publish-unit-test-result-action/composite@v1
+        if: always()
+        with:
+          files: ./**/CodeCoverageResults*.xml
