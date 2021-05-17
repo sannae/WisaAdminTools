@@ -178,8 +178,9 @@ task CodeCoverage {
     # ...
 
     # Compute actual results
-    If ( $CodeCoverageResult.CodeCoverage ) {
-        $codeCoverage = $result.CodeCoverage
+    $codeCoverage = $CodeCoverageResults.CodeCoverage   
+    If ( $CodeCoverage ) {
+
         $commandsFound = $codeCoverage.CommandsAnalyzedCount
 
         # To prevent any "Attempted to divide by zero" exceptions
