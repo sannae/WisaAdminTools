@@ -30,8 +30,11 @@ function Invoke-DatabaseQuery {
 
 	[CmdletBinding()]
 	param(
-		[string]$ConnectionString = Get-AppConnectionStrings,
-		[string]$Query
+        [Parameter(
+            HelpMessage="Insert your connection string",
+            ValueFromPipeline=$true)]
+                [string]$ConnectionString = (Get-AppConnectionStrings),
+        [Parameter(Mandatory=$True)][string]$Query
 	)
 
     # Crea ed apri connessione
