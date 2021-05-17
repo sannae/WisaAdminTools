@@ -162,22 +162,23 @@ task CodeCoverage {
         Show         = 'Summary'
     }
 
-    # # Additional parameters on Azure Pipelines agents to generate code coverage report
-    # if ($env:TF_BUILD) {
-    #     if (-not (Test-Path -Path $buildOutputPath -ErrorAction Continue)) {
-    #         New-Item -Path $buildOutputPath -ItemType Directory
-    #     }
-    #     $Timestamp = Get-date -UFormat "%Y%m%d-%H%M%S"
-    #     $PSVersion = $PSVersionTable.PSVersion.Major
-    #     $AnalysisResultFile = "CodeCoverageResults_PS$PSVersion`_$TimeStamp.xml"
-    #     $Params.Add("CodeCoverageOutputFile", "$buildOutputPath\$AnalysisResultFile")
-    # }
+    # Generate test results
+    $Timestamp = Get-date -UFormat "%Y%m%d-%H%M%S"
+    $PSVersion = $PSVersionTable.PSVersion.Major
+    $CodeCoverageResultFile = "CodeCoverageResults_PS$PSVersion`_$TimeStamp.xml"
+        if (-not (Test-Path -Path $buildOutputPath -ErrorAction SilentlyContinue)) {
+            New-Item -Path $buildOutputPath -ItemType Directory
+        }
 
     # Run tests
-    $result = Invoke-Pester @Params -Verbose
+    $CodeCoverageResult = Invoke-Pester @Params -Verbose
+
+    # Publishing test results
+    $TestResults | Export-CliXml -Path "$buildOutputPath\$CodeCoverageResultFile"
+    # ...
 
     # Compute actual results
-    If ( $result.CodeCoverage ) {
+    If ( $CodeCoverageResult.CodeCoverage ) {
         $codeCoverage = $result.CodeCoverage
         $commandsFound = $codeCoverage.CommandsAnalyzedCount
 
