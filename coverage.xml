@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE report PUBLIC "-//JACOCO//DTD Report 1.1//EN" "report.dtd"[]>
-<report name="Pester (05/17/2021 09:50:38)">
-  <sessioninfo id="this" start="1621245004687" dump="1621245038245" />
+<report name="Pester (05/17/2021 14:56:42)">
+  <sessioninfo id="this" start="1621263372787" dump="1621263402071" />
   <package name="WisaAdminTools/Functions/Private">
     <class name="WisaAdminTools/Functions/Private/Get-AllFolderLogs" sourcefilename="Functions/Private/Get-AllFolderLogs.ps1">
       <method name="Get-AllFolderLogs" desc="()" line="53">
@@ -716,36 +716,202 @@
   <package name="WisaAdminTools">
     <class name="WisaAdminTools/WisaAdminTools" sourcefilename="WisaAdminTools.psm1">
       <method name="&lt;script&gt;" desc="()" line="8">
-        <counter type="INSTRUCTION" missed="12" covered="0" />
-        <counter type="LINE" missed="8" covered="0" />
+        <counter type="INSTRUCTION" missed="4" covered="8" />
+        <counter type="LINE" missed="2" covered="6" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <counter type="INSTRUCTION" missed="4" covered="8" />
+      <counter type="LINE" missed="2" covered="6" />
+      <counter type="METHOD" missed="0" covered="1" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <sourcefile name="WisaAdminTools.psm1">
+      <line nr="8" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="9" mi="0" ci="2" mb="0" cb="0" />
+      <line nr="11" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="14" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="19" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="20" mi="0" ci="2" mb="0" cb="0" />
+      <line nr="22" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="25" mi="2" ci="0" mb="0" cb="0" />
+      <counter type="INSTRUCTION" missed="4" covered="8" />
+      <counter type="LINE" missed="2" covered="6" />
+      <counter type="METHOD" missed="0" covered="1" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </sourcefile>
+    <counter type="INSTRUCTION" missed="4" covered="8" />
+    <counter type="LINE" missed="2" covered="6" />
+    <counter type="METHOD" missed="0" covered="1" />
+    <counter type="CLASS" missed="0" covered="1" />
+  </package>
+  <package name="WisaAdminTools///vmware-host/Shared Folders/WisaAdminTools">
+    <class name="WisaAdminTools/.build" sourcefilename=".build.ps1">
+      <method name="&lt;script&gt;" desc="()" line="32">
+        <counter type="INSTRUCTION" missed="168" covered="0" />
+        <counter type="LINE" missed="143" covered="0" />
         <counter type="METHOD" missed="1" covered="0" />
       </method>
-      <counter type="INSTRUCTION" missed="12" covered="0" />
-      <counter type="LINE" missed="8" covered="0" />
+      <counter type="INSTRUCTION" missed="168" covered="0" />
+      <counter type="LINE" missed="143" covered="0" />
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </class>
-    <sourcefile name="WisaAdminTools.psm1">
-      <line nr="8" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="9" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="11" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="14" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="19" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="20" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="22" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="25" mi="2" ci="0" mb="0" cb="0" />
-      <counter type="INSTRUCTION" missed="12" covered="0" />
-      <counter type="LINE" missed="8" covered="0" />
+    <sourcefile name=".build.ps1">
+      <line nr="32" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="35" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="37" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="40" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="41" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="42" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="44" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="47" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="48" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="51" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="52" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="53" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="54" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="55" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="56" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="59" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="62" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="66" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="68" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="71" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="72" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="73" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="74" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="75" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="77" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="80" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="81" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="82" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="86" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="87" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="88" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="89" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="90" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="94" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="95" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="97" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="99" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="100" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="101" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="106" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="108" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="111" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="112" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="113" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="114" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="115" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="118" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="119" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="122" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="123" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="124" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="128" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="129" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="130" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="131" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="132" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="136" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="137" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="139" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="141" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="142" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="143" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="149" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="152" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="154" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="155" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="156" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="158" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="159" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="160" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="161" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="162" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="177" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="180" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="181" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="182" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="185" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="186" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="187" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="190" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="195" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="196" mi="3" ci="0" mb="0" cb="0" />
+      <line nr="202" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="206" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="210" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="213" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="217" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="221" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="225" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="229" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="232" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="235" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="236" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="237" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="241" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="244" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="248" mi="4" ci="0" mb="0" cb="0" />
+      <line nr="250" mi="3" ci="0" mb="0" cb="0" />
+      <line nr="251" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="254" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="255" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="256" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="260" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="264" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="269" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="271" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="272" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="273" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="274" mi="3" ci="0" mb="0" cb="0" />
+      <line nr="276" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="277" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="280" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="281" mi="3" ci="0" mb="0" cb="0" />
+      <line nr="284" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="285" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="289" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="291" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="292" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="293" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="294" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="298" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="302" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="304" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="305" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="308" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="309" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="312" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="316" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="318" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="319" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="323" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="324" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="325" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="329" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="330" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="331" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="332" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="333" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="334" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="338" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="342" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="343" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="344" mi="1" ci="0" mb="0" cb="0" />
+      <counter type="INSTRUCTION" missed="168" covered="0" />
+      <counter type="LINE" missed="143" covered="0" />
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
-    <counter type="INSTRUCTION" missed="12" covered="0" />
-    <counter type="LINE" missed="8" covered="0" />
+    <counter type="INSTRUCTION" missed="168" covered="0" />
+    <counter type="LINE" missed="143" covered="0" />
     <counter type="METHOD" missed="1" covered="0" />
     <counter type="CLASS" missed="1" covered="0" />
   </package>
-  <counter type="INSTRUCTION" missed="534" covered="0" />
-  <counter type="LINE" missed="367" covered="0" />
-  <counter type="METHOD" missed="21" covered="0" />
-  <counter type="CLASS" missed="21" covered="0" />
+  <counter type="INSTRUCTION" missed="694" covered="8" />
+  <counter type="LINE" missed="504" covered="6" />
+  <counter type="METHOD" missed="21" covered="1" />
+  <counter type="CLASS" missed="21" covered="1" />
 </report>

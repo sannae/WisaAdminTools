@@ -30,6 +30,6 @@ jobs:
         run: |
           Invoke-Build -Task Test
       # Verify code coverage using Pester
-      # - name: Verify code coverage
-      #   run: |
-      #     Invoke-Build -Task CodeCoverage    
+      - name: Verify code coverage
+        run: |
+          Invoke-Build -Task CodeCoverage    

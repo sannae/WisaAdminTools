@@ -144,6 +144,60 @@ task Test {
     }
 }
 
+
+# Synopsis: Verify the code coverage by tests
+task CodeCoverage {
+
+    # Inferior limit of code coverage tolerance
+    $acceptableCodeCoveragePercent = 60
+
+    Write-Verbose "Retrieving all files from root folder..."
+    $path = $buildRoot
+    $files = Get-ChildItem $path -Recurse -Include '*.ps1', '*.psm1' -Exclude '*.Tests.ps1', '*.PSScriptAnalyzer.tests.ps1'
+
+    $Params = @{
+        Path         = $path
+        CodeCoverage = $files
+        PassThru     = $true
+        Show         = 'Summary'
+    }
+
+    # # Additional parameters on Azure Pipelines agents to generate code coverage report
+    # if ($env:TF_BUILD) {
+    #     if (-not (Test-Path -Path $buildOutputPath -ErrorAction Continue)) {
+    #         New-Item -Path $buildOutputPath -ItemType Directory
+    #     }
+    #     $Timestamp = Get-date -UFormat "%Y%m%d-%H%M%S"
+    #     $PSVersion = $PSVersionTable.PSVersion.Major
+    #     $AnalysisResultFile = "CodeCoverageResults_PS$PSVersion`_$TimeStamp.xml"
+    #     $Params.Add("CodeCoverageOutputFile", "$buildOutputPath\$AnalysisResultFile")
+    # }
+
+    # Run tests
+    $result = Invoke-Pester @Params -Verbose
+
+    # Compute actual results
+    If ( $result.CodeCoverage ) {
+        $codeCoverage = $result.CodeCoverage
+        $commandsFound = $codeCoverage.CommandsAnalyzedCount
+
+        # To prevent any "Attempted to divide by zero" exceptions
+        If ( $commandsFound -ne 0 ) {
+            $commandsExercised = $codeCoverage.CommandsExecutedCount
+            [System.Double]$actualCodeCoveragePercent = [Math]::Round(($commandsExercised / $commandsFound) * 100, 2)
+        }
+        Else {
+            [System.Double]$actualCodeCoveragePercent = 0
+        }
+    }
+
+    # Fail the task if the code coverage results are not acceptable
+    if ($actualCodeCoveragePercent -lt $acceptableCodeCoveragePercent) {
+        throw "The overall code coverage by Pester tests is $actualCodeCoveragePercent% which is less than quality gate of $acceptableCodeCoveragePercent%. Pester ModuleVersion is: $((Get-Module -Name Pester -ListAvailable).ModuleVersion)."
+    }
+}
+
+
 # Synopsis: Generate a new module version if creating a release build
 task GenerateNewModuleVersion -If ($Configuration -eq 'Release') {
     # Using the current NuGet package version from the feed as a version base when building via Azure DevOps pipeline
@@ -282,53 +336,6 @@ task Build UpdateModuleManifest, UpdatePackageSpecification, {
 
     # Copy module files to the target build folder
     Copy-Item @Params
-}
-
-# Synopsis: Verify the code coverage by tests
-task CodeCoverage {
-    $acceptableCodeCoveragePercent = 60
-
-    $path = $moduleSourcePath
-    $files = Get-ChildItem $path -Recurse -Include '*.ps1', '*.psm1' -Exclude '*.Tests.ps1', '*.PSScriptAnalyzer.tests.ps1'
-
-    $Params = @{
-        Path         = $path
-        CodeCoverage = $files
-        PassThru     = $true
-        Show         = 'Summary'
-    }
-
-    # # Additional parameters on Azure Pipelines agents to generate code coverage report
-    # if ($env:TF_BUILD) {
-    #     if (-not (Test-Path -Path $buildOutputPath -ErrorAction Continue)) {
-    #         New-Item -Path $buildOutputPath -ItemType Directory
-    #     }
-    #     $Timestamp = Get-date -UFormat "%Y%m%d-%H%M%S"
-    #     $PSVersion = $PSVersionTable.PSVersion.Major
-    #     $AnalysisResultFile = "CodeCoverageResults_PS$PSVersion`_$TimeStamp.xml"
-    #     $Params.Add("CodeCoverageOutputFile", "$buildOutputPath\$AnalysisResultFile")
-    # }
-
-    $result = Invoke-Pester @Params
-
-    If ( $result.CodeCoverage ) {
-        $codeCoverage = $result.CodeCoverage
-        $commandsFound = $codeCoverage.NumberOfCommandsAnalyzed
-
-        # To prevent any "Attempted to divide by zero" exceptions
-        If ( $commandsFound -ne 0 ) {
-            $commandsExercised = $codeCoverage.NumberOfCommandsExecuted
-            [System.Double]$actualCodeCoveragePercent = [Math]::Round(($commandsExercised / $commandsFound) * 100, 2)
-        }
-        Else {
-            [System.Double]$actualCodeCoveragePercent = 0
-        }
-    }
-
-    # Fail the task if the code coverage results are not acceptable
-    if ($actualCodeCoveragePercent -lt $acceptableCodeCoveragePercent) {
-        throw "The overall code coverage by Pester tests is $actualCodeCoveragePercent% which is less than quality gate of $acceptableCodeCoveragePercent%. Pester ModuleVersion is: $((Get-Module -Name Pester -ListAvailable).ModuleVersion)."
-    }
 }
 
 # Synopsis: Clean up the target build directory
