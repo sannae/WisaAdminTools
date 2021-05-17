@@ -9,6 +9,7 @@ on: [push]
 jobs:
   # Test: perform some code quality test before building
   Test:
+  # Requires windows
     runs-on: windows-latest
     steps:
       # Make your repo available to workflow: https://github.com/actions/checkout
@@ -21,7 +22,7 @@ jobs:
             Install-Module InvokeBuild -Scope CurrentUser -Force
           }
           Import-Module InvokeBuild
-      # Analyze code with PSScriptAnalyzer
+      # Analyze code with PSScriptAnalyzer and publish the results
       - name: Analyze code with PSScriptAnalyzer
         run: |
           Invoke-Build -Task Analyze

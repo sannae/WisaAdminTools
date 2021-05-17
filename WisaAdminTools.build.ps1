@@ -93,7 +93,7 @@ task Analyze {
     # Invoke all tests and save results in CliXML file
     Write-Verbose "Running Pester tests..."
     $AnalysisResults = Invoke-Pester @Params -Verbose
-    # Publishing test results
+    # Publishing test results in Junit XML format (readable by Github Actions)
     $AnalysisResults | Export-JUnitReport -Path "$buildOutputPath\$AnalysisResultFile"
     # Block if errors >0
     if ($AnalysisResults.FailedCount -gt 0) {
@@ -136,11 +136,11 @@ task Test {
     Write-Verbose "Running Pester tests..."
     $TestResults = Invoke-Pester @Params -Verbose
     # Publishing test results
-    $TestResults | Export-CliXml -Path "$buildOutputPath\$TestResultFile"
+    $TestResults | Export-JUnitReport -Path "$buildOutputPath\$TestResultFile"
     # Block if errors >0
     if ($TestResults.FailedCount -gt 0) {
         $TestResults | Format-List
-        throw "One or more PSScriptAnalyzer rules have been violated. Build cannot continue!"
+        throw "One or more Pester tests have been violated. Build cannot continue!"
     }
 }
 
@@ -171,10 +171,10 @@ task CodeCoverage {
         }
 
     # Run tests
-    $CodeCoverageResult = Invoke-Pester @Params -Verbose
+    $CodeCoverageResults = Invoke-Pester @Params -Verbose
 
     # Publishing test results
-    $TestResults | Export-CliXml -Path "$buildOutputPath\$CodeCoverageResultFile"
+    $CodeCoverageResults | Export-JUnitReport -Path "$buildOutputPath\$CodeCoverageResultFile"
     # ...
 
     # Compute actual results
