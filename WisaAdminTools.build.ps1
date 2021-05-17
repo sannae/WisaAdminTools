@@ -298,16 +298,16 @@ task CodeCoverage {
         Show         = 'Summary'
     }
 
-    # Additional parameters on Azure Pipelines agents to generate code coverage report
-    if ($env:TF_BUILD) {
-        if (-not (Test-Path -Path $buildOutputPath -ErrorAction Continue)) {
-            New-Item -Path $buildOutputPath -ItemType Directory
-        }
-        $Timestamp = Get-date -UFormat "%Y%m%d-%H%M%S"
-        $PSVersion = $PSVersionTable.PSVersion.Major
-        $AnalysisResultFile = "CodeCoverageResults_PS$PSVersion`_$TimeStamp.xml"
-        $Params.Add("CodeCoverageOutputFile", "$buildOutputPath\$AnalysisResultFile")
-    }
+    # # Additional parameters on Azure Pipelines agents to generate code coverage report
+    # if ($env:TF_BUILD) {
+    #     if (-not (Test-Path -Path $buildOutputPath -ErrorAction Continue)) {
+    #         New-Item -Path $buildOutputPath -ItemType Directory
+    #     }
+    #     $Timestamp = Get-date -UFormat "%Y%m%d-%H%M%S"
+    #     $PSVersion = $PSVersionTable.PSVersion.Major
+    #     $AnalysisResultFile = "CodeCoverageResults_PS$PSVersion`_$TimeStamp.xml"
+    #     $Params.Add("CodeCoverageOutputFile", "$buildOutputPath\$AnalysisResultFile")
+    # }
 
     $result = Invoke-Pester @Params
 
