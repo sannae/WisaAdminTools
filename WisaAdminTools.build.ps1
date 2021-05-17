@@ -94,7 +94,7 @@ task Analyze {
     Write-Verbose "Running Pester tests..."
     $AnalysisResults = Invoke-Pester @Params -Verbose
     # Publishing test results
-    $AnalysisResults | Export-CliXml -Path "$buildOutputPath\$AnalysisResultFile"
+    $AnalysisResults | Export-JUnitReport -Path "$buildOutputPath\$AnalysisResultFile"
     # Block if errors >0
     if ($AnalysisResults.FailedCount -gt 0) {
         $AnalysisResults | Format-List
