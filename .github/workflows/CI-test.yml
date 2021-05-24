@@ -4,7 +4,7 @@
 # Jobs are run in parallel, unless a 'needs' condition is specified
 # Steps are always run sequentially
 
-name: CI/CD-test
+name: CI/CD
 on: [push]
 jobs:
   # Test: perform some code quality test before building
