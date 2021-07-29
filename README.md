@@ -1,6 +1,8 @@
 # :hammer: WisaAdminTools :wrench:
 ![GitHub Actions](https://github.com/sannae/WisaAdminTools/actions/workflows/CI-test.yml/badge.svg)
 
+:warning: This module is still work-in-progress!
+
 A PowerShell module with some useful CLI tools meant for administrators and operators of an N-tier software application suite based on the WISA web stack (Windows - IIS - SQL Server - ASP.NET).
 
 The main components are:
